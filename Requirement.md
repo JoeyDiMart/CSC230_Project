@@ -175,9 +175,22 @@ Additional features such as discussion forums and data hosting may be developed 
 - Publish final articles and manage journal issues.
 - Manage poster repository items and metadata.
 - Manage user accounts, roles, and permissions.
-- 
 
-# UI/UX 
+
+
+# UI/UX Requirements
+#### UI/UX Functional Requirements
+- Design of all pages 
+- Set the bones of the website by writing the HTML
+- Use React.js to make the buttons, input boxes, etc. reactive and dynamic
+- Must support: Login page, visible publications, different view, mobile and laptop functionality
+
+#### UI/UX Non-Functional Requirements
+- CSS to style the website 
+- adding animation and pop to the website
+- Scroll bar for extra photos from CIRT events, etc.
+- Place for events/networking things etc.
+
 
 # Backend/Database
 
