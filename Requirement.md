@@ -175,5 +175,10 @@ Additional features such as discussion forums and data hosting may be developed 
 - Publish final articles and manage journal issues.
 - Manage poster repository items and metadata.
 - Manage user accounts, roles, and permissions.
+- 
+
+# UI/UX 
+
+# Backend/Database
 
 
