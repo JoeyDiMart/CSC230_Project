@@ -182,3 +182,77 @@ Additional features such as discussion forums and data hosting may be developed 
 # Backend/Database
 
 
+## Security functionality 
+
+### Must have 
+- Passwords will be stored as Hashes
+- Contact information should be visible only if user makes it public
+- Password reset
+
+### Should have 
+- Double authentification
+- One time passwords
+
+
+### Nice to have
+- Touch id and Face id
+
+## Networking
+
+### Must have 
+- Research on the repository, if checked there would be contact information of authors 
+- Find person (public acoutns)
+
+### Should have 
+
+
+
+### Nice to have
+- Ability to send a dm to private acounts
+
+## Journal and Reviewer functionality 
+
+### Must have 
+- Several roles (student, Editor, and blind reviewer)
+- Comments for changes
+-  Submission and Downloads 
+
+### Should have 
+- To do edits list to the student
+
+
+### Nice to have
+- Built in editor
+
+
+## Archive and sort of archive
+
+### Must have 
+- Categorization by general topic of research
+- Sorting by Author, Age, Keyword, Most recent (search tab)
+
+### Should have 
+- Comment section
+
+
+### Nice to have
+
+
+## Settings / Web Manager 
+
+### Must have 
+- Per page change text, image capabilities
+- Ban users by username
+- Allow external organization acount creation
+- Ability to send external invite links
+
+### Should have 
+
+
+
+### Nice to have
+
+
+
+
+
