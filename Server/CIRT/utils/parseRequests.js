@@ -11,27 +11,47 @@ function getMain() {
 }
 
 async function handleGetRequest(req, res) {
+    console.log("REQUEST");
     const { pathname } = new URL(req.url, `http://${req.headers.host}`);
-  
-    if (pathname === "/main") {
-      res.statusCode = 200;
-      res.setHeader("Content-Type", "text/html");
-  
-      const filePath = path.join(__dirname, "../frontend/index.html"); // Adjust path
-  
-      // Read and send the file
-      fs.readFile(filePath, (err, data) => {
-        if (err) {
-          res.statusCode = 500;
-          console.log(err)
-          return res.end("Error loading the file");
+
+    switch (pathname) {
+        case "/main": {
+            res.statusCode = 200;
+            res.setHeader("Content-Type", "text/html");
+
+            const filePath = path.join(__dirname, "../frontend/index.html"); // Adjust path
+
+            // Read and send the file
+            fs.readFile(filePath, (err, data) => {
+                if (err) {
+                    res.statusCode = 500;
+                    console.error("File read error:", err);
+                    return res.end("Error loading the file");
+                }
+                res.end(data);
+            });
+
+            return;
         }
-        res.end(data);
-      });
-  
-      return; // Ensure no further execution
+
+        case "/secret":{
+          res.statusCode = 202
+          res.setHeader("Content-Type", "text/plain");
+          res.end("You have found Daniels lair, have a cake 🎂");
+
+        }
+
+        default: {
+            res.statusCode = 404;
+            res.setHeader("Content-Type", "text/plain");
+            res.end("Page Not Found");
+        }
     }
 }
+
+
+
+
 
 async function handlePostRequest(req, res) {
   res.statusCode = 500;
