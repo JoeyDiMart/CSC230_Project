@@ -42,9 +42,22 @@ async function handleGetRequest(req, res) {
         }
 
         default: {
-            res.statusCode = 404;
-            res.setHeader("Content-Type", "text/plain");
-            res.end("Page Not Found");
+          res.statusCode = 200;
+          res.setHeader("Content-Type", "text/html");
+
+          const filePath = path.join(__dirname, "../frontend/index.html"); // Adjust path
+
+          // Read and send the file
+          fs.readFile(filePath, (err, data) => {
+              if (err) {
+                  res.statusCode = 500;
+                  console.error("File read error:", err);
+                  return res.end("Error loading the file");
+              }
+              res.end(data);
+          });
+
+          return;
         }
     }
 }
