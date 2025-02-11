@@ -19,7 +19,7 @@ async function handleGetRequest(req, res) {
             res.statusCode = 200;
             res.setHeader("Content-Type", "text/html");
 
-            const filePath = path.join(__dirname, "../frontend/index.html"); // Adjust path
+            const filePath = path.join(__dirname, "../frontend/mainPage.html"); // Adjust path
 
             // Read and send the file
             fs.readFile(filePath, (err, data) => {
@@ -34,18 +34,108 @@ async function handleGetRequest(req, res) {
             return;
         }
 
-        case "/secret":{
-          res.statusCode = 202
-          res.setHeader("Content-Type", "text/plain");
-          res.end("You have found Daniels lair, have a cake 🎂");
+        case "/login":{
+          res.statusCode = 200;
+          res.setHeader("Content-Type", "text/html");
+          const filePath = path.join(__dirname, "../frontend/loginPage.html"); // Adjust path
 
+            // Read and send the file
+            fs.readFile(filePath, (err, data) => {
+              if (err) {
+                  res.statusCode = 500;
+                  console.error("File read error:", err);
+                  return res.end("Error loading the file");
+              }
+              res.end(data);
+          });
+
+          return;
         }
+
+        case "/signup": {
+          res.statusCode = 200;
+
+          res.setHeader("Content-Type", "text/html");
+          const filePath = path.join(__dirname, "../frontend/signupPage.html"); // Adjust path
+
+            // Read and send the file
+            fs.readFile(filePath, (err, data) => {
+              if (err) {
+                  res.statusCode = 500;
+                  console.error("File read error:", err);
+                  return res.end("Error loading the file");
+              }
+              res.end(data);
+          });
+
+          return;
+        }
+
+
+        case "/research": {
+          res.statusCode = 200;
+
+          res.setHeader("Content-Type", "text/html");
+          const filePath = path.join(__dirname, "../frontend/researchPage.html"); // Adjust path
+
+            // Read and send the file
+            fs.readFile(filePath, (err, data) => {
+              if (err) {
+                  res.statusCode = 500;
+                  console.error("File read error:", err);
+                  return res.end("Error loading the file");
+              }
+              res.end(data);
+          });
+
+          return;
+        }
+
+        case "/forgotpassword": {
+          res.statusCode = 200;
+
+          res.setHeader("Content-Type", "text/html");
+          const filePath = path.join(__dirname, "../frontend/forgotpasswordPage.html"); // Adjust path
+
+            // Read and send the file
+            fs.readFile(filePath, (err, data) => {
+              if (err) {
+                  res.statusCode = 500;
+                  console.error("File read error:", err);
+                  return res.end("Error loading the file");
+              }
+              res.end(data);
+          });
+
+          return;
+        }
+
+
+        case "/aboutus": {
+          res.statusCode = 200;
+
+          res.setHeader("Content-Type", "text/html");
+          const filePath = path.join(__dirname, "../frontend/aboutusPage.html"); // Adjust path
+
+            // Read and send the file
+            fs.readFile(filePath, (err, data) => {
+              if (err) {
+                  res.statusCode = 500;
+                  console.error("File read error:", err);
+                  return res.end("Error loading the file");
+              }
+              res.end(data);
+          });
+
+          return;
+        }
+
 
         default: {
           res.statusCode = 200;
           res.setHeader("Content-Type", "text/html");
 
-          const filePath = path.join(__dirname, "../frontend/index.html"); // Adjust path
+          const filePath = path.join(__dirname, "../frontend/mainPage.html"); // Adjust path
 
           // Read and send the file
           fs.readFile(filePath, (err, data) => {
