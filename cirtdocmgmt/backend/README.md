@@ -1,66 +1,194 @@
-# SuperTokens + Express
 
-A demo implementation of [SuperTokens](https://supertokens.com/) with [Express](https://expressjs.com/).
+# API Documentation
 
-## General Info
+All the API's REST based
 
-This project aims to demonstrate how to integrate SuperTokens into an Express server. Its primary purpose is to serve as an educational tool, but it can also be used as a starting point for your own project.
 
-## Repo Structure
+## Authentication
 
-### Source
+### Sign In
+
+Signs in a user. 
+
+/auth/signin
+
+**Parameters:**
+- `email`: User's email address
+- `password`: User's password
+
+**Example:**
 
 ```
-📦backend
-┣ 📜config.tsx --> Root component of the app
-┗ 📜index.tsx --> Entry point of the app
+await signIn('user@example.com', 'password123');
+
+On Successful sign in, retrieve the st-access-token needed for future reference authentication.
+
+
+
 ```
 
-#### SuperTokens
+### Logout
 
-The full configuration needed for the SuperTokens' back-end to work is in the `src/config.tsx` file. This file will differ based on the [auth recipe](https://supertokens.com/docs/guides) you choose.
+/auth/signout
 
-If you choose to use this as a starting point for your own project, you can further customize SuperTokens in the `src/config.tsx` file. Refer to our [docs](https://supertokens.com/docs) (and make sure to choose the correct recipe) for more details.
+Logs out the current user and removes the stored access token.
 
-## Application Flow
+**Example:**
+```
+await logout();
+```
 
-When using SuperTokens, the front-end never calls directly to the SuperTokens Core, the service that creates and manages sessions. Instead, the front-end calls to the back-end and the back-end calls to the Core. You can read more about [how SuperTokens works here](https://supertokens.com/docs/thirdpartyemailpassword/architecture).
+## User Management
 
-The back-end has two main files:
 
-1. **Entry Point (`index.ts`)**
 
-    - Initializes SuperTokens
-    - Adds CORS headers for sessions with the front-end
-    - Adds SuperTokens middleware
-    - Endpoints:
-        - `/hello`: Public route not protected by SuperTokens
-        - `/sessioninfo`: Uses SuperTokens middleware to pull the session token off the request and get the user session info
-        - `/tenants`: Grabs a list of tenants for multitenant configured applications
+### Create/Update User
+- **POST** `/api/users`
+- **Auth Required:** Yes (Send on header of request Authorization: 'Bearer {Accesstoken} which is retreived from signing")
 
-2. **Configuration (`config.ts`)**
-    - `supertokensConfig`:
-        - `supertokens`:
-            - `connectionURI`: Sets the URL that your SuperTokens core is located. By default, it connects to the playground core. In production, you can [host your own core](https://supertokens.com/docs/thirdpartyemailpassword/pre-built-ui/setup/core/with-docker) or create an account to [enable managed hosting](https://supertokens.com/dashboard-saas)
-        - `appInfo`: Holds informaiton like your project name
-            - `apiDomain`: Sets the domain your back-end API is on. SuperTokens automatically listens to requests at `${apiDomain}/auth`
-            - `websiteDomain`: Sets the domain your front-end website is on
-        - `recipeList`: An array of recipes for adding supertokens features
+- **Body:**
+  ```typescript
+  {
+    email: string,    // Valid email format required
+    first: string,    // 2-50 characters
+    last: string,     // 2-50 characters
+    role?: string     // Optional: 'admin' | 'user' | 'guest'
+  }
+  ```
+- **Response:** `201`
+  ```typescript
+  {
+    _id: string,
+    email: string,
+    first: string,
+    last: string,
+    role: string,
+    externalUserId: string,
+    isActive: boolean,
+    createdAt: Date,
+    updatedAt: Date
+  }
+  ```
 
-## Additional resources
+### Get Users (Paginated)
+- **GET** `/api/users?page=1&limit=10`
+- **Auth Required:** Yes
+- **Query Parameters:**
+  - `page`: number (default: 1)
+  - `limit`: number (default: 10)
+- **Response:** `200`
+  ```typescript
+  {
+    users: Array<User>,
+    currentPage: number,
+    totalPages: number,
+    totalUsers: number
+  }
+  ```
 
--   Custom UI Example: https://github.com/supertokens/supertokens-web-js/tree/master/examples/react/with-thirdpartyemailpassword
--   Custom UI Blog post: https://supertokens.medium.com/adding-social-login-to-your-website-with-supertokens-custom-ui-only-5fa4d7ab6402
--   Awesome SuperTokens: https://github.com/kohasummons/awesome-supertokens
 
-## Contributing
+## File Operations
 
-Please refer to the [CONTRIBUTING.md](https://github.com/supertokens/create-supertokens-app/blob/master/CONTRIBUTING.md) file in the root of the [`create-supertokens-app`](https://github.com/supertokens/create-supertokens-app) repo.
+### Upload File
+  Uploads a file to the s3 with associated metadata to mongodb.Send on header of request Authorization: 'Bearer {Accesstoken} which is retreived from signin"
 
-## Contact us
+- **POST** `/api/upload`
+- **Auth Required:** Yes
+- **Content-Type:** `multipart/form-data`
+- **Body:**
+  - `file`: File (Max size: 10MB)
+  - `keywords`: string (comma-separated, min 2 chars each)
+- **Supported File Types:** 
+  - image/jpeg
+  - image/png
+  - application/pdf
+  - text/plain
+- **Response:** `201`
+  ```typescript
+  {
+    _id: string,
+    filename: string,
+    uploadeduser: string,
+    uploaddate: Date,
+    filetype: string,
+    filesize: number,
+    keywords: string[],
+    s3_url: string,
+    thumbnail_url?: string,
+    createdAt: Date,
+    updatedAt: Date
+  }
+  ```
 
-For any questions, or support requests, please email us at team@supertokens.com, or join our [Discord](https://supertokens.com/discord) server.
+### Search Files (Paginated)
+- **GET** `/api/files?filename=test&keywords=keyword1,keyword2&page=1&limit=10`
+- **Auth Required:** Yes
+- **Query Parameters:**
+  - `filename`: string (optional)
+  - `keywords`: string (optional, comma-separated)
+  - `page`: number (default: 1)
+  - `limit`: number (default: 10)
+- **Response:** `200`
+  ```typescript
+  {
+    files: Array<File>,
+    currentPage: number,
+    totalPages: number,
+    totalFiles: number
+  }
+  ```
 
-## Authors
+### Download File
+- **GET** `/api/download/:id`
+- **Auth Required:** Yes
+- **Parameters:**
+  - `id`: File ID
+- **Response:** `200`
+  - File stream with appropriate content-type header
+  - Filename will be set in content-disposition header
 
-Created with :heart: by the folks at SuperTokens.com.
+### Delete File
+- **DELETE** `/api/files/:id`
+- **Auth Required:** Yes
+- **Parameters:**
+  - `id`: File ID
+- **Response:** `200`
+  ```typescript
+  {
+    message: string
+  }
+  ```
+
+## Error Responses
+All endpoints may return the following error responses:
+
+- `400` Bad Request
+  ```typescript
+  {
+    error: string
+  }
+  ```
+- `401` Unauthorized
+- `403` Forbidden
+- `404` Not Found
+  ```typescript
+  {
+    message: string
+  }
+  ```
+- `500` Server Error
+  ```typescript
+  {
+    error: string
+  }
+  ```
+
+## Error Handling
+
+### Common Error Codes
+- `401`: Authentication failed
+- `403`: Unauthorized access
+- `404`: Resource not found
+- `413`: File too large
+- `429`: Too many requests
+
