@@ -10,6 +10,7 @@ URI for MongoDB if you want you create your own instance by going to https://www
 
 Similarly, you setup AWS Accesskey & Secret Key for the File storage and Supertokens for authentication. I am using the free tier where AWS undger 5 GB it is free and Supertokens under 5000 users it is free.
 
+```
 MONGODB_URI=
 AWS_ACCESS_KEY_ID=
 AWS_SECRET_ACCESS_KEY=
@@ -19,6 +20,7 @@ SUPERTOKENS_CONNECTION_URI=https://try.supertokens.com
 SUPERTOKENS_API_KEY=
 API_DOMAIN=http://localhost:3001
 WEBSITE_DOMAIN=http://localhost:3000
+```
 
 Once the setup is complete. Run the following to install all the dependent node modules
 
