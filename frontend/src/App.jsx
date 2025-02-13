@@ -1,5 +1,5 @@
 import {Fragment, useState} from 'react'
-import reactLogo from './assets/react.svg'
+import reactLogo from '../public/react.svg'
 import viteLogo from '/vite.svg'
 import utampaLogo from '/UTampa_mark.png'
 import './App.css'
