@@ -1,31 +1,26 @@
-  // url = new URL(req.http)
-  // url host = url.hostname; // example.com
-  // const pathname = url.pathname; // /p/a/t/h
-  // const searchParams = url.searchParams; // {query: 'string'}
+import http from "http";
+import https from 'https'; /* For later use */ 
+import express from 'express'// Importing express, middleman between us and Node.js
 
-  import http from "http";
-  import https from 'https'; /* For later use */
-  import { handleGetRequest, handlePostRequest, handleDeleteRequest, handlePutRequest } from "./utils/parseRequests.js";
-  
-  const server = http.createServer((req, res) => {
-    const { method } = req;
-  
-    switch (method) {
-      case "GET":
-        return handleGetRequest(req, res);
-      case "POST":
-        return handlePostRequest(req, res);
-      case "DELETE":
-        return handleDeleteRequest(req, res);
-      case "PUT":
-        return handlePutRequest(req, res);
-      default:
-        res.writeHead(405);
-        res.end(`Unsupported request method: ${method}`);
-    }
-  });
-  
-  server.listen(8080, () => {
-    console.log(`Server is listening on: http://localhost:8080`);
-  });
-  
+import { handleGetRequest, handlePostRequest, handleDeleteRequest, handlePutRequest } from "./utils/parseRequests.js";
+
+const app = express(); // Main server object
+const PORT = 8080
+
+app.use(express.static('public')) // Making it accessible and reloadable
+app.use(express.json()); // Adding parsing jSON capabilities
+
+// All get, post, delete, and put requests will be handled by their respective functions
+app.get("*", handleGetRequest);
+app.post("*", handlePostRequest);
+app.delete("*", handleDeleteRequest);
+app.put("*", handlePutRequest);
+
+// The walls have ears, and they are listening to you
+app.listen(PORT, (error) =>{
+  if(!error)
+      console.log("Server is Successfully Running, and App is listening on port http://localhost:"+ PORT)
+  else 
+      console.log("Error occurred, server can't start", error);
+  }
+);
