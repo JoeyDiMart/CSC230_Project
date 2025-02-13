@@ -1,158 +1,30 @@
-import http from "http";
-import path from "path"
-import fs from "fs"; 
+import path from "path";
 import { fileURLToPath } from "url";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-function getMain() {
-  return "NIHUYA";
-}
 
 async function handleGetRequest(req, res) {
-    console.log("REQUEST");
-    const { pathname } = new URL(req.url, `http://${req.headers.host}`);
+    const routes = {
+        "/main": "mainPage.html",
+        "/login": "loginPage.html",
+        "/signup": "signupPage.html",
+        "/research": "researchPage.html",
+        "/forgotpassword": "forgotpasswordPage.html",
+        "/aboutus": "aboutusPage.html",
+    };
 
-    switch (pathname) {
-        case "/main": {
-            res.statusCode = 200;
-            res.setHeader("Content-Type", "text/html");
+    const fileName = routes[req.path] || "mainPage.html"; // Default to mainPage.html
+    const filePath = path.join(__dirname, "../frontend", fileName);
 
-            const filePath = path.join(__dirname, "../frontend/mainPage.html"); // Adjust path
-
-            // Read and send the file
-            fs.readFile(filePath, (err, data) => {
-                if (err) {
-                    res.statusCode = 500;
-                    console.error("File read error:", err);
-                    return res.end("Error loading the file");
-                }
-                res.end(data);
-            });
-
-            return;
+    res.sendFile(filePath, (err) => {
+        if (err) {
+            console.error("File send error:", err);
+            res.status(err.status || 500).send("Error loading the file");
         }
-
-        case "/login":{
-          res.statusCode = 200;
-          res.setHeader("Content-Type", "text/html");
-          const filePath = path.join(__dirname, "../frontend/loginPage.html"); // Adjust path
-
-            // Read and send the file
-            fs.readFile(filePath, (err, data) => {
-              if (err) {
-                  res.statusCode = 500;
-                  console.error("File read error:", err);
-                  return res.end("Error loading the file");
-              }
-              res.end(data);
-          });
-
-          return;
-        }
-
-        case "/signup": {
-          res.statusCode = 200;
-
-          res.setHeader("Content-Type", "text/html");
-          const filePath = path.join(__dirname, "../frontend/signupPage.html"); // Adjust path
-
-            // Read and send the file
-            fs.readFile(filePath, (err, data) => {
-              if (err) {
-                  res.statusCode = 500;
-                  console.error("File read error:", err);
-                  return res.end("Error loading the file");
-              }
-              res.end(data);
-          });
-
-          return;
-        }
-
-
-        case "/research": {
-          res.statusCode = 200;
-
-          res.setHeader("Content-Type", "text/html");
-          const filePath = path.join(__dirname, "../frontend/researchPage.html"); // Adjust path
-
-            // Read and send the file
-            fs.readFile(filePath, (err, data) => {
-              if (err) {
-                  res.statusCode = 500;
-                  console.error("File read error:", err);
-                  return res.end("Error loading the file");
-              }
-              res.end(data);
-          });
-
-          return;
-        }
-
-        case "/forgotpassword": {
-          res.statusCode = 200;
-
-          res.setHeader("Content-Type", "text/html");
-          const filePath = path.join(__dirname, "../frontend/forgotpasswordPage.html"); // Adjust path
-
-            // Read and send the file
-            fs.readFile(filePath, (err, data) => {
-              if (err) {
-                  res.statusCode = 500;
-                  console.error("File read error:", err);
-                  return res.end("Error loading the file");
-              }
-              res.end(data);
-          });
-
-          return;
-        }
-
-
-        case "/aboutus": {
-          res.statusCode = 200;
-
-          res.setHeader("Content-Type", "text/html");
-          const filePath = path.join(__dirname, "../frontend/aboutusPage.html"); // Adjust path
-
-            // Read and send the file
-            fs.readFile(filePath, (err, data) => {
-              if (err) {
-                  res.statusCode = 500;
-                  console.error("File read error:", err);
-                  return res.end("Error loading the file");
-              }
-              res.end(data);
-          });
-
-          return;
-        }
-
-
-        default: {
-          res.statusCode = 200;
-          res.setHeader("Content-Type", "text/html");
-
-          const filePath = path.join(__dirname, "../frontend/mainPage.html"); // Adjust path
-
-          // Read and send the file
-          fs.readFile(filePath, (err, data) => {
-              if (err) {
-                  res.statusCode = 500;
-                  console.error("File read error:", err);
-                  return res.end("Error loading the file");
-              }
-              res.end(data);
-          });
-
-          return;
-        }
-    }
+    });
 }
-
-
 
 
 
