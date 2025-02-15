@@ -11,6 +11,7 @@ function Navbar() {
             <a href="/About">About Us</a>
             <a href="/Research">Research Associates</a>
         </div>
+
         <div className="auth-buttons">
             <button className="login">Log in</button>
             <button className="signup">Sign up</button>

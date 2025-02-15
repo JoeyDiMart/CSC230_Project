@@ -7,7 +7,7 @@
     background-color: #C8102E;
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: left;
     padding: 10px 20px;
     height: 60px;
 }

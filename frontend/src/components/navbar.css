@@ -6,6 +6,7 @@
     justify-content: space-between; /* Space between the items */
     align-items: center;
     padding: 10px 20px;
+    width: 100%;
 }
 
 /* navbar items */
@@ -25,7 +26,7 @@
 /* Auth buttons */
 .auth-buttons {
     display: flex;
-    gap: 10px;
+    gap: 15px;
 }
 
 /* Style for login/signup buttons */
