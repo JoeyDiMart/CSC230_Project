@@ -1,5 +1,5 @@
 import {Fragment, useState} from 'react'
-//import './App.css'
+import './App.css'
 import Header from './components/header.jsx' // import the header
 
 function App() {

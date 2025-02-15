@@ -1,0 +1,52 @@
+/* Styling for the navbar */
+
+/* global items */
+.navbar {
+    display: flex;
+    justify-content: space-between; /* Space between the items */
+    align-items: center;
+    padding: 10px 20px;
+}
+
+/* navbar items */
+.nav-items {
+    display: flex;
+    gap: 15px;
+    margin-right: auto;  /* Space between nav items */
+}
+
+/* navbar links */
+.navbar a {
+    text-decoration: none;
+    color: black;
+    font-size: 20px;
+}
+
+/* Auth buttons */
+.auth-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+/* Style for login/signup buttons */
+.auth-buttons button {
+    padding: 10px 15px;
+    cursor: pointer;
+}
+
+/* Style for mobile: Hide by default */
+.navbar .auth-buttons {
+    display: none;
+}
+
+/* For screens larger than 768px (Desktop & Tablets in Landscape mode) */
+@media (min-width: 768px) {
+    .navbar {
+        justify-content: space-between;
+    }
+
+    /* Show auth buttons */
+    .navbar .auth-buttons {
+        display: flex;
+    }
+}

@@ -2,16 +2,12 @@ import React from "react";
 import Navbar from "./navbar.jsx";
 import "./header.css";
 
+// header, has the navbar within it
 function Header() {
     return (
         <header className="header">
-            <h1>Welcome!</h1>
-            <img src="/UTampa_mark.png" alt="Tampa Logo" className="logo" />
-            <Navbar />
-            <div className="auth-buttons">
-                <button className="login">Log in</button>
-                <button className="signup">Sign up</button>
-            </div>
+            <img src="/UTampa_mark.png" alt="Tampa Logo" className="logo" />  {/* UTampa Logo */}
+            <Navbar />  {/* Add navbar to header */}
         </header>
     );
 }
