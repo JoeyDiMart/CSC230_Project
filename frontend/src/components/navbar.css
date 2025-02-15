@@ -27,9 +27,10 @@
 .auth-buttons {
     display: flex;
     gap: 15px;
+    padding: 15px;
 }
 
-/* Style for login/signup buttons */
+/* Style for within login/signup buttons */
 .auth-buttons button {
     padding: 10px 15px;
     cursor: pointer;
