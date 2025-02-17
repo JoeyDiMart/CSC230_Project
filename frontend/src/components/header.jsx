@@ -6,7 +6,7 @@ import "./header.css";
 function Header() {
     return (
         <header className="header">
-            <img src="/UTampa_mark.png" alt="Tampa Logo" className="logo" />  {/* UTampa Logo */}
+            <img src="/UTampa_mark.png" alt="Tampa img" className="logo" />  {/* UTampa Logo */}
             <Navbar />  {/* Add navbar to header */}
         </header>
     );

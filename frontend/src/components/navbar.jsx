@@ -5,11 +5,11 @@ function Navbar() {
     return (
         <nav className="navbar">
         <div className="nav-items">
-            <a href="/Home">Home</a>
+            <a href="/">Home</a>
             <a href="/Publications">Publications</a>
             <a href="/Events">Events</a>
             <a href="/About">About Us</a>
-            <a href="/Research">Research Associates</a>
+            <a href="/Associates">Research Associates</a>
         </div>
 
         <div className="auth-buttons">

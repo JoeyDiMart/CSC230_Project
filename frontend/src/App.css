@@ -5,7 +5,8 @@
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
-  background-color: white;
+  font-family: 'univserse condense', sans-serif;
+  background-color: white;  /* Default light mode */
 }
 /* read darkmode / lightmode for users preference (default light)
 @media (prefers-color-scheme: dark) {
