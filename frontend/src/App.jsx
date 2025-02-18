@@ -4,6 +4,7 @@ import {BrowserRouter as Router, Routes, Route} from "react-router-dom";
 import Header from './components/header.jsx' // import the header
 import Footer from './components/footer.jsx'
 import Home from './pages/homePage.jsx'
+import LoginPage from './pages/loginPage.jsx'
 //import About from './pages/aboutPage.jsx'
 //import Publication from './pages/publicationsPage.jsx'
 //import Login from './pages/loginPage.jsx'
@@ -14,7 +15,8 @@ function App() {
       <Router>
           <Header /> {/* Render the Header, always visible */}
           <Routes>
-              <Route path="/" element={<Home/>} />
+              <Route path="/" element={<Home/>}/>,
+              <Route path="/Login" element={<LoginPage/>}/>
           </Routes>
 
           <Footer /> {/* Render the Footer, always visible */}

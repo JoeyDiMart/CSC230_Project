@@ -1,5 +1,5 @@
 import React from "react";
-import './loginPage.css';
+//import './loginPage.css';
 
 function LoginPage() {
     return (
@@ -33,3 +33,4 @@ function LoginPage() {
 
     );
 }
+export default LoginPage();
