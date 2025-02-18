@@ -214,14 +214,14 @@ Additional features such as discussion forums and data hosting may be developed 
 
 ### Must have 
 - Research on the repository, if checked there would be contact information of authors 
-- Find person (public acoutns)
+- Find person (public accoutns)
 
 ### Should have 
 
 
 
 ### Nice to have
-- Ability to send a dm to private acounts
+- Ability to send a dm to private accounts
 
 ## Journal and Reviewer functionality 
 
@@ -256,7 +256,7 @@ Additional features such as discussion forums and data hosting may be developed 
 ### Must have 
 - Per page change text, image capabilities
 - Ban users by username
-- Allow external organization acount creation
+- Allow external organization account creation
 - Ability to send external invite links
 
 ### Should have 

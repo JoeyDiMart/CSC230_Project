@@ -4,6 +4,7 @@ import "./navbar.css";
 function Navbar() {
     return (
         <nav className="navbar">
+
         <div className="nav-items">
             <a href="/">Home</a>
             <a href="/Publications">Publications</a>
