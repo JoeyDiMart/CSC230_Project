@@ -3,7 +3,6 @@ import React from "react";
 function Home() {
     return (
         <div className="homePage">
-            <h1>Criminology Institute for Research and Training</h1>
             <div className="about-cirt">
                 <h2>About CIRT</h2>
                 <p>The vision of the Criminology Institute for Research and Training (CIRT) is to become a catalyst and leader in research for criminal justice related organizations locally and nationwide. </p>

@@ -37,7 +37,7 @@
     font-size: 15px;
 }
 /* Styling for the login button */
-.auth-buttons .login {
+.auth-buttons .Login {
     background-color: transparent;
     color: black;
     border: 3px solid black;
@@ -47,7 +47,7 @@
 }
 
 /* Hover effect for the login button */
-.auth-buttons .login:hover {
+.auth-buttons .Login:hover {
     background-color: black;
     color: #C8102E;
     transform: scale(1.05);

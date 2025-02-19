@@ -1,10 +1,9 @@
 import React from "react";
-//import './loginPage.css';
+import './loginPage.css';
 
-function LoginPage() {
+function Login() {
     return (
-        <div className="login">
-            <h1>Criminology Institute for Research and Training</h1>
+        <div className="Login">
             <div className="LoginWrapper">
                 <form action="">
                     <h2>Login</h2>
@@ -24,7 +23,6 @@ function LoginPage() {
                     <div className="CreateAccount">
                         <p>Don't have an account?<a href="#">Create account</a></p>
                     </div>
-
                 </form>
             </div>
         </div>
@@ -33,4 +31,4 @@ function LoginPage() {
 
     );
 }
-export default LoginPage();
+export default Login;

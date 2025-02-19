@@ -5,10 +5,13 @@ import "./header.css";
 // header, has the navbar within it
 function Header() {
     return (
+        <>
         <header className="header">
             <img src="/UTampa_mark.png" alt="Tampa img" className="logo" />  {/* UTampa Logo */}
             <Navbar />  {/* Add navbar to header */}
         </header>
+        <h1>Criminology Institute for Research and Training</h1>
+        </>
     );
 }
 
