@@ -7,7 +7,7 @@ const __dirname = path.dirname(__filename);
 
 async function handleGetRequest(req, res) {
     const routes = {
-        "/main": "mainPage.html",
+        "/main": "../../frontend/src/main.jsx",
         "/login": "loginPage.html",
         "/signup": "signupPage.html",
         "/research": "researchPage.html",
