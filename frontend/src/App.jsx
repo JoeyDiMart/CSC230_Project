@@ -5,6 +5,7 @@ import Header from './components/header.jsx' // import the header
 import Footer from './components/footer.jsx'
 import Home from './pages/homePage.jsx'
 import Login from './pages/loginPage.jsx'
+import Signup from "./pages/signupPage.jsx";
 //import About from './pages/aboutPage.jsx'
 //import Publication from './pages/publicationsPage.jsx'
 
@@ -16,7 +17,7 @@ function App() {
           <Routes>
               <Route path="/" element={<Home />} />,
               <Route path="/Login" element={<Login />} />
-
+              <Route path="/Signup" element={<Signup />} />
           </Routes>
 
           <Footer /> {/* Render the Footer, always visible */}
