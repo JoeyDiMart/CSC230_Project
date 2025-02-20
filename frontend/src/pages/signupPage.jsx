@@ -1,5 +1,4 @@
-import react from 'react';
-import {useState} from "react";
+import {Fragment, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import './signupPage.css'
 
@@ -25,15 +24,14 @@ function Signup() {
     }
 
 
-
     return (
         <form onSubmit={handleSubmit}>
-            <div>
+            <>
                 <input type="text" name="name" placeholder="Name" value={formData.username} onChange={handleChange} required />
                 <input type="email" name="email" placeholder="Email" value={formData.primaryEmail} onChange={handleChange} required />
                 <input type="password" name="password" placeholder="Password" value={formData.password} onChange={handleChange} required />
                 <input type="password" name="password" placeholder="Verify Password" value={formData.verifyPassword} onChange={handleChange} required />
-            </div>
+            </>
             <div>
                 <button type="submit">Sign Up</button>
             </div>
