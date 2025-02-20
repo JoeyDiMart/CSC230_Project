@@ -7,7 +7,9 @@ function Header() {
     return (
         <>
         <header className="header">
-            <img src="/UTampa_mark.png" alt="Tampa img" className="logo" />  {/* UTampa Logo */}
+            <a href="/">
+                <img src="/UTampa_mark.png" alt="Tampa img" className="logo" />  {/* UTampa Logo */}
+            </a>
             <Navbar />  {/* Add navbar to header */}
         </header>
         <h1>Criminology Institute for Research and Training</h1>
