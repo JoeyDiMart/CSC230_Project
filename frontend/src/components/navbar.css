@@ -13,7 +13,27 @@
 .nav-items {
     display: flex;
     gap: 20px;
+    align-items: center;
     margin-right: auto;  /* Space between nav items */
+}
+
+/* Make nav-items flexbox */
+.nav-items ul {
+    display: flex; 
+    gap: 20px;      
+    padding: 0;    
+    margin: 0;      
+    list-style: none; 
+}
+
+/* Style the list items */
+.nav-items li {
+    margin: 0;
+}
+
+/* Hover effect */
+.nav-items a:hover {
+    color: #363434;
 }
 
 /* navbar links */
