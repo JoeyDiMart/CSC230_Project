@@ -12,6 +12,7 @@ function Login() {
                     <div className="input-field">
                         <input type="email" placeholder='Email Address' required/>
                     </div>
+
                     <div className="input-field">
                         <input type="password" placeholder='Password' required/>
                     </div>
@@ -20,10 +21,18 @@ function Login() {
                         <a href="#">Forgot password?</a>
                     </div>
 
-                    <button type="submit">Login</button>
+                    <label>
+                        <input type= "checkbox"/>
+                            Remember me
+
+                    </label>
+
+                    <div>
+                        <button type="submit">Login</button>
+                    </div>
 
                     <div className="CreateAccount">
-                        <p>Don't have an account?<Link to={"/Signup"}>Create account</Link></p>
+                        <p>Don't have an account? <Link to={"/Signup"}>Create account</Link></p>
                     </div>
                 </form>
             </div>
