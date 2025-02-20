@@ -11,6 +11,10 @@ function Footer() {
                 <a href="https://www.instagram.com/uoftampa/" target="_blank" rel="noopener noreferrer">
                     <img src="/instagram.svg" alt="Instagram" />
                 </a>
+                <a href="https://www.tiktok.com/@uoftampa" target="_blank" rel="noopener noreferrer">
+                    <img src="/tik_tok.svg" alt="Tik Tok" />
+                </a>
+
             </div>
             <div className="footer-items">
                 <h3>Contact Us</h3>
