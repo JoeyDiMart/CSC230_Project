@@ -74,17 +74,17 @@ function Signup() {
 
 
     return (
-        <form onSubmit={handleSubmit}>
-            <>
-                <input type="text" name="name" placeholder="Name" value={formData.name} onChange={handleChange} required />
-                <input type="email" name="email" placeholder="Email" value={formData.email} onChange={handleChange} required />
-                <input type="password" name="password" placeholder="Password" value={formData.password} onChange={handleChange} required />
-                <input type="password" name="verifyPassword" placeholder="Verify Password" value={formData.verifyPassword} onChange={handleChange} required />
-            </>
-            <div>
-                <button type="submit">Sign Up</button>
-            </div>
-        </form>
+        <div className="signup-container">   
+            <form onSubmit={handleSubmit}>
+                    <input type="text" name="name" placeholder="Name" value={formData.name} onChange={handleChange} required />
+                    <input type="email" name="email" placeholder="Email" value={formData.email} onChange={handleChange} required />
+                    <input type="password" name="password" placeholder="Password" value={formData.password} onChange={handleChange} required />
+                    <input type="password" name="verifyPassword" placeholder="Verify Password" value={formData.verifyPassword} onChange={handleChange} required />
+                <div>
+                    <button type="submit">Sign Up</button>
+                </div>
+            </form>
+        </div>
     )
 }
 export default Signup;
