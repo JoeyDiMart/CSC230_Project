@@ -6,8 +6,7 @@ import "./navbar.css";
 function Navbar() {
     const navigate = useNavigate();
 
-    // "guest" is default
-    const [role, setRole] = useState("guest");
+    //const [role, setRole] = useState("guest"); DELETE THIS PUT IT IN SOMEWHERE MORE GLOBAL LIKE APP.JSX
 
     return (
         <nav className="navbar">
