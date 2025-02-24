@@ -28,6 +28,8 @@ function Login() {
             });
 
             if (response.ok) {
+                //const data = await response.json();  // will expect a role from backend
+                //setRole(data.userRole); create setRole function
                 navigate("/");
             } else {
                 const errorData = await response.json();

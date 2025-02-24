@@ -23,7 +23,7 @@ function Signup() {
 
     //  need to finish handleSubmit
     // add a try, catch to fetch the backend api and update it by creating a new user
-    // IF signup succesful nviage to another page (logged in), or throw and error and retry signup
+    // IF signup succesful navigate to another page (logged in), or throw and error and retry signup
     const handleSubmit = async (e) => {
         e.preventDefault();
 
