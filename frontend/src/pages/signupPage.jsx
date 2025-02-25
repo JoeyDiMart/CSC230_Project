@@ -23,7 +23,7 @@ function Signup() {
 
     //  need to finish handleSubmit
     // add a try, catch to fetch the backend api and update it by creating a new user
-    // IF signup succesful nviage to another page (logged in), or throw and error and retry signup
+    // IF signup succesful navigate to another page (logged in), or throw and error and retry signup
     const handleSubmit = async (e) => {
         e.preventDefault();
 
@@ -50,7 +50,7 @@ function Signup() {
             setLoading(true);  // show a loading state
 
             // attempt to send to backend as body and wait for its response
-            const response = await fetch ("http://localhost:8000/signup", {
+            const response = await fetch ("http://localhost:8080/signup", {
                 method: "POST",  // send post request and create a new user
                 headers: { "Content-Type": "application/json" },  // the type of data is json since we use mongoDB
                 body: JSON.stringify({

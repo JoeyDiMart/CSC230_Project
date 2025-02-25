@@ -3,14 +3,14 @@ import React from "react";
 import { useState } from "react";
 import "./navbar.css";
 
-function Navbar() {
-    const navigate = useNavigate();  
-
+function Navbar() {  
+    const [role, setRole] = useState("guest")
     const [click, setClick] = useState(false)
     const handleClick = () => setClick(!click)
     const closeMobileMenu = () => setClick(false)
+    const navigate = useNavigate();
 
-
+    //const [role, setRole] = useState("guest"); DELETE THIS PUT IT IN SOMEWHERE MORE GLOBAL LIKE APP.JSX
 
     return (
         <nav className="navbar">
@@ -29,13 +29,22 @@ function Navbar() {
                 </ul>
             </div>
 
-            <div className="auth-buttons">
-                <button className="Login" onClick={() => navigate("/Login")}>Log in</button>
-                <button className="signup" onClick={() => navigate("/Signup")}>Sign up</button>
-            </div>
+            {role === "guest" && (
+                <div className="auth-buttons">
+                    <button className="Login" onClick={() => navigate("/Login")}>Log in</button>
+                    <button className="signup" onClick={() => navigate("/Signup")}>Sign up</button>
+                </div>
+            )}
 
+            {role !== "guest" && (
+                <button className="SignOut" onClick={() => setRole("guest")}></button>
+            )}
+            {/* Need to add Account Page for here */}
         </nav>
     );
 }
+
+
+
 
 export default Navbar;
