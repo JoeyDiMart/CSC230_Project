@@ -20,6 +20,7 @@
 
 /* Make nav-items flexbox */
 .nav-items ul {
+    color: #363434;
     display: flex; 
     gap: 20px;      
     padding: 0;    
@@ -92,10 +93,72 @@
     transform: scale(1.05);
 }
 
+.menu-icon i {
+    transition: transform 0.5s ease;
+}
 
-/* For screens larger than 768px (Desktop & Tablets in Landscape mode) */
-@media (min-width: 768px) {
+.rotate {
+    transform: rotate(90deg);
+}
+
+
+/* For Phone*/
+@media (max-width: 768px) {
+    .auth-buttons {
+        display: flex;
+        align-items: center;
+        position: absolute;
+        right: 80px;
+    }
+    .auth-buttons .signup {
+        display: none;
+    }
+    .nav-items ul {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        position: absolute;
+        top: 80px;
+        left: 0;
+        width: 100%;
+        height: calc(100vh - 60px);
+        background-color: #363434;
+        padding: 20px;
+        gap: 50px;
+        list-style: none;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+        display: none;
+        z-index: 99;
+        overflow-y: auto;
+    }
+    
+    .nav-items ul.active{
+        display: flex;
+    }
+    .menu-icon{
+        display: block;
+        font-size: 2rem;
+        color: black;
+        cursor: pointer;
+        position: absolute;
+        top: 15px;
+        right: 50px;
+        z-index: 100;
+    }
+    
+    .nav-items a{
+        font-size: 32px;
+        font-weight: bold;
+        color: #C8102E;
+    }
+}
+
+@media (min-width: 786px) {
     .navbar {
         justify-content: space-between;
     }
+
+.menu-icon {
+    display: none;
+}
 }
