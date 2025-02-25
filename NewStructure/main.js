@@ -1,4 +1,4 @@
-import { handleGetRequest, handlePostRequest, handleDeleteRequest, handlePutRequest } from "./utils/parseRequests.js";
+import { handlePostRequest } from "./utils/handlePOST";
 
 app.post("*", handlePostRequest);
 app.get("*", handleGetRequest);

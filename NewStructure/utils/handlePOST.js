@@ -1,5 +1,10 @@
+//imports
+import {client} from "/database/Mongodb.js";
+
+
 export const handlePostRequest = async (req, res) => {
-    const { method, body } = req;
+    // extracts the request from the body
+    const {body} = req;
 
     // Switch-like handler for different POST request types
     const requestHandlers = {
@@ -12,7 +17,8 @@ export const handlePostRequest = async (req, res) => {
     const handler = requestHandlers[req.originalUrl];
 
     if (handler) {
-        await handler(req, res, body); // Call the specific handler
+        // Call the specific handler
+        await handler(req, res, body);
     } else {
         res.status(404).json({ error: 'Route not found' });
     }
@@ -20,9 +26,9 @@ export const handlePostRequest = async (req, res) => {
 
 // Signup Handler
 const handleSignup = async (req, res, body) => {
-    const { email, password } = body;
-    if (!email || !password) {
-        return res.status(400).json({ error: "email and password are required" });
+    const {name, email, password } = body;
+    if (!name|| !email || !password) {
+        return res.status(400).json({ error: "name and email and password are required" });
     }
     try {
         const db = client.db('CIRT');
@@ -31,8 +37,7 @@ const handleSignup = async (req, res, body) => {
         if (existingUser) {
             return res.status(400).json({ error: "User already exists" });
         }
-        const hashPassword = await bcrypt.hash(password, 10);
-        const result = await collection.insertOne({ email, password: hashPassword });
+        const result = await collection.insertOne({naem, email, password });
         if (result.insertedId) {
             res.status(201).json({ message: "User registered successfully", userId: result.insertedId });
         } else {
