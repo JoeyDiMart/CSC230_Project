@@ -1,0 +1,100 @@
+/* Styling for the navbar */
+
+/* global items */
+.navbar {
+    display: flex;
+    justify-content: space-between; /* Space between the items */
+    align-items: center;
+    padding: 15px 20px;
+    width: 100%;
+}
+
+/* navbar items */
+.nav-items {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    margin-right: auto;  /* Space between nav items */
+}
+
+/* Make nav-items flexbox */
+.nav-items ul {
+    display: flex; 
+    gap: 20px;      
+    padding: 0;    
+    margin: 0;      
+    list-style: none; 
+}
+
+/* Style the list items */
+.nav-items li {
+    margin: 0;
+}
+
+/* Hover effect */
+.nav-items a:hover {
+    color: #363434;
+}
+
+/* navbar links */
+.navbar a {
+    text-decoration: none;
+    color: black;
+    font-size: 20px;
+}
+
+/* Auth buttons */
+.auth-buttons {
+    display: flex;
+    gap: 15px;
+    padding: 15px;
+}
+
+/* Style for within login/signup buttons */
+.auth-buttons button {
+    padding: 10px 15px;
+    cursor: pointer;
+    font-size: 15px;
+}
+/* Styling for the login button */
+.auth-buttons .Login {
+    background-color: transparent;
+    color: black;
+    border: 3px solid black;
+    border-radius: 20px; /* Small radius for subtle rounding */
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Soft shadow for smooth edges */
+    transition: background-color 0.3s ease, transform 0.3s ease, color 0.3s ease;
+}
+
+/* Hover effect for the login button */
+.auth-buttons .Login:hover {
+    background-color: black;
+    color: #C8102E;
+    transform: scale(1.05);
+}
+
+/* Styling for the signup button */
+.auth-buttons .signup {
+    background-color: black;
+    color: #C8102E;
+    border: 3px solid black;
+    border-radius: 20px; /* Small radius for subtle rounding */
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Soft shadow for smooth edges */
+    transition: background-color 0.3s ease, transform 0.3s ease, color 0.3s ease;
+}
+
+/* Hover effect for the signup button */
+.auth-buttons .signup:hover {
+    background-color: transparent;
+    color: black;
+    border: 3px solid black;
+    transform: scale(1.05);
+}
+
+
+/* For screens larger than 768px (Desktop & Tablets in Landscape mode) */
+@media (min-width: 768px) {
+    .navbar {
+        justify-content: space-between;
+    }
+}
