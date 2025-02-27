@@ -7,22 +7,10 @@
     background-color: #C8102E;
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: left;
     padding: 10px 20px;
     height: 60px;
 }
-
-.branding {
-    display: flex;
-    align-items: center;
-}
-
-.brand-title {
-    margin-left: 10px;
-    color: black;
-    font-size: 10px;
-}
-
 .header::before {
     content: "";
     position: absolute;
@@ -41,6 +29,7 @@
     height: 5px;
     background-color: black;  /* Line color */
 }
+
 
 .logo {
     height: 50px;               /* Adjust logo size */

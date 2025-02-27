@@ -7,3 +7,4 @@ export default defineConfig({
     outDir: 'dist', // Output directory for build files
   },
 });
+

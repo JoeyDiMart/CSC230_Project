@@ -6,8 +6,6 @@ import Footer from './components/footer.jsx'
 import Home from './pages/homePage.jsx'
 import Login from './pages/loginPage.jsx'
 import Signup from "./pages/signupPage.jsx";
-import '@fortawesome/fontawesome-free/css/all.min.css';
-
 //import About from './pages/aboutPage.jsx'
 //import Publication from './pages/publicationsPage.jsx'
 
