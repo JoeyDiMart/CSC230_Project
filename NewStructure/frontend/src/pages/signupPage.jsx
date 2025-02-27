@@ -99,14 +99,18 @@ function Signup() {
                     <div className="input-container">
                         <input type="email" name="email" placeholder="Email" value={formData.email} onChange={handleChange} required />
                     </div>
+
+                    
                     <div className="input-container">
                         <input type={showPassword ? "text" : "password"} name="password" placeholder="Password" value={formData.password} onChange={handleChange} required />
                         <span className="eye-icon" onClick={togglePasswordVisibility}>{showPassword ? <FaEye /> : <FaEyeSlash />}</span>
                     </div>
+                    
                     <div className="input-container">
                         <input type={showVerifyPassword ? "text" : "password"} name="verifyPassword" placeholder="Verify Password" value={formData.verifyPassword} onChange={handleChange} required/>
                         <span className="eye-icon" onClick={toggleVerifyPasswordVisibility}>{showVerifyPassword ? <FaEye /> : <FaEyeSlash />}</span>
                     </div>
+                        
                     <div>
                         <button type="submit">Sign Up</button>
                     </div>
