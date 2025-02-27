@@ -1,11 +1,13 @@
 //imports
 import {client} from "../Database/Mongodb.js";
-
+import bcrypt from "bcryptjs";
 
 export const handlePostRequest = async (req, res) => {
+    console.log("Incoming POST request to:", req.path);
+    console.log("Request body:", req.body);
     // extracts the request from the body
     const {body} = req;
-
+    console.log(body);
     // Switch-like handler for different POST request types
     const requestHandlers = {
         '/signup': handleSignup,
@@ -20,7 +22,7 @@ export const handlePostRequest = async (req, res) => {
         // Call the specific handler
         await handler(req, res, body);
     } else {
-        res.status(404).json({ error: 'Route not found' });
+        return res.status(404).json({ error: 'Route not found' });
     }
 };
 
@@ -37,14 +39,14 @@ const handleSignup = async (req, res, body) => {
         if (existingUser) {
             return res.status(400).json({ error: "User already exists" });
         }
-        const result = await collection.insertOne({naem, email, password });
+        const result = await collection.insertOne({name, email, password });
         if (result.insertedId) {
-            res.status(201).json({ message: "User registered successfully", userId: result.insertedId });
+            return res.status(201).json({ message: "User registered successfully", userId: result.insertedId });
         } else {
-            res.status(400).json({ error: "Failed to register user" });
+            return res.status(400).json({ error: "Failed to register user" });
         }
     } catch (err) {
-        res.status(500).json({ error: 'Internal server error' });
+        return res.status(500).json({ error: 'Internal server error' });
     }
 };
 
@@ -66,8 +68,8 @@ const handleLogin = async (req, res, body) => {
             return res.status(400).json({ error: 'Invalid email or password' });
         }
         req.session.user = { id: user._id, email: user.email };
-        res.json({ message: 'Logged in successfully', user: { id: user._id, email: user.email } });
+        return res.json({ message: 'Logged in successfully', user: { id: user._id, email: user.email } });
     } catch (err) {
-        res.status(500).json({ error: 'Internal server error' });
+        return res.status(500).json({ error: 'Internal server error' });
     }
 };
