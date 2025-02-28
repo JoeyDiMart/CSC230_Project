@@ -1,6 +1,7 @@
 import {Fragment, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import './signupPage.css'
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 function Signup() {
 
@@ -11,6 +12,18 @@ function Signup() {
             email: "",
             password: "",
             verifyPassword: ""});
+
+    // Eye Icon Functions
+    const [showPassword, setShowPassword] = useState(false)
+    const [showVerifyPassword, setShowVerifyPassword] = useState(false)
+
+    const togglePasswordVisibility = () => {
+        setShowPassword(!showPassword);
+    }
+    const toggleVerifyPasswordVisibility = () => {
+        setShowVerifyPassword(!showVerifyPassword);
+    }
+
 
     // check and handle the changes in the input fields
     const handleChange = (e) => {
@@ -23,7 +36,7 @@ function Signup() {
 
     //  need to finish handleSubmit
     // add a try, catch to fetch the backend api and update it by creating a new user
-    // IF signup succesful navigate to another page (logged in), or throw and error and retry signup
+    // IF signup succesful nviage to another page (logged in), or throw and error and retry signup
     const handleSubmit = async (e) => {
         e.preventDefault();
 
@@ -50,7 +63,7 @@ function Signup() {
             setLoading(true);  // show a loading state
 
             // attempt to send to backend as body and wait for its response
-            const response = await fetch ("http://localhost:8080/signup", {
+            const response = await fetch ("http://localhost:8000/signup", {
                 method: "POST",  // send post request and create a new user
                 headers: { "Content-Type": "application/json" },  // the type of data is json since we use mongoDB
                 body: JSON.stringify({
@@ -69,21 +82,36 @@ function Signup() {
         } catch (error) {
             console.error("error from signup: ", error)
             alert(error);
+        } finally{
+            setLoading(false)
         }
     };
 
 
     return (
-        <div className="signup-container">   
-            <form onSubmit={handleSubmit}>
-                    <input type="text" name="name" placeholder="Name" value={formData.name} onChange={handleChange} required />
-                    <input type="email" name="email" placeholder="Email" value={formData.email} onChange={handleChange} required />
-                    <input type="password" name="password" placeholder="Password" value={formData.password} onChange={handleChange} required />
-                    <input type="password" name="verifyPassword" placeholder="Verify Password" value={formData.verifyPassword} onChange={handleChange} required />
-                <div>
-                    <button type="submit">Sign Up</button>
-                </div>
-            </form>
+        <div className="signup-page">
+            <div className="signup-container">   
+                <h1>Sign Up</h1>
+                <form onSubmit={handleSubmit}>
+                    <div className="input-container">
+                        <input type="text" name="name" placeholder="Name" value={formData.name} onChange={handleChange} required />
+                    </div>
+                    <div className="input-container">
+                        <input type="email" name="email" placeholder="Email" value={formData.email} onChange={handleChange} required />
+                    </div>
+                    <div className="input-container">
+                        <input type={showPassword ? "text" : "password"} name="password" placeholder="Password" value={formData.password} onChange={handleChange} required />
+                        <span className="eye-icon" onClick={togglePasswordVisibility}>{showPassword ? <FaEye /> : <FaEyeSlash />}</span>
+                    </div>
+                    <div className="input-container">
+                        <input type={showVerifyPassword ? "text" : "password"} name="verifyPassword" placeholder="Verify Password" value={formData.verifyPassword} onChange={handleChange} required/>
+                        <span className="eye-icon" onClick={toggleVerifyPasswordVisibility}>{showVerifyPassword ? <FaEye /> : <FaEyeSlash />}</span>
+                    </div>
+                    <div>
+                        <button type="submit">Sign Up</button>
+                    </div>
+                </form>
+            </div>
         </div>
     )
 }

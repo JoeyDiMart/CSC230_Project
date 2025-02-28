@@ -1,12 +1,20 @@
-/* Styling for the navbar */
+::-webkit-scrollbar {
+    width: 0px;  
+    background: transparent;
+}
 
 /* global items */
 .navbar {
+    position: sticky;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 60px;
     display: flex;
     justify-content: space-between; /* Space between the items */
     align-items: center;
-    padding: 15px 20px;
-    width: 100%;
+    padding: 15px 25px;
+    z-index: 1;
 }
 
 /* navbar items */
@@ -23,14 +31,14 @@
     color: #363434;
     display: flex; 
     gap: 20px;      
-    padding: 0;    
-    margin: 0;      
+    margin: 0;
+    padding: 0;
     list-style: none; 
 }
 
 /* Style the list items */
 .nav-items li {
-    margin: 0;
+    display: inline-block;
 }
 
 /* Hover effect */
@@ -48,13 +56,13 @@
 /* Auth buttons */
 .auth-buttons {
     display: flex;
+    align-items: center;
     gap: 15px;
-    padding: 15px;
+    padding-top: 15px;
 }
 
 /* Style for within login/signup buttons */
 .auth-buttons button {
-    padding: 10px 15px;
     cursor: pointer;
     font-size: 15px;
 }
@@ -96,7 +104,9 @@
 .menu-icon i {
     transition: transform 0.5s ease;
 }
-
+.menu-icon{
+    right: 5%;
+}
 .rotate {
     transform: rotate(90deg);
 }
@@ -108,7 +118,8 @@
         display: flex;
         align-items: center;
         position: absolute;
-        right: 80px;
+        right: 75px;
+        bottom: 20px;
     }
     .auth-buttons .signup {
         display: none;
@@ -120,7 +131,7 @@
         position: absolute;
         top: 80px;
         left: 0;
-        width: 100%;
+        right: 0;
         height: calc(100vh - 60px);
         background-color: #363434;
         padding: 20px;
@@ -141,8 +152,8 @@
         color: black;
         cursor: pointer;
         position: absolute;
-        top: 15px;
-        right: 50px;
+        top: 25px;
+        right: 35px;
         z-index: 100;
     }
     
@@ -153,12 +164,20 @@
     }
 }
 
+/* For Computer*/
 @media (min-width: 786px) {
+    .auth-buttons {
+        position:relative ;
+        left: -20px;
+        top: -5px;
+    }
+
+
     .navbar {
         justify-content: space-between;
     }
 
-.menu-icon {
-    display: none;
-}
-}
+    .menu-icon {
+        display: none;
+    }
+    }
