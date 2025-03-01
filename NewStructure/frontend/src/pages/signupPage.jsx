@@ -50,7 +50,10 @@ function Signup() {
             return;
         }
 
-        const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{12,}$/;  // list of requirements for password
+        // const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{4,}$/;  // list of requirements for password
+        // TODO
+        const passwordRegex = /^.*$/;
+
         if (!passwordRegex.test(formData.password)) {
             alert("Please satisfy password requirements:\n - Contains at least 12 characters\n - " +
                 "Contains at least one upper case letter\n - " +
