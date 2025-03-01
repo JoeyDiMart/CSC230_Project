@@ -36,8 +36,8 @@ app.use(express.json());
     await connectToDatabase();
 })();
 
-// Start listening on the PORT 8080
-const PORT = 8080;
+// Start listening on the PORT 8081
+const PORT = 8081;
 app.listen(PORT, () => {
     console.log(`The server is running on http://localhost:${PORT}`);
 });

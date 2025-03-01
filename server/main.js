@@ -1,4 +1,4 @@
-/**
+n/**
  * Main Server File - CIRT Publishing System
  * 
  * This file sets up our Express server and all its core functionality.
@@ -22,7 +22,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT || 8081;
 
 // === Middleware Setup ===
 // Allow cross-origin requests (helpful for development)
