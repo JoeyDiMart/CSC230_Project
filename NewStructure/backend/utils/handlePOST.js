@@ -73,3 +73,15 @@ const handleLogin = async (req, res, body) => {
         return res.status(500).json({ error: 'Internal server error' });
     }
 };
+const handLogout = async (req, res, next) => {
+
+}
+// Logout Handler
+const handleLogout = (req, res) => {
+    req.session.destroy(err => {
+        if (err) {
+            return res.status(500).json({ error: 'Could not log out' });
+        }
+        res.json({ message: 'Logged out successfully' });
+    });
+};
