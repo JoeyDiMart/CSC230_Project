@@ -63,7 +63,7 @@ function Signup() {
             setLoading(true);  // show a loading state
 
             // attempt to send to backend as body and wait for its response
-            const response = await fetch ("http://localhost:8000/signup", {
+            const response = await fetch ("http://localhost:8081/signup", {
                 method: "POST",  // send post request and create a new user
                 headers: { "Content-Type": "application/json" },  // the type of data is json since we use mongoDB
                 body: JSON.stringify({
