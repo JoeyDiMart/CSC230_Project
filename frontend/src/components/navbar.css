@@ -38,14 +38,27 @@
 
 /* Style the list items */
 .nav-items li {
+    position: relative;
     display: inline-block;
+    color: #fff;
+    line-height: 2;
 }
 
-/* Hover effect */
-.nav-items a:hover {
-    color: #363434;
-}
-
+.nav-items li::before {
+    content: '';
+    width: 0;
+    height: 2px;
+    border-radius: 2px;
+    background-color: #363434;
+    position: absolute;
+    bottom: -.25rem;
+    left: 0;
+    transition: width .4s;
+  }
+  
+  .nav-items li:hover:before {
+    width: 100%;
+  }
 /* navbar links */
 .navbar a {
     text-decoration: none;
@@ -171,8 +184,7 @@
         left: -20px;
         top: -5px;
     }
-
-
+    
     .navbar {
         justify-content: space-between;
     }

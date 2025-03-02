@@ -97,7 +97,9 @@ body, html {
   }
 
   .eye-icon {
+    font-size: 20px;
     position: absolute;
+    top: -3px;   /* Moves up */
     padding: 15px;
     transform: translateX(-50px); 
     border-radius: 15px;
