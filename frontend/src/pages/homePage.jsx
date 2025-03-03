@@ -1,4 +1,6 @@
 import React from "react";
+import "./homePage.css"
+//import "./components/photoGallery.jsx"
 
 function Home() {
     return (

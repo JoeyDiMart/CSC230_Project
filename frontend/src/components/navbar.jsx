@@ -4,7 +4,7 @@ import { useState } from "react";
 import "./navbar.css";
 
 function Navbar() {
-    const [role, setRole] = useState("admin");  // set roles in navbar since this is the only thing affected
+    const [role, setRole] = useState("guest");  // set roles in navbar since this is the only thing affected
     const [click, setClick] = useState(false)
     const handleClick = () => setClick(!click)
     const closeMobileMenu = () => setClick(false)
