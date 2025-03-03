@@ -131,18 +131,68 @@
     transform: scale(1.05);
 }
 
-
-
-.menu-icon i {
-    transition: transform 0.5s ease;
-}
-.menu-icon{
-    right: 5%;
-}
-.rotate {
-    transform: rotate(90deg);
-}
-
+.menu-icon {
+    position: absolute;
+    width: 40px;
+    height: 30px;
+    margin-right: 1.5rem;
+    right: 0;
+    background: transparent;
+    cursor: pointer;
+    display: block;
+    }
+    
+    .menu-icon input {
+    display: none;
+    }
+    
+    .menu-icon span {
+    display: block;
+    position: absolute;
+    height: 4px;
+    width: 100%;
+    background: black;
+    border-radius: 9px;
+    opacity: 1;
+    left: 0;
+    transform: rotate(0deg);
+    transition: .25s ease-in-out;
+    }
+    
+    .menu-icon span:nth-of-type(1) {
+    top: 0px;
+    transform-origin: left center;
+    }
+    
+    .menu-icon span:nth-of-type(2) {
+    top: 50%;
+    transform: translateY(-50%);
+    transform-origin: left center;
+    }
+    
+    .menu-icon span:nth-of-type(3) {
+    top: 100%;
+    transform-origin: left center;
+    transform: translateY(-100%);
+    }
+    
+    .menu-icon input:checked ~ span:nth-of-type(1) {
+    transform: rotate(45deg);
+    top: 0px;
+    left: 5px;
+    }
+    
+    .menu-icon input:checked ~ span:nth-of-type(2) {
+    width: 0%;
+    opacity: 0;
+    }
+    
+    .menu-icon input:checked ~ span:nth-of-type(3) {
+    transform: rotate(-45deg);
+    top: 28px;
+    left: 5px;
+    }
+    
 
 /* For Phone*/
 @media (max-width: 768px) {
@@ -177,18 +227,7 @@
     
     .nav-items ul.active{
         display: flex;
-    }
-    .menu-icon{
-        display: block;
-        font-size: 2rem;
-        color: black;
-        cursor: pointer;
-        position: absolute;
-        top: 25px;
-        right: 35px;
-        z-index: 100;
-    }
-    
+    }   
     .nav-items a{
         font-size: 32px;
         font-weight: bold;

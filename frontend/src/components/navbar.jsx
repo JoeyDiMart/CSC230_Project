@@ -14,11 +14,13 @@ function Navbar() {
     return (
         <nav className="navbar">
             <div className="nav-items">
-
-                <div className="menu-icon" onClick={handleClick}>
-                        <i className={click ? 'fas fa-times rotate' : 'fas fa-bars'}/>
-                </div>
-
+                <label htmlFor="menu-icon" className="menu-icon">
+                    <input type="checkbox" id="menu-icon" checked={click} onChange={handleClick}/>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </label>
+                
                 {/* Conditional to activate the nav menu*/}
                 <ul className={click? 'nav-menu active' : 'nav-menu'}>
                     <li><Link to="/Publications" onClick={closeMobileMenu}>Publications</Link></li>
@@ -29,7 +31,7 @@ function Navbar() {
                         <li><Link to="/Account" onClick={closeMobileMenu}>Account</Link></li>
                     )}
                 </ul>
-            </div>
+                </div>
 
             {role === "guest" && (
                 <div className="auth-buttons">
