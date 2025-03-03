@@ -3,14 +3,13 @@ import React from "react";
 import { useState } from "react";
 import "./navbar.css";
 
-function Navbar() {  
-    const [role, setRole] = useState("guest")
+function Navbar() {
+    const [role, setRole] = useState("admin");  // set roles in navbar since this is the only thing affected
     const [click, setClick] = useState(false)
     const handleClick = () => setClick(!click)
     const closeMobileMenu = () => setClick(false)
     const navigate = useNavigate();
 
-    //const [role, setRole] = useState("guest"); DELETE THIS PUT IT IN SOMEWHERE MORE GLOBAL LIKE APP.JSX
 
     return (
         <nav className="navbar">
@@ -26,6 +25,9 @@ function Navbar() {
                     <li><Link to="/Events" onClick={closeMobileMenu}>Events</Link></li>
                     <li><Link to="/About" onClick={closeMobileMenu}>About Us</Link></li>
                     <li><Link to="/Associates" onClick={closeMobileMenu}>Research Associates</Link></li>
+                    {role !== "guest" && (
+                        <li><Link to="/Account" onClick={closeMobileMenu}>Account</Link></li>
+                    )}
                 </ul>
             </div>
 
@@ -37,14 +39,13 @@ function Navbar() {
             )}
 
             {role !== "guest" && (
-                <button className="SignOut" onClick={() => setRole("guest")}></button>
+                <div className="auth-buttons">
+                    <button className="signout" onClick= {() => setRole("guest")}>Sign Out</button>
+                </div>
+
             )}
-            {/* Need to add Account Page for here */}
         </nav>
     );
 }
-
-
-
 
 export default Navbar;
