@@ -10,11 +10,12 @@
   width: 100vw;
   height: 100vh;
   margin: 0 auto;
-  padding: 2rem;
+  padding: 3rem;
   text-align: center;
   line-height: 1.5;
-  background-color: #FFFFF0;  /* Default light mode */
+  background-color: #ffffff;  /* Default light mode */
   color-scheme: light dark;
+  overflow-x: hidden;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
