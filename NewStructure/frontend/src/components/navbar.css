@@ -5,7 +5,7 @@
 
 /* global items */
 .navbar {
-    position: fixed;
+    position: sticky;
     top: 0;
     left: 0;
     width: 100%;
@@ -13,8 +13,8 @@
     display: flex;
     justify-content: space-between; /* Space between the items */
     align-items: center;
-    padding: 15px 20px;
-    z-index: 1000;
+    padding: 15px 25px;
+    z-index: 1;
 }
 
 /* navbar items */
@@ -31,21 +31,34 @@
     color: #363434;
     display: flex; 
     gap: 20px;      
-    padding: 0;    
-    margin: 0;      
+    margin: 0;
+    padding: 0;
     list-style: none; 
 }
 
 /* Style the list items */
 .nav-items li {
-    margin: 0;
+    position: relative;
+    display: inline-block;
+    color: #fff;
+    line-height: 2;
 }
 
-/* Hover effect */
-.nav-items a:hover {
-    color: #363434;
-}
-
+.nav-items li::before {
+    content: '';
+    width: 0;
+    height: 2px;
+    border-radius: 2px;
+    background-color: #363434;
+    position: absolute;
+    bottom: -.25rem;
+    left: 0;
+    transition: width .4s;
+  }
+  
+  .nav-items li:hover:before {
+    width: 100%;
+  }
 /* navbar links */
 .navbar a {
     text-decoration: none;
@@ -58,12 +71,11 @@
     display: flex;
     align-items: center;
     gap: 15px;
-    padding: 15px;
+    padding-top: 15px;
 }
 
 /* Style for within login/signup buttons */
 .auth-buttons button {
-    padding: 10px 15px;
     cursor: pointer;
     font-size: 15px;
 }
@@ -102,16 +114,85 @@
     transform: scale(1.05);
 }
 
-.menu-icon i {
-    transition: transform 0.5s ease;
-}
-.menu-icon{
-    right: 5%;
-}
-.rotate {
-    transform: rotate(90deg);
+.auth-buttons .signout {
+    background-color: black;
+    color: #C8102E;
+    border: 3px solid black;
+    border-radius: 20px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease, transform 0.3s ease, color 0.3s ease;
 }
 
+/* Hover effect for the signup button */
+.auth-buttons .signout:hover {
+    background-color: transparent;
+    color: black;
+    border: 3px solid black;
+    transform: scale(1.05);
+}
+
+.menu-icon {
+    position: absolute;
+    width: 40px;
+    height: 30px;
+    margin-right: 1.5rem;
+    right: 0;
+    background: transparent;
+    cursor: pointer;
+    display: block;
+    }
+    
+    .menu-icon input {
+    display: none;
+    }
+    
+    .menu-icon span {
+    display: block;
+    position: absolute;
+    height: 4px;
+    width: 100%;
+    background: black;
+    border-radius: 9px;
+    opacity: 1;
+    left: 0;
+    transform: rotate(0deg);
+    transition: .25s ease-in-out;
+    }
+    
+    .menu-icon span:nth-of-type(1) {
+    top: 0px;
+    transform-origin: left center;
+    }
+    
+    .menu-icon span:nth-of-type(2) {
+    top: 50%;
+    transform: translateY(-50%);
+    transform-origin: left center;
+    }
+    
+    .menu-icon span:nth-of-type(3) {
+    top: 100%;
+    transform-origin: left center;
+    transform: translateY(-100%);
+    }
+    
+    .menu-icon input:checked ~ span:nth-of-type(1) {
+    transform: rotate(45deg);
+    top: 0px;
+    left: 5px;
+    }
+    
+    .menu-icon input:checked ~ span:nth-of-type(2) {
+    width: 0%;
+    opacity: 0;
+    }
+    
+    .menu-icon input:checked ~ span:nth-of-type(3) {
+    transform: rotate(-45deg);
+    top: 28px;
+    left: 5px;
+    }
+    
 
 /* For Phone*/
 @media (max-width: 768px) {
@@ -119,7 +200,8 @@
         display: flex;
         align-items: center;
         position: absolute;
-        right: 85px;
+        right: 75px;
+        bottom: 20px;
     }
     .auth-buttons .signup {
         display: none;
@@ -145,18 +227,7 @@
     
     .nav-items ul.active{
         display: flex;
-    }
-    .menu-icon{
-        display: block;
-        font-size: 2rem;
-        color: black;
-        cursor: pointer;
-        position: absolute;
-        top: 15px;
-        right: 50px;
-        z-index: 100;
-    }
-    
+    }   
     .nav-items a{
         font-size: 32px;
         font-weight: bold;
@@ -171,8 +242,7 @@
         left: -20px;
         top: -5px;
     }
-
-
+    
     .navbar {
         justify-content: space-between;
     }
