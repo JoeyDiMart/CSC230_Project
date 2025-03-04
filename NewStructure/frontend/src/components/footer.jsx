@@ -12,7 +12,6 @@ function Footer() {
                 <h3>Contact Us</h3>
                 <h3>FAQs</h3>
                 <h3>Resources</h3>
-                <h3>Research Associates</h3>
                 <h3>Mission Statement</h3>
             </div>
             <div className="social-links">
