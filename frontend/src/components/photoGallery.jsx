@@ -15,6 +15,8 @@ function Gallery() {
             .catch((error) => console.error("Error fetching photos:", error));
     }, []);
      */
+
+    // be  sure to remove this once connected to backend
     useEffect(() => {
         // For testing, manually add photos to the list
         const testPhotos = [
@@ -39,9 +41,9 @@ function Gallery() {
 
     return (
         <div className="gallery">
-            <img src={photos[leftIndex]} alt="leftPhoto" />
-            <img src={photos[centerIndex]} alt="centerPhoto" />
-            <img src={photos[rightIndex]} alt="rightPhoto" />
+            <img key="side" src={photos[leftIndex]} alt="leftPhoto" />
+            <img key="center" src={photos[centerIndex]} alt="centerPhoto" />
+            <img key="side" src={photos[rightIndex]} alt="rightPhoto" />
         </div>
 
     );
