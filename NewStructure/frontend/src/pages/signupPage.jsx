@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import './signupPage.css'
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 
-function Signup({ setRole }) {
+function Signup() {
 
     // update the text field when user puts in email and password
     const [formData, setFormData] =
@@ -72,7 +72,7 @@ function Signup({ setRole }) {
             });
             const data = await response.json();
             if (response.ok) {
-                setRole(data.role);  // set users role based on what the backend gives
+                (data.role);  // set users role based on what the backend gives
                 navigate("/");
             } else {
                 const errorData = await response.json();

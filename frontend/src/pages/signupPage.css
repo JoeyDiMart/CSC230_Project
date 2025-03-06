@@ -1,6 +1,6 @@
 body, html {
-    margin: 0px;
-    padding: 0px;
+    margin: 0;
+    padding: 0;
 }
 
 .signup-page {
@@ -78,7 +78,7 @@ body, html {
   .signup-container button:hover {
     background-color: #a10c27;
     transform: scale(1.03);
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .signup-container p {
