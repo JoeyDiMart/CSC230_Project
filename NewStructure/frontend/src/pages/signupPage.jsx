@@ -72,11 +72,10 @@ function Signup() {
             });
             const data = await response.json();
             if (response.ok) {
-                (data.role);  // set users role based on what the backend gives
+                //(data.role);  // set users role based on what the backend gives
                 navigate("/");
             } else {
-                const errorData = await response.json();
-                alert(errorData.message || "Signup failed. Please try again.");
+                alert(data.error || "Signup failed. Please try again.");
             }
         } catch (error) {
             console.error("error from signup: ", error)
