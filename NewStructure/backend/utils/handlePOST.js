@@ -37,7 +37,7 @@ const handleSignup = async (req, res, body) => {
         const collection = db.collection('USERS');
         const existingUser = await collection.findOne({ email: email });
         if (existingUser) {
-            return res.status(400).json({ error: "User already exists" });
+            return res.status(400).json({ error: "User already exists" });  // tested by changing message, works
         }
         const result = await collection.insertOne({name, email, password });
         if (result.insertedId) {
