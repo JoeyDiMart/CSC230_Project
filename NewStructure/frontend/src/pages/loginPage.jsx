@@ -16,7 +16,6 @@ function Login() {
         setFormData({...formData, [e.target.name]: e.target.value});
     };
 
-    // maybe remove async?
     const handleSubmit = async (e) => {
         e.preventDefault();
 
@@ -28,9 +27,10 @@ function Login() {
             });
 
             if (response.ok) {
-                //const data = await response.json();  // will expect a role from backend
-                //setRole(data.userRole); create setRole function
+                const data = await response.json();  // will expect a role from backend
+                setRole(data.userRole);
                 navigate("/");
+
             } else {
                 const errorData = await response.json();
                 alert(errorData.message);
