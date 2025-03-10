@@ -7,7 +7,7 @@ function Login() {
 
     const [formData, setFormData] = useState({
         email: "",
-        password: "",
+        password: ""
     });
 
     const navigate = useNavigate();
@@ -27,8 +27,8 @@ function Login() {
             });
 
             if (response.ok) {
-                const data = await response.json();  // will expect a role from backend
-                setRole(data.userRole);
+                // const data = await response.json();  // will expect a role from backend
+                // setRole(data.userRole);
                 navigate("/");
 
             } else {
