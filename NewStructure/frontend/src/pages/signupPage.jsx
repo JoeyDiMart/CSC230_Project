@@ -75,7 +75,6 @@ function Signup() {
                 (data.role);  // set users role based on what the backend gives
                 navigate("/");
             } else {
-                const errorData = await response.json();
                 alert(errorData.message || "Signup failed. Please try again.");
             }
         } catch (error) {
