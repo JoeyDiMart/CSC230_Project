@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, {Fragment, useEffect, useState} from "react";
+import './photoGallery.css'
 
 function Gallery() {
     const [photos, setPhotos] = useState([]);
-    const [leftIndex, setLeftIndex] = useState(0);
-    const [centerIndex, setCenterIndex] = useState(1);
-    const [rightIndex, setRightIndex] = useState(2);
+    const [index, setIndex] = useState(0);
 
     /*
     useEffect(() => {
@@ -20,9 +19,9 @@ function Gallery() {
     useEffect(() => {
         // For testing, manually add photos to the list
         const testPhotos = [
-            "../public/test1.png",
-            "../public/test2.png",
-            "../public/test3.png"
+            "/test1.png",
+            "/test2.png",
+            "/test3.png"
         ];
         setPhotos(testPhotos); // Update state immutably
     }, []); // This effect runs once on mount
@@ -31,19 +30,27 @@ function Gallery() {
         if (photos.length === 0) { return }
 
         const interval = setInterval(() => {
-            setLeftIndex((prevIndex) => (prevIndex + 1) % photos.length);
-            setCenterIndex((prevIndex) => (prevIndex + 1) % photos.length);
-            setRightIndex((prevIndex) => (prevIndex + 1) % photos.length);
+            setIndex((prevIndex) => (prevIndex + 1) % photos.length);
         }, 3000);
 
         return () => clearInterval(interval);
     }, [photos]);
 
+    const leftIndex = (index + photos.length - 1) % photos.length;
+    const centerIndex = index;
+    const rightIndex = (index + 1) % photos.length;
+
     return (
         <div className="gallery">
-            <img key="side" src={photos[leftIndex]} alt="leftPhoto" />
-            <img key="center" src={photos[centerIndex]} alt="centerPhoto" />
-            <img key="side" src={photos[rightIndex]} alt="rightPhoto" />
+            <div className="photo-container">
+            <img key="left" src={photos[leftIndex]} alt="leftPhoto" />
+            </div>
+            <div className="photo-container center-photo">
+                <img key="center" src={photos[centerIndex]} alt="centerPhoto" />
+            </div>
+            <div className="photo-container">
+                <img key="right" src={photos[rightIndex]} alt="rightPhoto" />
+            </div>
         </div>
 
     );

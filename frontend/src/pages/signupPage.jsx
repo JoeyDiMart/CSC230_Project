@@ -73,8 +73,8 @@ function Signup({ setRole }) {
                 method: "POST",  // send post request and create a new user
                 headers: { "Content-Type": "application/json" },  // the type of data is json since we use mongoDB
                 body: JSON.stringify({
-                    name: formData.name,
-                    email: formData.email,
+                    name: formData.name.toLowerCase(),
+                    email: formData.email.toLowerCase(),
                     password: formData.password,
                 }),
             });
