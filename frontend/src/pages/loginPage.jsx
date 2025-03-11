@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import './loginPage.css';
 import './signupPage.jsx'
 
-function Login() {
+function Login({ setRole }) {
 
     const [formData, setFormData] = useState({
         email: "",
