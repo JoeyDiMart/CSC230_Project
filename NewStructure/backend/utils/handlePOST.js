@@ -75,7 +75,7 @@ const handleSignup = async (req, res, body) => {
 const handleLogin = async (req, res, body) => {
     const { email, password } = body;
     if (!email || !password) {
-        return res.status(450).json({ error: 'Email and password are required' });
+        return res.status(400).json({ error: 'Email and password are required' });  // changed login error to 400
     }
     try {
         const db = client.db('CIRT');
@@ -86,7 +86,7 @@ const handleLogin = async (req, res, body) => {
         }
         // CORRECT IMPLEMENTATION
         //const isMatch = await bcrypt.compare(password, user.password);
-        const isMatch = password == user.password;
+        const isMatch = password === user.password;
         if (!isMatch) {
             return res.status(470).json({ error: 'Invalid email or password' });
         }
