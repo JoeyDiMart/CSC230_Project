@@ -1,0 +1,454 @@
+{
+    "info": {
+        "name": "CIRT API Tests",
+        "description": "Test collection for CIRT Journal System API",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "item": [
+        {
+            "name": "User Management",
+            "item": [
+                {
+                    "name": "Sign Up",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "http://localhost:8081/signup",
+                            "protocol": "http",
+                            "host": ["localhost"],
+                            "port": "8081",
+                            "path": ["signup"]
+                        },
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"name\": \"Test User\",\n    \"email\": \"test@example.com\",\n    \"password\": \"testpass123\"\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "Login",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "http://localhost:8081/login",
+                            "protocol": "http",
+                            "host": ["localhost"],
+                            "port": "8081",
+                            "path": ["login"]
+                        },
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"email\": \"test@example.com\",\n    \"password\": \"testpass123\"\n}"
+                        }
+                    },
+                    "options": {
+                        "followRedirects": true,
+                        "storeCookies": true
+                    }
+                },
+                {
+                    "name": "Get Profile",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "http://localhost:8081/profile",
+                            "protocol": "http",
+                            "host": ["localhost"],
+                            "port": "8081",
+                            "path": ["profile"]
+                        }
+                    },
+                    "options": {
+                        "followRedirects": true,
+                        "sendCookies": true
+                    }
+                },
+                {
+                    "name": "Logout",
+                    "request": {
+                        "method": "POST",
+                        "url": {
+                            "raw": "http://localhost:8081/logout",
+                            "protocol": "http",
+                            "host": ["localhost"],
+                            "port": "8081",
+                            "path": ["logout"]
+                        }
+                    },
+                    "options": {
+                        "followRedirects": true,
+                        "sendCookies": true
+                    }
+                },
+                {
+                    "name": "Update User Role",
+                    "request": {
+                        "method": "PUT",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "http://localhost:8081/role/{{userId}}",
+                            "protocol": "http",
+                            "host": ["localhost"],
+                            "port": "8081",
+                            "path": ["role", "{{userId}}"]
+                        },
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"role\": \"reviewer\"\n}"
+                        }
+                    },
+                    "options": {
+                        "followRedirects": true,
+                        "sendCookies": true
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Journal Management",
+            "item": [
+                {
+                    "name": "Submit Manuscript",
+                    "request": {
+                        "method": "POST",
+                        "header": [],
+                        "url": {
+                            "raw": "http://localhost:8081/submit",
+                            "protocol": "http",
+                            "host": ["localhost"],
+                            "port": "8081",
+                            "path": ["submit"]
+                        },
+                        "body": {
+                            "mode": "formdata",
+                            "formdata": [
+                                {
+                                    "key": "manuscript",
+                                    "type": "file",
+                                    "src": []
+                                },
+                                {
+                                    "key": "title",
+                                    "value": "Test Manuscript",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "abstract",
+                                    "value": "Test abstract for the manuscript",
+                                    "type": "text"
+                                }
+                            ]
+                        }
+                    },
+                    "options": {
+                        "followRedirects": true,
+                        "sendCookies": true
+                    }
+                },
+                {
+                    "name": "Get Manuscript",
+                    "request": {
+                        "method": "GET",
+                        "url": {
+                            "raw": "http://localhost:8081/{{manuscriptId}}",
+                            "protocol": "http",
+                            "host": ["localhost"],
+                            "port": "8081",
+                            "path": ["{{manuscriptId}}"]
+                        }
+                    },
+                    "options": {
+                        "followRedirects": true,
+                        "sendCookies": true
+                    }
+                },
+                {
+                    "name": "Submit Review",
+                    "request": {
+                        "method": "POST",
+                        "header": [],
+                        "url": {
+                            "raw": "http://localhost:8081/{{manuscriptId}}/review",
+                            "protocol": "http",
+                            "host": ["localhost"],
+                            "port": "8081",
+                            "path": ["{{manuscriptId}}", "review"]
+                        },
+                        "body": {
+                            "mode": "formdata",
+                            "formdata": [
+                                {
+                                    "key": "annotated",
+                                    "type": "file",
+                                    "src": []
+                                },
+                                {
+                                    "key": "comments",
+                                    "value": "Test review comments",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "recommendation",
+                                    "value": "accept",
+                                    "type": "text"
+                                }
+                            ]
+                        }
+                    },
+                    "options": {
+                        "followRedirects": true,
+                        "sendCookies": true
+                    }
+                },
+                {
+                    "name": "Get Reviews",
+                    "request": {
+                        "method": "GET",
+                        "url": {
+                            "raw": "http://localhost:8081/review",
+                            "protocol": "http",
+                            "host": ["localhost"],
+                            "port": "8081",
+                            "path": ["review"]
+                        }
+                    },
+                    "options": {
+                        "followRedirects": true,
+                        "sendCookies": true
+                    }
+                },
+                {
+                    "name": "Get Issues",
+                    "request": {
+                        "method": "GET",
+                        "url": {
+                            "raw": "http://localhost:8081/issues",
+                            "protocol": "http",
+                            "host": ["localhost"],
+                            "port": "8081",
+                            "path": ["issues"]
+                        }
+                    },
+                    "options": {
+                        "followRedirects": true,
+                        "sendCookies": true
+                    }
+                },
+                {
+                    "name": "Create Issue",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "http://localhost:8081/issues",
+                            "protocol": "http",
+                            "host": ["localhost"],
+                            "port": "8081",
+                            "path": ["issues"]
+                        },
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"title\": \"Test Issue\",\n    \"volume\": 1,\n    \"number\": 1,\n    \"manuscripts\": [\"{{manuscriptId}}\"]\n}"
+                        }
+                    },
+                    "options": {
+                        "followRedirects": true,
+                        "sendCookies": true
+                    }
+                },
+                {
+                    "name": "Update Manuscript Decision",
+                    "request": {
+                        "method": "PUT",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "http://localhost:8081/{{manuscriptId}}/decision",
+                            "protocol": "http",
+                            "host": ["localhost"],
+                            "port": "8081",
+                            "path": ["{{manuscriptId}}", "decision"]
+                        },
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"status\": \"accepted\",\n    \"comments\": \"Manuscript accepted for publication\"\n}"
+                        }
+                    },
+                    "options": {
+                        "followRedirects": true,
+                        "sendCookies": true
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Poster Management",
+            "item": [
+                {
+                    "name": "Upload Poster",
+                    "request": {
+                        "method": "POST",
+                        "header": [],
+                        "url": {
+                            "raw": "http://localhost:8081/posters/upload",
+                            "protocol": "http",
+                            "host": ["localhost"],
+                            "port": "8081",
+                            "path": ["posters", "upload"]
+                        },
+                        "body": {
+                            "mode": "formdata",
+                            "formdata": [
+                                {
+                                    "key": "poster",
+                                    "type": "file",
+                                    "src": []
+                                },
+                                {
+                                    "key": "title",
+                                    "value": "Test Poster",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "description",
+                                    "value": "Test poster description",
+                                    "type": "text"
+                                }
+                            ]
+                        }
+                    },
+                    "options": {
+                        "followRedirects": true,
+                        "sendCookies": true
+                    }
+                },
+                {
+                    "name": "Get All Posters",
+                    "request": {
+                        "method": "GET",
+                        "url": {
+                            "raw": "http://localhost:8081/posters",
+                            "protocol": "http",
+                            "host": ["localhost"],
+                            "port": "8081",
+                            "path": ["posters"]
+                        }
+                    },
+                    "options": {
+                        "followRedirects": true,
+                        "sendCookies": true
+                    }
+                },
+                {
+                    "name": "Get Pending Posters",
+                    "request": {
+                        "method": "GET",
+                        "url": {
+                            "raw": "http://localhost:8081/posters/pending",
+                            "protocol": "http",
+                            "host": ["localhost"],
+                            "port": "8081",
+                            "path": ["posters", "pending"]
+                        }
+                    },
+                    "options": {
+                        "followRedirects": true,
+                        "sendCookies": true
+                    }
+                },
+                {
+                    "name": "Get Poster by ID",
+                    "request": {
+                        "method": "GET",
+                        "url": {
+                            "raw": "http://localhost:8081/posters/{{posterId}}",
+                            "protocol": "http",
+                            "host": ["localhost"],
+                            "port": "8081",
+                            "path": ["posters", "{{posterId}}"]
+                        }
+                    },
+                    "options": {
+                        "followRedirects": true,
+                        "sendCookies": true
+                    }
+                },
+                {
+                    "name": "Approve Poster",
+                    "request": {
+                        "method": "PUT",
+                        "url": {
+                            "raw": "http://localhost:8081/posters/{{posterId}}/approve",
+                            "protocol": "http",
+                            "host": ["localhost"],
+                            "port": "8081",
+                            "path": ["posters", "{{posterId}}", "approve"]
+                        }
+                    },
+                    "options": {
+                        "followRedirects": true,
+                        "sendCookies": true
+                    }
+                },
+                {
+                    "name": "Delete Poster",
+                    "request": {
+                        "method": "DELETE",
+                        "url": {
+                            "raw": "http://localhost:8081/posters/{{posterId}}",
+                            "protocol": "http",
+                            "host": ["localhost"],
+                            "port": "8081",
+                            "path": ["posters", "{{posterId}}"]
+                        }
+                    },
+                    "options": {
+                        "followRedirects": true,
+                        "sendCookies": true
+                    }
+                }
+            ]
+        }
+    ],
+    "variable": [
+        {
+            "key": "userId",
+            "value": "user_id_here"
+        },
+        {
+            "key": "manuscriptId",
+            "value": "manuscript_id_here"
+        },
+        {
+            "key": "posterId",
+            "value": "poster_id_here"
+        }
+    ]
+}
