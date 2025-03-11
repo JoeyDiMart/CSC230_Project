@@ -1,0 +1,22 @@
+Summary:
+This project is using Node.js + Express for the backend. All backend/server files are located in the server directory.
+The frontend uses Vite.js with a React template, which is a more modern way to create React projects. Everything for
+our frontend is in the "frontend" directory. Within "frontend/src" we have two main directories. "Components" contains
+everything that will be universal throughout every webpage, such as the header, navbar, and footer. "pages" contains all
+of the jsx and css for any webpage we have made. within this src directory without being in another directory is
+App.jsx which lays universal rules (such as light mode, font, etc.) and main.jsx which is the root file of hte front end.
+this is where all of our files are "connected." index.html is the only html file we have to set the default language,
+character set, title of the webpage, and favicon. The "public" directory contains all images we might use, such as
+the UTampa logo.
+
+Note for the project:
+There are three branches, a main branch which is pretty simple, our final product will be on this branch. there is a
+'frontend' and 'backend' branch as well, which is where each team respectively works within.
+
+Naming scheme:
+All frontend file names use the same naming scheme. App, index, and main are all standard/good practice names which were
+default created for us by creating a react project. All web pages have (in lower case) the name of the page followed by
+"Page."  "loginPage.jsx" is an example of our naming scheme. All jsx files are styled with a file of the same name but
+with a ".css" file extension to show it's the style sheet for that page. In the discord server, we have a "variable-names"
+chat which no one can speak in unless it's giving a variable that was created. This is to keep consistency and make sure
+frontend and backend are using the same variable names and keep communication errors to a minimum.

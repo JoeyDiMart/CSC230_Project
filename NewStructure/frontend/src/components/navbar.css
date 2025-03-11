@@ -1,0 +1,253 @@
+::-webkit-scrollbar {
+    width: 0px;  
+    background: transparent;
+}
+
+/* global items */
+.navbar {
+    position: sticky;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 60px;
+    display: flex;
+    justify-content: space-between; /* Space between the items */
+    align-items: center;
+    padding: 15px 25px;
+    z-index: 1;
+}
+
+/* navbar items */
+.nav-items {
+    display: flex;
+    flex: 1;
+    align-items: center;
+    justify-content: center;
+    margin-right: auto;  /* Space between nav items */
+}
+
+/* Make nav-items flexbox */
+.nav-items ul {
+    color: #363434;
+    display: flex; 
+    gap: 20px;      
+    margin: 0;
+    padding: 0;
+    list-style: none; 
+}
+
+/* Style the list items */
+.nav-items li {
+    position: relative;
+    display: inline-block;
+    color: #fff;
+    line-height: 2;
+}
+
+.nav-items li::before {
+    content: '';
+    width: 0;
+    height: 2px;
+    border-radius: 2px;
+    background-color: #363434;
+    position: absolute;
+    bottom: -.25rem;
+    left: 0;
+    transition: width .4s;
+  }
+  
+  .nav-items li:hover:before {
+    width: 100%;
+  }
+/* navbar links */
+.navbar a {
+    text-decoration: none;
+    color: black;
+    font-size: 20px;
+}
+
+/* Auth buttons */
+.auth-buttons {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding-top: 15px;
+}
+
+/* Style for within login/signup buttons */
+.auth-buttons button {
+    cursor: pointer;
+    font-size: 15px;
+}
+/* Styling for the login button */
+.auth-buttons .Login {
+    background-color: transparent;
+    color: black;
+    border: 3px solid black;
+    border-radius: 20px; /* Small radius for subtle rounding */
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Soft shadow for smooth edges */
+    transition: background-color 0.3s ease, transform 0.3s ease, color 0.3s ease;
+}
+
+/* Hover effect for the login button */
+.auth-buttons .Login:hover {
+    background-color: black;
+    color: #C8102E;
+    transform: scale(1.05);
+}
+
+/* Styling for the signup button */
+.auth-buttons .signup {
+    background-color: black;
+    color: #C8102E;
+    border: 3px solid black;
+    border-radius: 20px; /* Small radius for subtle rounding */
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Soft shadow for smooth edges */
+    transition: background-color 0.3s ease, transform 0.3s ease, color 0.3s ease;
+}
+
+/* Hover effect for the signup button */
+.auth-buttons .signup:hover {
+    background-color: transparent;
+    color: black;
+    border: 3px solid black;
+    transform: scale(1.05);
+}
+
+.auth-buttons .signout {
+    background-color: black;
+    color: #C8102E;
+    border: 3px solid black;
+    border-radius: 20px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease, transform 0.3s ease, color 0.3s ease;
+}
+
+/* Hover effect for the signup button */
+.auth-buttons .signout:hover {
+    background-color: transparent;
+    color: black;
+    border: 3px solid black;
+    transform: scale(1.05);
+}
+
+.menu-icon {
+    position: absolute;
+    width: 40px;
+    height: 30px;
+    margin-right: 1.5rem;
+    right: 0;
+    background: transparent;
+    cursor: pointer;
+    display: block;
+    }
+    
+    .menu-icon input {
+    display: none;
+    }
+    
+    .menu-icon span {
+    display: block;
+    position: absolute;
+    height: 4px;
+    width: 100%;
+    background: black;
+    border-radius: 9px;
+    opacity: 1;
+    left: 0;
+    transform: rotate(0deg);
+    transition: .25s ease-in-out;
+    }
+    
+    .menu-icon span:nth-of-type(1) {
+    top: 0px;
+    transform-origin: left center;
+    }
+    
+    .menu-icon span:nth-of-type(2) {
+    top: 50%;
+    transform: translateY(-50%);
+    transform-origin: left center;
+    }
+    
+    .menu-icon span:nth-of-type(3) {
+    top: 100%;
+    transform-origin: left center;
+    transform: translateY(-100%);
+    }
+    
+    .menu-icon input:checked ~ span:nth-of-type(1) {
+    transform: rotate(45deg);
+    top: 0px;
+    left: 5px;
+    }
+    
+    .menu-icon input:checked ~ span:nth-of-type(2) {
+    width: 0%;
+    opacity: 0;
+    }
+    
+    .menu-icon input:checked ~ span:nth-of-type(3) {
+    transform: rotate(-45deg);
+    top: 28px;
+    left: 5px;
+    }
+    
+
+/* For Phone*/
+@media (max-width: 768px) {
+    .auth-buttons {
+        display: flex;
+        align-items: center;
+        position: absolute;
+        right: 75px;
+        bottom: 20px;
+    }
+    .auth-buttons .signup {
+        display: none;
+    }
+    .nav-items ul {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        position: absolute;
+        top: 80px;
+        left: 0;
+        right: 0;
+        height: calc(100vh - 60px);
+        background-color: #363434;
+        padding: 20px;
+        gap: 50px;
+        list-style: none;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+        display: none;
+        z-index: 99;
+        overflow-y: auto;
+    }
+    
+    .nav-items ul.active{
+        display: flex;
+    }   
+    .nav-items a{
+        font-size: 32px;
+        font-weight: bold;
+        color: #C8102E;
+    }
+}
+
+/* For Computer*/
+@media (min-width: 786px) {
+    .auth-buttons {
+        position:relative ;
+        left: -20px;
+        top: -5px;
+    }
+    
+    .navbar {
+        justify-content: space-between;
+    }
+
+    .menu-icon {
+        display: none;
+    }
+    }
