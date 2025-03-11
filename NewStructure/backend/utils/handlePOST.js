@@ -1,6 +1,14 @@
 //imports
+import * as userService from '../services/userService.js';
+import * as journalService from '../services/journalService.js';
+import * as posterService from '../services/posterService.js';
 import {client} from "../Database/Mongodb.js";
 import bcrypt from "bcryptjs";
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 export const handlePostRequest = async (req, res) => {
     console.log("Incoming POST request to:", req.path);
@@ -12,7 +20,10 @@ export const handlePostRequest = async (req, res) => {
     const requestHandlers = {
         '/signup': handleSignup,
         '/login': handleLogin,
-        // Add more handlers here as needed for other routes
+        '/logout': handleLogout,
+        '/submit': handleSubmit,
+        '/issues': journalService.handleCreateIssue,
+        '/posters/upload': handleUpload,
     };
 
     // Check if the handler exists for this route
@@ -22,9 +33,19 @@ export const handlePostRequest = async (req, res) => {
         // Call the specific handler
         await handler(req, res, body);
     } else {
+        const reviewMatch = req.path.match(/^\/([^\/]+)\/review$/);
+        if (reviewMatch) {
+            req.params = { id: reviewMatch[1] };
+            return journalService.upload.single('annotated')(req, res, (err) => {
+                if (err) return res.status(400).json({ error: err.message });
+                return journalService.handleReview(req, res);
+            });
+        }
+    
         return res.status(404).json({ error: 'Route not found' });
     }
 };
+
 
 // Signup Handler
 const handleSignup = async (req, res, body) => {
@@ -37,7 +58,7 @@ const handleSignup = async (req, res, body) => {
         const collection = db.collection('USERS');
         const existingUser = await collection.findOne({ email: email });
         if (existingUser) {
-            return res.status(400).json({ error: "User already exists" });
+            return res.status(400).json({ error: "User already exists" });  // tested by changing message, works
         }
         const result = await collection.insertOne({name, email, password });
         if (result.insertedId) {
@@ -54,28 +75,33 @@ const handleSignup = async (req, res, body) => {
 const handleLogin = async (req, res, body) => {
     const { email, password } = body;
     if (!email || !password) {
-        return res.status(400).json({ error: 'Email and password are required' });
+        return res.status(450).json({ error: 'Email and password are required' });
     }
     try {
         const db = client.db('CIRT');
         const collection = db.collection('USERS');
         const user = await collection.findOne({ email });
         if (!user) {
-            return res.status(400).json({ error: 'Invalid email or password' });
+            return res.status(460).json({ error: 'Invalid email or password' });
         }
-        const isMatch = await bcrypt.compare(password, user.password);
+        // CORRECT IMPLEMENTATION
+        //const isMatch = await bcrypt.compare(password, user.password);
+        const isMatch = password == user.password;
         if (!isMatch) {
-            return res.status(400).json({ error: 'Invalid email or password' });
+            return res.status(470).json({ error: 'Invalid email or password' });
         }
-        req.session.user = { id: user._id, email: user.email };
+        req.session.user = {
+            id: user._id,
+            email: user.email,
+            role: user.role || 'author'
+        };
+
         return res.json({ message: 'Logged in successfully', user: { id: user._id, email: user.email } });
     } catch (err) {
         return res.status(500).json({ error: 'Internal server error' });
     }
 };
-const handLogout = async (req, res, next) => {
 
-}
 // Logout Handler
 const handleLogout = (req, res) => {
     req.session.destroy(err => {
@@ -83,5 +109,22 @@ const handleLogout = (req, res) => {
             return res.status(500).json({ error: 'Could not log out' });
         }
         res.json({ message: 'Logged out successfully' });
+    });
+};
+
+
+// Manuscript submission handler
+const handleSubmit = async (req, res) => {
+    return journalService.upload.single('manuscript')(req, res, (err) => {
+        if (err) return res.status(400).json({ error: err.message });
+        return journalService.handleSubmit(req, res);
+    });
+};
+
+// Poster upload handler
+const handleUpload = async (req, res) => {
+    return posterService.upload.single('poster')(req, res, (err) => {
+        if (err) return res.status(400).json({ error: err.message });
+        return posterService.handleUpload(req, res);
     });
 };
