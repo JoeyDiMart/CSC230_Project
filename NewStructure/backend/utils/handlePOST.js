@@ -95,7 +95,6 @@ const handleLogin = async (req, res, body) => {
             email: user.email,
             role: user.role || 'author'
         };
-
         return res.json({ message: 'Logged in successfully', user: { id: user._id, email: user.email } });
     } catch (err) {
         return res.status(500).json({ error: 'Internal server error' });

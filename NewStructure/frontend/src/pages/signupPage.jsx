@@ -1,5 +1,5 @@
 import {Fragment, useState} from "react";
-import {useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import './signupPage.css'
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 
@@ -30,13 +30,10 @@ function Signup() {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
-    // allow for redirection after singup is complete
+    // allow for redirection after sing up is complete
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);  // show a loading state
 
-    //  need to finish handleSubmit
-    // add a try, catch to fetch the backend api and update it by creating a new user
-    // IF signup succesful nviage to another page (logged in), or throw and error and retry signup
     const handleSubmit = async (e) => {
         e.preventDefault();
 
@@ -50,15 +47,13 @@ function Signup() {
             return;
         }
 
-        // const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{4,}$/;  // list of requirements for password
-        // TODO
-        const passwordRegex = /^.*$/;
-
+        const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{12,}$/;  // list of requirements for password
         if (!passwordRegex.test(formData.password)) {
-            alert("Please satisfy password requirements:\n - Contains at least 12 characters\n - " +
-                "Contains at least one upper case letter\n - " +
-                "Contains at least one lowercase letter\n - " +
-                "Contains at least one number");
+            alert("Please satisfy password requirements:\n " +
+                "- Contains at least 12 characters\n " +
+                "- Contains at least one upper case letter\n" +
+                "- Contains at least one lowercase letter\n " +
+                "- Contains at least one number");
             return;
         }
 
@@ -75,18 +70,17 @@ function Signup() {
                     password: formData.password,
                 }),
             });
-x
+            const data = await response.json();
             if (response.ok) {
+                (data.role);  // set users role based on what the backend gives
                 navigate("/");
             } else {
-                const errorData = await response.json();
                 alert(errorData.message || "Signup failed. Please try again.");
-
             }
         } catch (error) {
             console.error("error from signup: ", error)
             alert(error);
-        } finally{
+        } finally {
             setLoading(false)
         }
     };
@@ -103,18 +97,14 @@ x
                     <div className="input-container">
                         <input type="email" name="email" placeholder="Email" value={formData.email} onChange={handleChange} required />
                     </div>
-
-                    
                     <div className="input-container">
                         <input type={showPassword ? "text" : "password"} name="password" placeholder="Password" value={formData.password} onChange={handleChange} required />
                         <span className="eye-icon" onClick={togglePasswordVisibility}>{showPassword ? <FaEye /> : <FaEyeSlash />}</span>
                     </div>
-                    
                     <div className="input-container">
                         <input type={showVerifyPassword ? "text" : "password"} name="verifyPassword" placeholder="Verify Password" value={formData.verifyPassword} onChange={handleChange} required/>
                         <span className="eye-icon" onClick={toggleVerifyPasswordVisibility}>{showVerifyPassword ? <FaEye /> : <FaEyeSlash />}</span>
                     </div>
-                        
                     <div>
                         <button type="submit">Sign Up</button>
                     </div>
