@@ -13,6 +13,7 @@
     box-sizing: border-box;
     box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2);
     width: 100%;
+    margin-bottom: 20px;
 }
 
 
@@ -23,4 +24,5 @@
     box-sizing: border-box;
     box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2);
     width: 100%;
+    margin-bottom: 20px;
 }
