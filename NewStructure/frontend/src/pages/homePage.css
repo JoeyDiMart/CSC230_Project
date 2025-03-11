@@ -4,7 +4,6 @@
     flex-direction: column;
     justify-content: center; /* Centers content */
     max-width: 100vw;
-    gap: 20px;
 }
 
 .about-cirt {
@@ -14,6 +13,7 @@
     box-sizing: border-box;
     box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2);
     width: 100%;
+    margin-bottom: 20px;
 }
 
 
@@ -24,4 +24,5 @@
     box-sizing: border-box;
     box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2);
     width: 100%;
+    margin-bottom: 20px;
 }

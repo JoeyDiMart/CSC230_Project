@@ -11,7 +11,7 @@ function Header() {
         <header className="header">
             <div className="branding">
                 <Link to="/"><img src="/UTampa_mark.png" alt="Tampa img" className="logo" />  {/* UTampa Logo */}</Link>
-                <Link to="/" className="brand-title"><h1>CIRT</h1></Link>
+                <Link to="/" className="brand-title"></Link>
             </div>
             <Navbar /> {/* Add navbar to header */}
         </header>
