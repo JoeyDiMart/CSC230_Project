@@ -14,8 +14,8 @@ export const handlePostRequest = async (req, res) => {
     console.log("Incoming POST request to:", req.path);
     console.log("Request body:", req.body);
     // extracts the request from the body
-    const {body} = req;
-    console.log(body);
+    //const {body} = req; this is redundant
+    //console.log(body); use req.body it's the same thing
     // Switch-like handler for different POST request types
     const requestHandlers = {
         '/signup': handleSignup,
@@ -31,7 +31,7 @@ export const handlePostRequest = async (req, res) => {
 
     if (handler) {
         // Call the specific handler
-        await handler(req, res, body);
+        await handler(req, res);
     } else {
         const reviewMatch = req.path.match(/^\/([^\/]+)\/review$/);
         if (reviewMatch) {
@@ -48,9 +48,9 @@ export const handlePostRequest = async (req, res) => {
 
 
 // Signup Handler
-const handleSignup = async (req, res, body) => {
-    const {name, email, password, role='publisher'} = body;
-    //const {name, email, password} = body;
+const handleSignup = async (req, res) => {
+    const {name, email, password, role='publisher'} = req.body;
+    //const {name, email, password} = req.body;
     if (!name|| !email || !password) {
         return res.status(400).json({ error: "name and email and password are required" });
     }
@@ -74,8 +74,8 @@ const handleSignup = async (req, res, body) => {
 };
 
 // Login Handler
-const handleLogin = async (req, res, body) => {
-    const { email, password } = body;
+const handleLogin = async (req, res) => {
+    const { email, password } = req.body;
     if (!email || !password) {
         return res.status(400).json({ error: 'Email and password are required' });  // changed login error to 400
     }

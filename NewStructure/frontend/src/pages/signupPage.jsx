@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import './signupPage.css'
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 
-function Signup({ setRole }) {
+function Signup({ role, setRole }) {
 
     // update the text field when user puts in email and password
     const [formData, setFormData] =
