@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import './loginPage.css';
 import './signupPage.jsx'
 
-function Login({ setRole }) {
+function Login({ role, setRole }) {
 
     const [formData, setFormData] = useState({
         email: "",
@@ -28,8 +28,8 @@ function Login({ setRole }) {
             });
 
             if (response.ok) {
-                //const data = await response.json();  // will expect a role from backend
-                //setRole(data.userRole); create setRole function
+                const data = await response.json();  // will expect a role from backend
+                setRole(data.userRole);
                 navigate("/");
             } else {
                 const errorData = await response.json();
