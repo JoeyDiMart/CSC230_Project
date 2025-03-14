@@ -49,7 +49,8 @@ export const handlePostRequest = async (req, res) => {
 
 // Signup Handler
 const handleSignup = async (req, res, body) => {
-    const {name, email, password } = body;
+    const {name, email, password, role='publisher'} = body;
+    //const {name, email, password} = body;
     if (!name|| !email || !password) {
         return res.status(400).json({ error: "name and email and password are required" });
     }
@@ -60,7 +61,8 @@ const handleSignup = async (req, res, body) => {
         if (existingUser) {
             return res.status(400).json({ error: "User already exists" });  // tested by changing message, works
         }
-        const result = await collection.insertOne({name, email, password });
+        const result = await collection.insertOne({name, email, password, role });
+        //const result = await collection.insertOne({name, email, password });
         if (result.insertedId) {
             return res.status(201).json({ message: "User registered successfully", userId: result.insertedId });
         } else {
@@ -88,14 +90,16 @@ const handleLogin = async (req, res, body) => {
         //const isMatch = await bcrypt.compare(password, user.password);
         const isMatch = password === user.password;
         if (!isMatch) {
-            return res.status(470).json({ error: 'Invalid email or password' });
+            return res.status(401).json({ error: 'Invalid email or password' });
         }
         req.session.user = {
             id: user._id,
             email: user.email,
-            role: user.role || 'author'
+            role: user.role || 'publisher',
         };
-        return res.json({ message: 'Logged in successfully', user: { id: user._id, email: user.email } });
+        return res.json({ message: 'Logged in successfully',
+            user: { id: user._id, email: user.email, role: user.role }
+        });
     } catch (err) {
         return res.status(500).json({ error: 'Internal server error' });
     }
