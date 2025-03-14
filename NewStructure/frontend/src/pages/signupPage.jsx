@@ -11,7 +11,8 @@ function Signup({ role, setRole }) {
             name: "",
             email: "",
             password: "",
-            verifyPassword: ""});
+            verifyPassword: "",
+            role: "guest"});
 
     // Eye Icon Functions
     const [showPassword, setShowPassword] = useState(false);
@@ -76,11 +77,12 @@ function Signup({ role, setRole }) {
                     name: formData.name.toLowerCase(),
                     email: formData.email.toLowerCase(),
                     password: formData.password,
+                    role: formData.role
                 }),
             });
             const data = await response.json();
             if (response.ok) {
-                console.log(`The users role: ${data.Role}`)
+                console.log(`The users role: ${data.role}`)
                 //(data.Role);  // set users role based on what the backend gives
                 navigate("/");
             } else {

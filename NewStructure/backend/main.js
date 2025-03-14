@@ -10,6 +10,7 @@ import { fileURLToPath } from 'url';
 import {client, connectToDatabase} from "./Database/Mongodb.js";
 import cors from 'cors';
 import session from 'express-session';
+import favicon from 'serve-favicon';
 
 // Utils Imports
 import { handlePostRequest } from "./utils/handlePOST.js";
@@ -23,6 +24,9 @@ const __dirname = path.dirname(__filename);
 
 // Create a web server
 const app = express();
+
+// Serve favicon
+app.use(favicon(path.join(__dirname, '..','frontend', 'public', 'UTampa_mark.png')));
 
 // Middleware setup
 app.use(express.json());
@@ -38,7 +42,7 @@ app.use(session({
     resave: false,
     saveUninitialized: false,
     cookie: {
-        secure: false, // Set to false for non-HTTPS
+        secure: false, // Set to false for non-HTTPS needs to go to true when we launch
         httpOnly: true,
         maxAge: 24 * 60 * 60 * 1000 // 24 hours
     }

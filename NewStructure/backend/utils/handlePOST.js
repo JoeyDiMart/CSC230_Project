@@ -12,7 +12,7 @@ const __dirname = path.dirname(__filename);
 
 export const handlePostRequest = async (req, res) => {
     console.log("Incoming POST request to:", req.path);
-    console.log("Request body:", req.body);
+    console.log("Original Request body:", req.body);
     // extracts the request from the body
     //const {body} = req; this is redundant
     //console.log(body); use req.body it's the same thing
@@ -46,10 +46,16 @@ export const handlePostRequest = async (req, res) => {
     }
 };
 
+const setRole = (role) => {
+    // If the user is a guest, set the role to publisher
+    return role === 'guest' ? 'publisher' : role;
+};
 
 // Signup Handler
 const handleSignup = async (req, res) => {
-    const {name, email, password, role='publisher'} = req.body;
+    let {name, email, password, role} = req.body;
+    role = setRole(role);
+    console.log("After-Processing Request body:", req.body);
     //const {name, email, password} = req.body;
     if (!name|| !email || !password) {
         return res.status(400).json({ error: "name and email and password are required" });
@@ -92,10 +98,11 @@ const handleLogin = async (req, res) => {
         if (!isMatch) {
             return res.status(401).json({ error: 'Invalid email or password' });
         }
+
         req.session.user = {
             id: user._id,
             email: user.email,
-            role: user.role || 'publisher',
+            role: user.role
         };
         return res.json({ message: 'Logged in successfully',
             user: { id: user._id, email: user.email, role: user.role }

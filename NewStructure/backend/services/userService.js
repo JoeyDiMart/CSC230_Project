@@ -33,7 +33,7 @@ export const handleUpdateRole = async (req, res) => {
     }
 
     const { role } = req.body;
-    if (!['author', 'reviewer', 'editor', 'admin'].includes(role)) {
+    if (!['author', 'reviewer', 'publisher', 'admin'].includes(role)) {
         return res.status(400).json({ error: 'Invalid role' });
     }
 
