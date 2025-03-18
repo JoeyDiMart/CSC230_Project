@@ -1,8 +1,141 @@
-.footer {
+/* Footer Container */
+.footer-container {
+    background-color: #b1afaf;
+    color: white; /* All text is white */
+    padding: 3rem 2rem;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Footer Sections */
+.footer-sections {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2rem;
+    border-bottom: 1px solid #4b5563;
+    padding-bottom: 2rem;
+}
+
+/* Medium Screens: 2 columns layout */
+@media (max-width: 1024px) {
+    .footer-sections {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* Small Screens: 1 column layout */
+@media (max-width: 768px) {
+    .footer-sections {
+        grid-template-columns: repeat(1, 1fr);
+    }
+}
+
+/* Footer Column */
+.footer-column {
     display: flex;
     flex-direction: column;
-    width: 100%;
+}
+
+/* Footer Titles */
+.footer-title {
+    font-weight: bold;
+    text-transform: uppercase;
+    color: white;
+    margin-bottom: 1rem;
+    transition: color 0.3s ease;
+}
+
+.footer-title:hover {
+    color: #9ca3af; /* Light gray on hover */
+}
+
+/* Footer List */
+.footer-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+/* Footer Items */
+.footer-item {
+    padding: 0.5rem 0;
+    color: white;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.footer-item:hover {
+    color: #9ca3af; /* Lighter gray on hover */
+}
+
+/* Subscribe Section */
+.subscribe-section {
     display: flex;
+    flex-direction: column;
+}
+
+.subscribe-description {
+    color: white;
+    margin-top: 0.5rem;
+}
+
+/* Subscribe Form */
+.subscribe-form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-top: 1rem;
+}
+
+/* Input Fields */
+.subscribe-input {
+    padding: 0.75rem;
+    border-radius: 0.375rem;
+    border: 1px solid #4b5563;
+    background-color: #1e293b;
+    color: white;
+}
+
+/* Subscribe Button */
+.subscribe-button {
+    padding: 0.75rem;
+    background-color: #C8102E;
+    border: none;
+    border-radius: 0.375rem;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.subscribe-button:hover {
+    background-color: #C8102E;
+}
+
+/* Social Links */
+.social-links {
+    display: flex;
+    justify-content: space-between;
     align-items: center;
-    justify-content: center;
+    margin-top: 2rem;
+}
+
+/* Copyright */
+.footer-copyright {
+    color: white;
+}
+
+/* Social Icons */
+.social-icons {
+    display: flex;
+    gap: 1rem;
+}
+
+.social-icon {
+    width: 24px;
+    height: 24px;
+    transition: transform 0.3s ease;
+}
+
+.social-icon:hover {
+    transform: scale(1.1);
 }
