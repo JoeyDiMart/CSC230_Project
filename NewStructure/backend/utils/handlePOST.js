@@ -1,5 +1,4 @@
 //imports
-import * as userService from '../services/userService.js';
 import * as journalService from '../services/journalService.js';
 import * as posterService from '../services/posterService.js';
 import {client} from "../Database/Mongodb.js";
@@ -54,8 +53,8 @@ const setRole = (role) => {
 // Signup Handler
 const handleSignup = async (req, res) => {
     let {name, email, password, role} = req.body;
-    role = setRole(role);
-    console.log("After-Processing Request body:", req.body);
+    role = setRole();
+    console.log("role: ", role);
     //const {name, email, password} = req.body;
     if (!name|| !email || !password) {
         return res.status(400).json({ error: "name and email and password are required" });
@@ -68,7 +67,8 @@ const handleSignup = async (req, res) => {
             return res.status(400).json({ error: "User already exists" });  // tested by changing message, works
         }
         const result = await collection.insertOne({name, email, password, role });
-        //const result = await collection.insertOne({name, email, password });
+        console.log("Result stuff: ", result);
+        console.log("After-Processing Request body:", req.body);
         if (result.insertedId) {
             return res.status(201).json({ message: "User registered successfully", userId: result.insertedId });
         } else {
@@ -105,6 +105,7 @@ const handleLogin = async (req, res) => {
             email: user.email,
             role: user.role
         };
+        console.log("TESTing      ", req.session.user.role);
         return res.json({ message: 'Logged in successfully',
             user: { id: user._id, name: user.name, email: user.email, role: user.role }
         });
