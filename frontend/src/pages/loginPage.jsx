@@ -29,7 +29,7 @@ function Login({ role, setRole }) {
 
             if (response.ok) {
                 const data = await response.json();  // will expect a role from backend
-                setRole(data.userRole);
+                setRole(data.role);
                 navigate("/");
             } else {
                 const errorData = await response.json();

@@ -1,15 +1,30 @@
 import { Link, useNavigate } from "react-router-dom";
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./navbar.css";
 
 function Navbar() {
     const [role, setRole] = useState("guest");  // set roles in navbar since this is the only thing affected
+    const [name, setName] = useState("");
     const [click, setClick] = useState(false)
     const handleClick = () => setClick(!click)
     const closeMobileMenu = () => setClick(false)
     const navigate = useNavigate();
 
+    useEffect(() => {
+        const storedRole = localStorage.getItem("role");
+        const storedName = localStorage.getItem("name");
+
+        if (storedRole) setRole(storedRole);
+        if (storedName) setName(storedName);
+    }, []);
+    const handleLogout = () => {
+        localStorage.removeItem("role");
+        localStorage.removeItem("name");
+        setRole("guest");
+        setName("");
+        navigate("/");
+    };
 
     return (
         <nav className="navbar">
@@ -42,9 +57,10 @@ function Navbar() {
 
             {role !== "guest" && (
                 <div className="auth-buttons">
-                    <button className="signout" onClick= {() => setRole("guest")}>Sign Out</button>
-                </div>
 
+                    <button className="account-dropdown"> TEST </button>
+                    <button className="signout" onClick= {() => handleLogout()}>Sign Out</button>
+                </div>
             )}
         </nav>
     );

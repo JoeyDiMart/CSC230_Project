@@ -51,7 +51,6 @@ function Signup({ role, setRole }) {
         }
 
         if (!passwordRegex.test(formData.password)) {
-
             setErrorMessage(
                 <>
                     Please satisfy password requirements:
@@ -74,7 +73,7 @@ function Signup({ role, setRole }) {
                 method: "POST",  // send post request and create a new user
                 headers: { "Content-Type": "application/json" },  // the type of data is json since we use mongoDB
                 body: JSON.stringify({
-                    name: formData.name.toLowerCase(),
+                    name: formData.name,
                     email: formData.email.toLowerCase(),
                     password: formData.password,
                     role: formData.role
@@ -83,7 +82,7 @@ function Signup({ role, setRole }) {
             const data = await response.json();
             if (response.ok) {
                 console.log(`The users role: ${data.role}`)
-                //(data.Role);  // set users role based on what the backend gives
+                //(data.role);  // set users role based on what the backend gives
                 navigate("/");
             } else {
                 //alert(data.error || "Signup failed. Please try again.");  original alert can prob delete

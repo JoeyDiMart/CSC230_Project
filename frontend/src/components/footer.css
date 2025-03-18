@@ -5,6 +5,10 @@
     padding: 3rem 2rem;
     width: 100%;
     box-sizing: border-box;
+    border: 2px solid #989797;
+    border-radius: 20px;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2);
+    margin-bottom: 20px;
 }
 
 /* Footer Sections */
@@ -46,7 +50,7 @@
 }
 
 .footer-title:hover {
-    color: #9ca3af; /* Light gray on hover */
+    color: #ffffff;
 }
 
 /* Footer List */
@@ -65,7 +69,7 @@
 }
 
 .footer-item:hover {
-    color: #9ca3af; /* Lighter gray on hover */
+    color: #C8102E;
 }
 
 /* Subscribe Section */
@@ -119,12 +123,7 @@
     margin-top: 2rem;
 }
 
-/* Copyright */
-.footer-copyright {
-    color: white;
-}
-
-/* Social Icons */
+/* Socials */
 .social-icons {
     display: flex;
     gap: 1rem;
