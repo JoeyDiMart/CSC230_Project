@@ -101,11 +101,12 @@ const handleLogin = async (req, res) => {
 
         req.session.user = {
             id: user._id,
+            name: user.name,
             email: user.email,
             role: user.role
         };
         return res.json({ message: 'Logged in successfully',
-            user: { id: user._id, email: user.email, role: user.role }
+            user: { id: user._id, name: user.name, email: user.email, role: user.role }
         });
     } catch (err) {
         return res.status(500).json({ error: 'Internal server error' });
