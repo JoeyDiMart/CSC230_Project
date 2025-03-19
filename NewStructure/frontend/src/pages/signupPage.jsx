@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import './signupPage.css'
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 
-function Signup({ role, setRole }) {
+function Signup({ role, setRole, name, setName }) {
 
     // update the text field when user puts in email and password
     const [formData, setFormData] =
@@ -83,11 +83,10 @@ function Signup({ role, setRole }) {
             if (response.ok) {
                 console.log(`The users role: ${JSON.stringify(data.user)}`)
                 setRole(data.user.role);
-                console.log("Testing since this is role after setting: ", role);
-                //(data.role);  // set users role based on what the backend gives
+                setName(data.user.name);
+                console.log("Testing since this is role after setting: ", role, name);
                 navigate("/");
             } else {
-                //alert(data.error || "Signup failed. Please try again.");  original alert can prob delete
                 setErrorMessage(data.error || "Signup failed");
             }
         } catch (error) {

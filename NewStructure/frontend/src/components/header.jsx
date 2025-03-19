@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 
 // header, has the navbar within it
-function Header({ role, setRole }) {
+function Header({ role, setRole, name, setName }) {
     return (
         <>
         <header className="header">
@@ -13,7 +13,7 @@ function Header({ role, setRole }) {
                 <Link to="/"><img src="/UTampa_mark.png" alt="Tampa img" className="logo" />  {/* UTampa Logo */}</Link>
                 <Link to="/" className="brand-title"></Link>
             </div>
-            <Navbar role={role} setRole={setRole}/>
+            <Navbar role={role} setRole={setRole} name={name} setName={setName}/>
         </header>
         <h1>Criminology Institute for Research and Training</h1>
         </>

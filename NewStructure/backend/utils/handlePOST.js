@@ -110,9 +110,8 @@ const handleLogin = async (req, res) => {
             email: user.email,
             role: user.role
         };
-        console.log("TESTing      ", req.session.user.role);
         return res.json({ message: 'Logged in successfully',
-            user: { id: user._id, name: user.name, email: user.email, role: user.role }
+            user: { name: user.name, role: user.role }
         });
     } catch (err) {
         return res.status(500).json({ error: 'Internal server error' });
