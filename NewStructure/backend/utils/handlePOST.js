@@ -46,8 +46,8 @@ export const handlePostRequest = async (req, res) => {
 };
 
 const setRole = (role) => {
-    // If the user is a guest, set the role to publisher
-    return role === 'guest' ? 'publisher' : role;
+    // If the role is null, undefined, empty, or 'guest', set it to 'publisher'
+    return !role || role === 'guest' ? 'publisher' : role;
 };
 
 // Signup Handler
