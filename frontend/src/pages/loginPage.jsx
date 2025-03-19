@@ -2,8 +2,20 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import './loginPage.css';
 import './signupPage.jsx'
+import {FaEye, FaEyeSlash} from "react-icons/fa";
 
 function Login({ role, setRole }) {
+
+    // Eye Icon Functions
+    const [showPassword, setShowPassword] = useState(false);
+    const [showVerifyPassword, setShowVerifyPassword] = useState(false);
+
+    const togglePasswordVisibility = () => {
+        setShowPassword(!showPassword);
+    }
+    const toggleVerifyPasswordVisibility = () => {
+        setShowVerifyPassword(!showVerifyPassword);
+    }
 
     const [formData, setFormData] = useState({
         email: "",
@@ -29,7 +41,7 @@ function Login({ role, setRole }) {
 
             if (response.ok) {
                 const data = await response.json();  // will expect a role from backend
-                setRole(data.role);
+                // setRole(data.role);
                 navigate("/");
             } else {
                 const errorData = await response.json();
@@ -43,7 +55,7 @@ function Login({ role, setRole }) {
     };
 
     return (
-        <div className="Login">
+        <div className="LoginPage">
             <div className="LoginWrapper">
                 <form onSubmit={handleSubmit}>
                     <h2>Login</h2>
@@ -53,20 +65,21 @@ function Login({ role, setRole }) {
                     </div>
 
                     <div className="input-field">
-                        <input type="password" name="password" placeholder='Password' value={formData.password} onChange={handleChange} required/>
-                    </div>
-
-                    <div className='forgotPassword'>
-                        <a href="#">Forgot password?</a>
-                        {/*<Link to="/forgot-password">Forgot password?</Link>  ADD THIS WHEN FORGOTPASS PAGE IS MADE */}
+                        <input type={showPassword ? "text" : "password"} name="password" placeholder="Password" value={formData.password} onChange={handleChange} required />
+                        <span className="eye-icon" onClick={togglePasswordVisibility}>{showPassword ? <FaEye /> : <FaEyeSlash />}</span>
                     </div>
 
                     <label>
                         <input type= "checkbox"/> Remember me
                     </label>
 
-                    <div>
+                    <div className="submit-button">
                         <button type="submit">Login</button>
+                    </div>
+
+                    <div className='forgotPassword'>
+                        <a href="#">Forgot password?</a>
+                        {/*<Link to="/forgot-password">Forgot password?</Link>  ADD THIS WHEN FORGOTPASS PAGE IS MADE */}
                     </div>
 
                     <div className="CreateAccount">
