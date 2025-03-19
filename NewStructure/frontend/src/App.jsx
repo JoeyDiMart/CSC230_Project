@@ -11,15 +11,16 @@ import Account from "./pages/accountPage.jsx";
 //import Publication from './pages/publicationsPage.jsx'
 
 function App() {
+    const [role, setRole] = useState("guest");
 
   return (
       <Router>
-          <Header /> {/* always visible header, takes in role data */}
+          <Header role={role} setRole={setRole}/> {/* always visible header, takes in role data */}
 
           <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/Login" element={<Login />} />
-              <Route path="/Signup" element={<Signup />} />
+              <Route path="/Signup" element={<Signup role={role} setRole={setRole}/>} />
               <Route path="/Account" element={<Account />} />
           </Routes>
 

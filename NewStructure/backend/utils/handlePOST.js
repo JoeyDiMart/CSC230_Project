@@ -53,9 +53,8 @@ const setRole = (role) => {
 // Signup Handler
 const handleSignup = async (req, res) => {
     let {name, email, password, role} = req.body;
-    role = setRole();
-    console.log("role: ", role);
-    //const {name, email, password} = req.body;
+    role = setRole(role);
+    console.log("role is ", role);
     if (!name|| !email || !password) {
         return res.status(400).json({ error: "name and email and password are required" });
     }
@@ -66,11 +65,17 @@ const handleSignup = async (req, res) => {
         if (existingUser) {
             return res.status(400).json({ error: "User already exists" });  // tested by changing message, works
         }
+
         const result = await collection.insertOne({name, email, password, role });
-        console.log("Result stuff: ", result);
-        console.log("After-Processing Request body:", req.body);
         if (result.insertedId) {
-            return res.status(201).json({ message: "User registered successfully", userId: result.insertedId });
+            const insertedUser = await collection.findOne(
+                { _id: result.insertedId },
+                { projection: { name: 1, role: 1, _id: 0 } }  // Include only name and role, exclude _id and password
+            );
+            return res.status(201).json({
+                message: "User registered successfully",
+                user: insertedUser   // return the name and the role only
+            });
         } else {
             return res.status(400).json({ error: "Failed to register user" });
         }

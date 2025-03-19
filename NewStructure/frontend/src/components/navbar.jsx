@@ -3,9 +3,7 @@ import React from "react";
 import { useState, useEffect } from "react";
 import "./navbar.css";
 
-function Navbar() {
-    const [role, setRole] = useState("guest");  // set roles in navbar since this is the only thing affected
-    const [name, setName] = useState("");
+function Navbar({ role, setRole }) {
     const [click, setClick] = useState(false)
     const handleClick = () => setClick(!click)
     const closeMobileMenu = () => setClick(false)

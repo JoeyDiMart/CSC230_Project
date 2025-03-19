@@ -81,7 +81,9 @@ function Signup({ role, setRole }) {
             });
             const data = await response.json();
             if (response.ok) {
-                console.log(`The users role: ${data.role}`)
+                console.log(`The users role: ${JSON.stringify(data.user)}`)
+                setRole(data.user.role);
+                console.log("Testing since this is role after setting: ", role);
                 //(data.role);  // set users role based on what the backend gives
                 navigate("/");
             } else {
