@@ -46,22 +46,14 @@ function Signup({ role, setRole, name, setName }) {
         }
 
         if (formData.password !== formData.verifyPassword) {
-            alert("Passwords don't match");
+            setErrorMessage("Passwords don't match");
             return;
         }
 
         if (!passwordRegex.test(formData.password)) {
             setErrorMessage(
-                <>
-                    Please satisfy password requirements:
-                    <ul className={error-message}>
-                        <li>At least 12 characters</li>
-                        <li>At least one upper case letter</li>
-                        <li>At least one lower case letter</li>
-                        <li>At least one number</li>
-                    </ul>
-                </>
-            );
+                    "Please satisfy password requirements:\n• At least 12 characters\n• At least one uppercase letter\n• At least one lowercase letter\n• At least one number"
+                );
             return;
         }
 

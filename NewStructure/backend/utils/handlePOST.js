@@ -11,7 +11,7 @@ const __dirname = path.dirname(__filename);
 
 export const handlePostRequest = async (req, res) => {
     console.log("Incoming POST request to:", req.path);
-    console.log("Original Request body:", req.body);
+    console.log("Request body:", req.body);
     // extracts the request from the body
     //const {body} = req; this is redundant
     //console.log(body); use req.body it's the same thing

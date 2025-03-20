@@ -109,6 +109,12 @@ body, html {
     user-select: none;
   }
 
+.error-message {
+    color: red;
+    font-size: 14px;
+    margin-top: 8px;
+}
+
   @media (max-width: 768px){
     .signup-container {
         width: 90%;
