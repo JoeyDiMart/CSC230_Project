@@ -1,7 +1,0 @@
-#The following is the instructions on how to operate the backend and serverside of the CIRT Website
-
-
-## File Structure
-
-
-## Powering the webserver on
