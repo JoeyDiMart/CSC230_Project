@@ -45,6 +45,7 @@ export const handlePostRequest = async (req, res) => {
     }
 };
 
+// setRole will update the roll that gets sent to the frontend, initially guest, will change to publisher after singup
 const setRole = (role) => {
     // If the role is null, undefined, empty, or 'guest', set it to 'publisher'
     return !role || role === 'guest' ? 'publisher' : role;
@@ -53,29 +54,31 @@ const setRole = (role) => {
 // Signup Handler
 const handleSignup = async (req, res) => {
     let {name, email, password, role} = req.body;
-    role = setRole(role);
+    role = setRole(role);  // update role
     console.log("role is ", role);
     if (!name|| !email || !password) {
         return res.status(400).json({ error: "name and email and password are required" });
     }
     try {
-        const db = client.db('CIRT');
-        const collection = db.collection('USERS');
+        const db = client.db('CIRT');  // access database
+        const collection = db.collection('USERS');  // access USERS section of database
         const existingUser = await collection.findOne({ email: email });
-        if (existingUser) {
+        if (existingUser) {  // test if email is already stored in database
             return res.status(400).json({ error: "User already exists" });  // tested by changing message, works
         }
 
-        const result = await collection.insertOne({name, email, password, role });
-        if (result.insertedId) {
-            const insertedUser = await collection.findOne(
+        const result = await collection.insertOne({name, email, password, role });  // collect all 4 variables from user inpus
+        if (result.insertedId) {  // if successfully created put into database
+            const insertedUser = await collection.findOne(  // if successful collect
                 { _id: result.insertedId },
-                { projection: { name: 1, role: 1, _id: 0 } }  // Include only name and role, exclude _id and password
+                { projection: { name: 1, role: 1, _id: 0 } }  // Include only name and role to send to frontend again
             );
-            return res.status(201).json({
+            return res.status(201).json({   // return as json to frontend
                 message: "User registered successfully",
                 user: insertedUser   // return the name and the role only
             });
+
+            // error handling stuff
         } else {
             return res.status(400).json({ error: "Failed to register user" });
         }
@@ -86,24 +89,24 @@ const handleSignup = async (req, res) => {
 
 // Login Handler
 const handleLogin = async (req, res) => {
-    const { email, password } = req.body;
+    const { email, password } = req.body;  // take in only email and password from frontend
     if (!email || !password) {
-        return res.status(400).json({ error: 'Email and password are required' });  // changed login error to 400
+        return res.status(400).json({ error: 'Email and password are required' }); // if empty fields
     }
     try {
-        const db = client.db('CIRT');
-        const collection = db.collection('USERS');
-        const user = await collection.findOne({ email });
+        const db = client.db('CIRT');  // connect to database
+        const collection = db.collection('USERS');  // link to USERS section of database
+        const user = await collection.findOne({ email });  // find user by searching for email
         if (!user) {
             return res.status(460).json({ error: 'Invalid email or password' });
         }
-        // CORRECT IMPLEMENTATION
-        //const isMatch = await bcrypt.compare(password, user.password);
-        const isMatch = password === user.password;
+
+        const isMatch = password === user.password;  // check if correct password NOT ENCRYPTED
         if (!isMatch) {
             return res.status(401).json({ error: 'Invalid email or password' });
         }
 
+        // take in specific user data
         req.session.user = {
             id: user._id,
             name: user.name,
@@ -111,7 +114,7 @@ const handleLogin = async (req, res) => {
             role: user.role
         };
         return res.json({ message: 'Logged in successfully',
-            user: { name: user.name, role: user.role }
+            user: { name: user.name, role: user.role }  // return only name and role
         });
     } catch (err) {
         return res.status(500).json({ error: 'Internal server error' });
