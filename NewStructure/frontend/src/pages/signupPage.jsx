@@ -83,7 +83,6 @@ function Signup({ role, setRole, name, setName }) {
             }
         } catch (error) {
             console.error("error from signup: ", error)
-            // prob should delete this alert(error);
             setErrorMessage("An error occurred");
         } finally {
             setLoading(false)

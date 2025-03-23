@@ -55,7 +55,6 @@ const setRole = (role) => {
 const handleSignup = async (req, res) => {
     let {name, email, password, role} = req.body;
     role = setRole(role);  // update role
-    console.log("role is ", role);
     if (!name|| !email || !password) {
         return res.status(400).json({ error: "name and email and password are required" });
     }
