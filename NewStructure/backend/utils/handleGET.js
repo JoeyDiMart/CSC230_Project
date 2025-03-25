@@ -22,7 +22,8 @@ export const handleGetRequest = async (req, res) => {
             '/users': userService.handleGetAll,
             '/profile': userService.handleProfile,  // Fixed function name
             '/issues': journalService.handleGetIssues,  // Fixed function name
-            '/review': journalService.handleGetReviews
+            '/review': journalService.handleGetReviews,
+            '/api/photos': handleGetPhotos
         };
     
         // Check if the handler exists for this route
@@ -62,3 +63,27 @@ export const handleGetRequest = async (req, res) => {
         res.status(500).json({ error: 'Internal server error' });
     }
 };
+
+
+import fs from "fs"
+
+
+let handleGetPhotos = async (req, res) => {
+    try {
+        const imagePaths = ["/photos/photo1.png", "/photos/photo2.png", "/photos/photo3.png"];
+        const imageData = await Promise.all(
+            imagePaths.map(async (imgPath) => {
+                const filePath = path.join(__dirname, imgPath);
+                const imageBuffer = await fs.promises.readFile(filePath);
+                return `data:image/png;base64,${imageBuffer.toString("base64")}`; // Correct Base64 format
+            })
+        );
+
+        res.json(imageData); // Send Base64-encoded images as JSON
+    } catch (err) {
+        console.error(err);
+        res.sendStatus(500);
+    }
+};
+
+
