@@ -25,9 +25,6 @@ function Navbar({ role, setRole, name, setName }) {
                     <li><Link to="/Publications" onClick={closeMobileMenu}>Publications</Link></li>
                     <li><Link to="/Events" onClick={closeMobileMenu}>Events</Link></li>
                     <li><Link to="/Associates" onClick={closeMobileMenu}>Research Associates</Link></li>
-                    {role !== "guest" && (
-                        <li><Link to="/Account" onClick={closeMobileMenu}>Account</Link></li>
-                    )}
                 </ul>
                 </div>
 
