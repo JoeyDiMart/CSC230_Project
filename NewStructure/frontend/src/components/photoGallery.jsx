@@ -8,13 +8,18 @@ function Gallery() {
 
     useEffect(() => {
         // Fetch images from the backend
-        fetch("http://localhost:8081/api/photos")
-            .then((response) => response.json())
+        fetch("http://localhost:8081/api/photos") // Make sure this is the correct route
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                return response.json();
+            })
             .then((data) => setPhotos(data))
             .catch((error) => console.error("Error fetching photos:", error));
     }, []);
 
-    
+
     useEffect(() => {
         if (photos.length === 0) { return }
 

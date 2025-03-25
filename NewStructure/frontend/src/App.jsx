@@ -7,7 +7,6 @@ import Login from './pages/loginPage.jsx'
 import Signup from "./pages/signupPage.jsx";
 import {useState} from "react";
 import Account from "./pages/accountPage.jsx";
-//import About from './pages/aboutPage.jsx'
 //import Publication from './pages/publicationsPage.jsx'
 
 function App() {
