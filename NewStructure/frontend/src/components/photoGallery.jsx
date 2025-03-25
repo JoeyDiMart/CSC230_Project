@@ -5,7 +5,7 @@ function Gallery() {
     const [photos, setPhotos] = useState([]);
     const [index, setIndex] = useState(0);
 
-    /*
+
     useEffect(() => {
         // Fetch images from the backend
         fetch("http://localhost:8081/api/photos")
@@ -13,19 +13,8 @@ function Gallery() {
             .then((data) => setPhotos(data))
             .catch((error) => console.error("Error fetching photos:", error));
     }, []);
-     */
 
-    // be  sure to remove this once connected to backend
-    useEffect(() => {
-        // For testing, manually add photos to the list
-        const testPhotos = [
-            "/test1.png",
-            "/test2.png",
-            "/test3.png"
-        ];
-        setPhotos(testPhotos); // Update state immutably
-    }, []); // This effect runs once on mount
-
+    
     useEffect(() => {
         if (photos.length === 0) { return }
 
