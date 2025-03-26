@@ -3,28 +3,15 @@ import React from "react";
 import { useState, useEffect } from "react";
 import "./navbar.css";
 
-function Navbar() {
-    const [role, setRole] = useState("guest");  // set roles in navbar since this is the only thing affected
-    const [name, setName] = useState("");
+function Navbar({ role, setRole, name, setName }) {
     const [click, setClick] = useState(false)
     const handleClick = () => setClick(!click)
     const closeMobileMenu = () => setClick(false)
     const navigate = useNavigate();
+    const [isDropdownOpen, setDropdownOpen] = useState(false);
 
-    useEffect(() => {
-        const storedRole = localStorage.getItem("role");
-        const storedName = localStorage.getItem("name");
+    name = "TestUser";
 
-        if (storedRole) setRole(storedRole);
-        if (storedName) setName(storedName);
-    }, []);
-    const handleLogout = () => {
-        localStorage.removeItem("role");
-        localStorage.removeItem("name");
-        setRole("guest");
-        setName("");
-        navigate("/");
-    };
 
     return (
         <nav className="navbar">
@@ -56,11 +43,25 @@ function Navbar() {
             )}
 
             {role !== "guest" && (
-                <div className="auth-buttons">
+            <div className="auth-buttons">
+                <div className="profile-dropdown">
+                <button
+                    className="profile-button"
+                    onClick={() => setDropdownOpen(prev => !prev)}> {name}
+                </button>
 
-                    <button className="account-dropdown"> TEST </button>
-                    <button className="signout" onClick= {() => handleLogout()}>Sign Out</button>
+                {isDropdownOpen && (
+                <ul className={`dropdown-content ${isDropdownOpen ? "show" : ""}`}>
+                    <li><Link to="/Account" onClick={() => setDropdownOpen(false)}>Account</Link></li>
+                    <li><Link to="/Dashboard" onClick={() => setDropdownOpen(false)}>Dashboard</Link></li>
+                </ul>
+                )}
                 </div>
+
+                <button className="signout" onClick={() => setRole("guest")}>
+                Sign Out
+                </button>
+            </div>
             )}
         </nav>
     );
