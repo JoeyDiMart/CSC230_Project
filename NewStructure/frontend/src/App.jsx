@@ -5,13 +5,36 @@ import Footer from './components/footer.jsx'
 import Home from './pages/homePage.jsx'
 import Login from './pages/loginPage.jsx'
 import Signup from "./pages/signupPage.jsx";
-import {useState} from "react";
+import {useState,useEffect} from "react";
 import Account from "./pages/accountPage.jsx";
 //import Publication from './pages/publicationsPage.jsx'
 
 function App() {
     const [role, setRole] = useState("guest");
     const [name, setName] = useState("");
+
+    // Check for active session when app loads so the user doesn't need to logged in again if they already logged in
+    useEffect(() => {
+        const checkSession = async () => {
+            try {
+                const response = await fetch("http://localhost:8081/check-session", {
+                    credentials: 'include' // Important: needed for cookies/session
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    if (data.user) {
+                        setRole(data.user.role);
+                        setName(data.user.name);
+                    }
+                }
+            } catch (error) {
+                console.error("Error checking session:", error);
+            }
+        };
+
+        checkSession();
+     }, []);
 
   return (
       <Router>
