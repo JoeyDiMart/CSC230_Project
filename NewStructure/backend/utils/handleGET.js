@@ -23,7 +23,8 @@ export const handleGetRequest = async (req, res) => {
             '/profile': userService.handleProfile,  // Fixed function name
             '/issues': journalService.handleGetIssues,  // Fixed function name
             '/review': journalService.handleGetReviews,
-            '/api/photos': handleGetPhotos
+            '/api/photos': handleGetPhotos,
+            '/check-session': handleCheckSession
         };
     
         // Check if the handler exists for this route
@@ -87,3 +88,15 @@ let handleGetPhotos = async (req, res) => {
 };
 
 
+
+const handleCheckSession = async (req, res) => {
+    if (req.session && req.session.user) {
+        return res.status(200).json({
+            user: {
+                name: req.session.user.name,
+                role: req.session.user.role
+            }
+        });
+    }
+    return res.status(401).json({ message: 'No active session' });
+};

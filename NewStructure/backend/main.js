@@ -32,19 +32,22 @@ app.use(favicon(path.join(__dirname, '..','frontend', 'public', 'UTampa_mark.png
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors({
-    origin: true, // Allow all origins
-    credentials: true // Allow credentials
+    origin: 'http://localhost:5173', // Specify the exact frontend origin
+    credentials: true, // Allow credentials
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
 // Session configuration
 app.use(session({
     secret: 'CIRT-secret-key',
-    resave: false,
+    resave: true,
     saveUninitialized: false,
     cookie: {
         secure: false, // Set to false for non-HTTPS needs to go to true when we launch
         httpOnly: true,
-        maxAge: 24 * 60 * 60 * 1000 // 24 hours
+        maxAge: 24 * 60 * 60 * 1000, // 24 hours
+        sameSite: 'lax'
     }
 }));
 
