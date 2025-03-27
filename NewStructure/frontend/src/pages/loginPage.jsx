@@ -36,6 +36,7 @@ function Login({ role, setRole, name, setName }) {
             const response = await fetch("http://localhost:8081/login", {
                 method: "POST",
                 headers: {"Content-Type": "application/json"},
+                credentials: 'include', //It tells the browser to send cookies with the request & allows session cookie to be saved in the browser
                 body: JSON.stringify(formData),
             });
 
