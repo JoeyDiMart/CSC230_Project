@@ -70,11 +70,11 @@ const handleSignup = async (req, res) => {
         if (result.insertedId) {  // if successfully created put into database
             const insertedUser = await collection.findOne(  // if successful collect
                 { _id: result.insertedId },
-                { projection: { name: 1, role: 1, _id: 0 } }  // Include only name and role to send to frontend again
+                { projection: { name: 1, email:1, role: 1, _id: 0 } }  // Include only name, email, and role to send to frontend again
             );
             return res.status(201).json({   // return as json to frontend
                 message: "User registered successfully",
-                user: insertedUser   // return the name and the role only
+                user: insertedUser   // return the name, email and the role only
             });
 
             // error handling stuff

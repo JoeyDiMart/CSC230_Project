@@ -4,7 +4,7 @@ import './loginPage.css';
 import './signupPage.jsx'
 import {FaEye, FaEyeSlash} from "react-icons/fa";
 
-function Login({ role, setRole, name, setName }) {
+function Login({ role, setRole, name, setName, email, setEmail }) {
 
     // Eye Icon Functions
     const [showPassword, setShowPassword] = useState(false);
@@ -44,7 +44,7 @@ function Login({ role, setRole, name, setName }) {
                 const data = await response.json();  // will expect a role and name from backend
                 setRole(data.user.role);
                 setName(data.user.name);
-                console.log("Role from logging in: ", role, name);
+                setEmail(data.user.email);
                 navigate("/");
             } else {
                 const errorData = await response.json();

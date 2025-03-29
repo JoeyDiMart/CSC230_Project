@@ -6,12 +6,13 @@ import Home from './pages/homePage.jsx'
 import Login from './pages/loginPage.jsx'
 import Signup from "./pages/signupPage.jsx";
 import {useState,useEffect} from "react";
-import Account from "./pages/accountPage.jsx";
-//import Publication from './pages/publicationsPage.jsx'
+//import Account from "./pages/accountPage.jsx";
+import Publications from './pages/publicationsPage.jsx'
 
 function App() {
     const [role, setRole] = useState("guest");
     const [name, setName] = useState("");
+    const [email, setEmail] = useState("");
 
     // Check for active session when app loads so the user doesn't need to logged in again if they already logged in
     useEffect(() => {
@@ -42,9 +43,9 @@ function App() {
 
           <Routes>
               <Route path="/" element={<Home />} />
-              <Route path="/Login" element={<Login role={role} setRole={setRole} name={name} setName={setName}/>} />
-              <Route path="/Signup" element={<Signup role={role} setRole={setRole} name={name} setName={setName}/>} />
-              <Route path="/Account" element={<Account />} />
+              <Route path="/Login" element={<Login role={role} setRole={setRole} name={name} setName={setName} email={email} setEmail={setEmail} />} />
+              <Route path="/Signup" element={<Signup role={role} setRole={setRole} name={name} setName={setName} email={email} setEmail={setEmail} />} />
+              <Route path="/Publications" element={<Publications role={role} setRole={setRole} name={name} setName={setName} email={email} setEmail={setEmail} />} />
           </Routes>
 
           <Footer /> {/* Render the Footer, always visible */}

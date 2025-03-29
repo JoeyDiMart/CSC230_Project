@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import './signupPage.css'
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 
-function Signup({ role, setRole, name, setName }) {
+function Signup({ role, setRole, name, setName, email, setEmail }) {
 
     // update the text field when user puts in email and password
     const [formData, setFormData] =
@@ -76,7 +76,7 @@ function Signup({ role, setRole, name, setName }) {
                 console.log(`The users role: ${JSON.stringify(data.user)}`)
                 setRole(data.user.role);
                 setName(data.user.name);
-                console.log("Testing since this is role after setting: ", role, name);
+                setEmail(data.user.email);
                 navigate("/");
             } else {
                 setErrorMessage(data.error || "Signup failed");
