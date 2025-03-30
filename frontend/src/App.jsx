@@ -1,30 +1,45 @@
-import './App.css'
-import {BrowserRouter as Router, Routes, Route} from "react-router-dom";
-import Header from './components/header.jsx' // import the header
-import Footer from './components/footer.jsx'
-import Home from './pages/homePage.jsx'
-import Login from './pages/loginPage.jsx'
+import './App.css';
+import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
+import Header from './components/header.jsx';
+import Footer from './components/footer.jsx';
+import Home from './pages/homePage.jsx';
+import Login from './pages/loginPage.jsx';
 import Signup from "./pages/signupPage.jsx";
-import {useState} from "react";
 import Account from "./pages/accountPage.jsx";
-//import About from './pages/aboutPage.jsx'
-//import Publication from './pages/publicationsPage.jsx'
+import Dashboard from "./pages/dashboardPage.jsx";
 
-function App() {
+// ✅ Wrapper component so we can use the useLocation() hook
+function AppWrapper() {
+  const location = useLocation();
+
+  // Make the path lowercase so it's case-insensitive
+  const path = location.pathname.toLowerCase();
+
+  // Hide header/footer on /dashboard
+  const hideHeaderFooter = path.startsWith("/dashboard");
 
   return (
-      <Router>
-          <Header /> {/* always visible header, takes in role data */}
+    <>
+      {!hideHeaderFooter && <Header />}
 
-          <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/Login" element={<Login />} />
-              <Route path="/Signup" element={<Signup />} />
-              <Route path="/Account" element={<Account />} />
-          </Routes>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/account" element={<Account />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+      </Routes>
 
-          <Footer /> {/* Render the Footer, always visible */}
-      </Router>
+      {!hideHeaderFooter && <Footer />}
+    </>
+  );
+}
+
+function App() {
+  return (
+    <Router>
+      <AppWrapper />
+    </Router>
   );
 }
 
