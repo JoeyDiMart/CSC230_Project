@@ -1,10 +1,14 @@
+import Sidebar from '../components/Dashboard/Sidebar';
+import Dashboard from '../components/Dashboard/dashboard';
 
-
-export default function Dashboard() {
+const DashboardPage = () => {
     return (
       <div>
-        Dashboard page works!
+        <Sidebar />
+        <Dashboard />
       </div>
     );
-  }
+  };
+  
+  export default DashboardPage;
   
