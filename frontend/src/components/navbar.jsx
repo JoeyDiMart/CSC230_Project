@@ -72,7 +72,7 @@ function Navbar({ role, setRole, name, setName }) {
                             <Link to="/Account" onClick={() => setDropdownOpen(false)}>Account</Link>
                         </li>
                         <li>
-                            <Link to="/dashboardPage" onClick={() => setDropdownOpen(false)}>Dashboard</Link>
+                            <Link to="/Dashboard" onClick={() => setDropdownOpen(false)}>Dashboard</Link>
                         </li>
                     </ul>
                 )}
