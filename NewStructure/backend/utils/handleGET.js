@@ -8,6 +8,7 @@ import * as journalService from '../services/journalService.js';
 import * as posterService from '../services/posterService.js';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import {client} from "../Database/Mongodb.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -71,23 +72,30 @@ import fs from "fs"
 
 let handleGetPhotos = async (req, res) => {
     try {
-        const imagePaths = ["/photos/photo1.png", "/photos/photo2.png", "/photos/photo3.png"];
+        const db = client.db('CIRT');  // connect to database
+        const collection = db.collection('PHOTOS');  // link to PHOTOS section of database
+        
+        const photo1 = await collection.findOne({ name : 'photo1' });  
+        const photo2 = await collection.findOne({ name : 'photo2' });  
+        const photo3 = await collection.findOne({ name : 'photo3' });  
+        const images = [photo1, photo2, photo3];
+
         const imageData = await Promise.all(
-            imagePaths.map(async (imgPath) => {
-                const filePath = path.join(__dirname, imgPath);
-                const imageBuffer = await fs.promises.readFile(filePath);
-                return `data:image/png;base64,${imageBuffer.toString("base64")}`; // Correct Base64 format
+            images.map(async (image) => {
+                let imag = (image.img.data) 
+                imag = (JSON.stringify(imag)).replace('Binary.createFromBase64("', "").replace('", 0)',"")
+                imag = imag.replace(/^"|"$/g, "");
+                return `data:image/png;base64,${imag}`; // Correct Base64 format
             })
         );
 
+        
         res.json(imageData); // Send Base64-encoded images as JSON
     } catch (err) {
         console.error(err);
         res.sendStatus(500);
     }
 };
-
-
 
 const handleCheckSession = async (req, res) => {
     if (req.session && req.session.user) {
