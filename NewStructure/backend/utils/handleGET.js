@@ -22,8 +22,8 @@ export const handleGetRequest = async (req, res) => {
             '/posters': posterService.handleGetAll,
             '/users': userService.handleGetAll,
             '/profile': userService.handleProfile,  // Fixed function name
-            '/issues': journalService.handleGetIssues,  // Fixed function name
-            '/review': journalService.handleGetReviews,
+            '/issues': publicationService.handleGetIssues,  // Fixed function name
+            '/review': publicationService.handleGetReviews,
             '/api/photos': handleGetPhotos,
             '/check-session': handleCheckSession
         };
@@ -48,7 +48,7 @@ export const handleGetRequest = async (req, res) => {
             const manuscriptMatch = req.path.match(/^\/([^\/]+)$/);
             if (manuscriptMatch && manuscriptMatch[1] !== 'favicon.ico') {
                 req.params = { id: manuscriptMatch[1] };
-                await journalService.handleGetManuscript(req, res);
+                await publicationService.handleGetManuscript(req, res);
                 return;
             }
 
