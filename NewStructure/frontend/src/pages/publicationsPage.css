@@ -1,11 +1,38 @@
-.popup-overlay {
+.upload-popup {
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 75%;
-    height: 75%;
-    background: rgba(0, 0, 0, 0.5);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80%;
+    height: 80%;
+    z-index: 1000;
+    background-color: white;
+    visibility: visible;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    justify-content: flex-start;
     align-items: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: opacity 0.3s ease;
+    border-radius: 20px;
 }
+
+.upload {
+    margin-left: auto;
+}
+.upload:hover {
+    transform: scale(1.05);
+    transition: transform 0.3s ease;
+}
+.upload-popup .exit-upload {
+    position: absolute; /* Position relative to the nearest positioned ancestor (if any) */
+    top: 10px; /* Distance from the top */
+    right: 10px; /* Distance from the right */
+}
+.upload-popup .h2 {
+    text-align: center;
+    margin: 0;
+    width: 100%;
+}
+
+

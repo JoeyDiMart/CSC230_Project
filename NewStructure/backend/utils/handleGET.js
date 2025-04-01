@@ -67,9 +67,6 @@ export const handleGetRequest = async (req, res) => {
 };
 
 
-import fs from "fs"
-
-
 let handleGetPhotos = async (req, res) => {
     try {
         const db = client.db('CIRT');  // connect to database
