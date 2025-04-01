@@ -1,5 +1,4 @@
 @tailwind base;
-
 /*Cards will be costumized in components (@layer components)*/
 @tailwind components;
 @tailwind utilities;
@@ -11,6 +10,7 @@ a {
 }
 
 body{
+  width: 100%;
   margin: 0;
   display: flex;
   place-items: center;
@@ -48,5 +48,3 @@ button:focus-visible {
   button {
     background-color: #C8102E;
   }
-
-/* Override global body flex centering ONLY inside dashboard */

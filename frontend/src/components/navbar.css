@@ -59,6 +59,7 @@
   .nav-items li:hover:before {
     width: 100%;
   }
+
 /* navbar links */
 .navbar a {
     text-decoration: none;
