@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from "react";
+ import React, {useState, useEffect} from "react";
 import { useDropzone } from 'react-dropzone';
 import Navbar from "../components/navbar.jsx";
 import "./publicationsPage.css"
@@ -45,7 +45,6 @@ function Publications({ role, email, name }) {
                     <h2>Under Review</h2>
                 </div>
             )}
-`
             <h2>Publications</h2>
             <div className="search-bar">
                 <input type="text" id="search" class="search-bar" onKeyUp="searchText()" placeholder="Search..."/>

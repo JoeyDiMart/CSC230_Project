@@ -1,5 +1,5 @@
 import * as userService from '../services/userService.js';
-import * as journalService from '../services/journalService.js';
+import * as journalService from '../services/publicationService.js';
 import * as posterService from '../services/posterService.js';
 
 export const handlePutRequest = async (req, res) => {

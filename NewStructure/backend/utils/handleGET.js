@@ -4,7 +4,7 @@
 
 // Imports
 import * as userService from '../services/userService.js';
-import * as journalService from '../services/journalService.js';
+import * as publicationService from '../services/publicationService.js';
 import * as posterService from '../services/posterService.js';
 import path from 'path';
 import { fileURLToPath } from 'url';
