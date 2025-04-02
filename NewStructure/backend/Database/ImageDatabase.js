@@ -15,6 +15,14 @@ export async function insertPhoto(imagePath, imageName) {
         const db = client.db("CIRT");
         const photosCollection = db.collection("PHOTOS");
 
+        // Check if an image with the same name already exists
+        const existingImage = await photosCollection.findOne({ name: imageName });
+
+        if (existingImage) {
+            console.log("An image with this name already exists. Insertion skipped.");
+            return;
+        }
+
         // Read the image file as binary data
         const imgData = fs.readFileSync(imagePath);
 
@@ -62,6 +70,3 @@ export async function getImageByName(imageName) {
         console.error('Error retrieving image:', error);
     }
 }
-
-//todo delete when done
-getImageByName('Pickleball');
