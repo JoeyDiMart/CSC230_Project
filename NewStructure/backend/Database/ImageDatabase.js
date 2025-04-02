@@ -65,5 +65,3 @@ export async function getImageByName(imageName) {
 
 //todo delete when done
 getImageByName('Pickleball');
-
-

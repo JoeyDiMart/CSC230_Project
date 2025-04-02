@@ -71,22 +71,22 @@ let handleGetPhotos = async (req, res) => {
     try {
         const db = client.db('CIRT');  // connect to database
         const collection = db.collection('PHOTOS');  // link to PHOTOS section of database
-        
-        const photo1 = await collection.findOne({ name : 'photo1' });  
-        const photo2 = await collection.findOne({ name : 'photo2' });  
-        const photo3 = await collection.findOne({ name : 'photo3' });  
-        const images = [photo1, photo2, photo3];
 
-        const imageData = await Promise.all(
-            images.map(async (image) => {
-                let imag = (image.img.data) 
-                imag = (JSON.stringify(imag)).replace('Binary.createFromBase64("', "").replace('", 0)',"")
-                imag = imag.replace(/^"|"$/g, "");
-                return `data:image/png;base64,${imag}`; // Correct Base64 format
-            })
-        );
 
-        
+        // Fetch three random photos instead of fixed names
+        const photos = await collection.aggregate([{ $sample: { size: 3 } }]).toArray();
+
+        if (photos.length === 0) {
+            return res.status(404).json({ message: "No photos found" });
+        }
+
+        // Convert binary data to Base64
+        const imageData = photos
+            .filter(photo => photo?.img?.data) // Ensure valid data exists
+            .map(photo => {
+                return `data:image/png;base64,${photo.img.data.toString('base64')}`;
+            });
+
         res.json(imageData); // Send Base64-encoded images as JSON
     } catch (err) {
         console.error(err);
