@@ -105,3 +105,4 @@ const handleCheckSession = async (req, res) => {
     }
     return res.status(401).json({ message: 'No active session' });
 };
+
