@@ -4,9 +4,20 @@ import Navbar from "../components/navbar.jsx";
 import "./publicationsPage.css"
 
 function Publications({ role, email, name }) {
-    role = "publisher"; // temp for testing
     const [showUpload, setShowUpload] = useState(false);
-    const [uploadFile, setUploadFile] = useState(null);
+    role = 'publisher'
+
+    const [uploadFile, setUploadFile] =
+        useState({
+            title: '',
+            author: [name],
+            email: email,
+            keywords: [],
+            file: '',
+        });
+    const handleChange = (e) => {
+        setUploadFile({ ...uploadFile, [e.target.name]: e.target.value });
+    };
 
     // Handle drop event
     const onDrop = (acceptedFiles) => {
@@ -23,7 +34,7 @@ function Publications({ role, email, name }) {
     });
 
     return (
-        <div className={`publisher-stuff ${showUpload ? 'opacity-50' : ''}`}> {/* opacity has no effect */}
+        <div className="publisher-stuff">
             {role === "publisher" && (
                 <div>
                     <h2>My Publications</h2>
@@ -32,12 +43,18 @@ function Publications({ role, email, name }) {
                         <div className="upload-popup">
                             <button onClick={() => setShowUpload(false)} className="exit-upload">X</button>
                             <h2>Upload a Publication</h2>
-                            <div {...getRootProps()} className="dropzone">
-                                <input {...getInputProps()} />
-                                <p>Drag & Drop PDF here, or click to select</p>
-                                {uploadFile && <p>File uploaded is {uploadFile.name}</p>}
+                            <div className="input-container">
+                                <input type="title" name="title" placeholder="Title" value={uploadFile.title} onChange={handleChange} required />
+                                <div className="input-list">
+                                    <input type="author" name="author" placeholder="Authors" value={uploadFile.author} onChange={handleChange} required />
+                                    <input type="keywords" name="keywords" placeholder="Keywords" value={uploadFile.keywords} onChange={handleChange} required />
+                                </div>
+                                <div {...getRootProps()} className="dropzone">
+                                    <input {...getInputProps()} />
+                                    <p>Drag & Drop PDF here, or click to select</p>
+                                    {uploadFile && <p>File uploaded is {uploadFile.name} {uploadFile.title}</p>}
+                                </div>
                             </div>
-
                         </div>
                     )}
 
