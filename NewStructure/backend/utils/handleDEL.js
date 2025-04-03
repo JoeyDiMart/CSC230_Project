@@ -1,13 +1,21 @@
+import * as journalService from '../services/journalService.js';
 import * as posterService from '../services/posterService.js';
+import * as eventService from '../services/eventService.js';
+import { client } from "../Database/Mongodb.js";
 
 export const handleDeleteRequest = async (req, res) => {
-    // Poster routes
-    const posterMatch = req.path.match(/^\/posters\/([^\/]+)$/);
-    if (posterMatch) {
-        req.params = { id: posterMatch[1] };
-        await posterService.handleDelete(req, res);
-        return;
-    }
+    console.log("Incoming DELETE request to:", req.path);
 
-    return res.status(404).json({ error: 'Route not found' });
+    const requestHandlers = {
+        '/posters/:id': posterService.handleDelete,
+        '/journals/:id': journalService.handleDelete,
+        '/events/:id': eventService.handleDelete
+    };
+
+    const handler = requestHandlers[req.path];
+    if (handler) {
+        await handler(req, res);
+    } else {
+        res.status(404).json({ error: 'Not found' });
+    }
 };
