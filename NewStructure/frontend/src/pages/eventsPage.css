@@ -38,6 +38,57 @@
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
+.calendar-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    padding: 0.5rem;
+    background-color: #f8f9fa;
+    border-radius: 4px;
+}
+
+.view-controls,
+.navigation-controls {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.current-date {
+    font-size: 1.2rem;
+    font-weight: 500;
+    color: #333;
+    padding: 0.5rem;
+    min-width: 200px;
+    text-align: center;
+}
+
+.calendar-controls button {
+    padding: 0.5rem 1rem;
+    border: 1px solid #ddd;
+    background-color: white;
+    color: #333;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.calendar-controls button:hover {
+    background-color: #007bff;
+    color: white;
+    border-color: #007bff;
+}
+
+.calendar-controls button.active {
+    background-color: #007bff;
+    color: white;
+    border-color: #007bff;
+}
+
+.calendar-controls button:active {
+    transform: translateY(1px);
+}
+
 .modal-overlay {
     position: fixed;
     top: 0;

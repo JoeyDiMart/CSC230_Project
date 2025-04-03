@@ -32,6 +32,8 @@ function Events({ role, email, name }) {
         startDate: new Date(),
         endDate: new Date()
     });
+    const [date, setDate] = useState(new Date());
+    const [view, setView] = useState('month');
 
     useEffect(() => {
         fetchEvents();
@@ -158,6 +160,65 @@ function Events({ role, email, name }) {
         }
     };
 
+    const handleNavigate = (action) => {
+        const currentDate = new Date(date);
+        
+        switch (action) {
+            case 'PREV':
+                switch (view) {
+                    case 'month':
+                        setDate(new Date(currentDate.setMonth(currentDate.getMonth() - 1)));
+                        break;
+                    case 'week':
+                        setDate(new Date(currentDate.setDate(currentDate.getDate() - 7)));
+                        break;
+                    case 'day':
+                        setDate(new Date(currentDate.setDate(currentDate.getDate() - 1)));
+                        break;
+                }
+                break;
+            case 'NEXT':
+                switch (view) {
+                    case 'month':
+                        setDate(new Date(currentDate.setMonth(currentDate.getMonth() + 1)));
+                        break;
+                    case 'week':
+                        setDate(new Date(currentDate.setDate(currentDate.getDate() + 7)));
+                        break;
+                    case 'day':
+                        setDate(new Date(currentDate.setDate(currentDate.getDate() + 1)));
+                        break;
+                }
+                break;
+            case 'TODAY':
+                setDate(new Date());
+                break;
+            default:
+                setDate(new Date(action));
+                break;
+        }
+    };
+
+    const formatDateLabel = () => {
+        const options = {
+            month: 'long',
+            year: 'numeric'
+        };
+
+        if (view === 'week') {
+            const weekStart = new Date(date);
+            const weekEnd = new Date(date);
+            weekEnd.setDate(weekEnd.getDate() + 6);
+            return `${weekStart.toLocaleDateString('en-US', { month: 'long', day: 'numeric' })} - ${weekEnd.toLocaleDateString('en-US', { month: 'long', day: 'numeric' })} ${weekStart.getFullYear()}`;
+        }
+
+        if (view === 'day') {
+            options.day = 'numeric';
+        }
+
+        return new Date(date).toLocaleDateString('en-US', options);
+    };
+
     return (
         <div className="events-page">
             <div className="events-header">
@@ -173,6 +234,36 @@ function Events({ role, email, name }) {
             </div>
 
             <div className="calendar-container">
+                <div className="calendar-controls">
+                    <div className="view-controls">
+                        <button 
+                            onClick={() => setView('month')}
+                            className={view === 'month' ? 'active' : ''}
+                        >
+                            Month
+                        </button>
+                        <button 
+                            onClick={() => setView('week')}
+                            className={view === 'week' ? 'active' : ''}
+                        >
+                            Week
+                        </button>
+                        <button 
+                            onClick={() => setView('day')}
+                            className={view === 'day' ? 'active' : ''}
+                        >
+                            Day
+                        </button>
+                    </div>
+                    <div className="current-date">
+                        {formatDateLabel()}
+                    </div>
+                    <div className="navigation-controls">
+                        <button onClick={() => handleNavigate('PREV')}>Previous</button>
+                        <button onClick={() => handleNavigate('TODAY')}>Today</button>
+                        <button onClick={() => handleNavigate('NEXT')}>Next</button>
+                    </div>
+                </div>
                 <Calendar
                     localizer={localizer}
                     events={events}
@@ -192,7 +283,11 @@ function Events({ role, email, name }) {
                         }
                     })}
                     views={['month', 'week', 'day']}
-                    defaultView="month"
+                    view={view}
+                    onView={setView}
+                    date={date}
+                    onNavigate={handleNavigate}
+                    toolbar={false}
                 />
             </div>
 
