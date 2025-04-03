@@ -192,7 +192,76 @@
     top: 28px;
     left: 5px;
     }
-    
+
+    .auth-buttons {
+        position: relative; /* Make it the positioning context */
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      
+      .account-dropdown {
+        position: relative; /* Keep label positioned normally */
+        cursor: pointer;
+        padding-right: 25px;
+      }
+      
+
+      /*Creating Animation*/
+      @keyframes fadeSlideIn {
+        0% {
+          opacity: 0;
+          transform: translateY(-10px);
+        }
+        100% {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes fadeOut {
+        100%{
+            opacity: 1;
+            transform: translateY(0);
+        }
+        0% {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+
+      }
+      
+      .dropdown-content {
+        animation: fadeSlideIn 0.2s ease forwards;
+        position: absolute;
+        top: 100%;
+        left: -25px;
+        background-color: white;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        width: 150px;
+        padding: 8px 0;
+        z-index: 1000;
+      }
+
+      .dropdown-content.show {
+        opacity: 1;
+        transform: translateY(0);
+        pointer-events: auto;
+      }
+      
+      .dropdown-content li {
+        padding: 8px 16px;
+        list-style: none;
+        cursor: pointer;
+      }
+      
+      .dropdown-content li:hover {
+        background-color: #f5f5f5;
+      }
+      
+
 
 /* For Phone*/
 @media (max-width: 768px) {

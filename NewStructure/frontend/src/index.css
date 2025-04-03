@@ -1,3 +1,8 @@
+@tailwind base;
+/*Cards will be costumized in components (@layer components)*/
+@tailwind components;
+@tailwind utilities;
+
 a {
   font-weight: 500;
   color: #C8102E;
@@ -28,6 +33,7 @@ button {
   cursor: pointer;
   transition: border-color 0.25s;
 }
+
 button:hover {
   border-color: #000000;
 }

@@ -1,5 +1,5 @@
 //imports
-import * as journalService from '../services/journalService.js';
+import * as journalService from '../services/publicationService.js';
 import * as posterService from '../services/posterService.js';
 import * as eventService from '../services/eventService.js';
 import {client} from "../Database/Mongodb.js";
