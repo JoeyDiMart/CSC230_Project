@@ -1,6 +1,7 @@
 //imports
 import * as journalService from '../services/journalService.js';
 import * as posterService from '../services/posterService.js';
+import * as eventService from '../services/eventService.js';
 import {client} from "../Database/Mongodb.js";
 import bcrypt from "bcryptjs";
 import path from 'path';
@@ -12,21 +13,27 @@ const __dirname = path.dirname(__filename);
 export const handlePostRequest = async (req, res) => {
     console.log("Incoming POST request to:", req.path);
     console.log("Request body:", req.body);
-    // extracts the request from the body
-    //const {body} = req; this is redundant
-    //console.log(body); use req.body it's the same thing
-    // Switch-like handler for different POST request types
+
+    // Handle event updates first since they have dynamic routes
+    const eventUpdateMatch = req.path.match(/^\/events\/([^\/]+)$/);
+    if (eventUpdateMatch) {
+        req.params = { id: eventUpdateMatch[1] };
+        return eventService.handleUpdate(req, res);
+    }
+
+    // Static route handlers
     const requestHandlers = {
         '/signup': handleSignup,
         '/login': handleLogin,
         '/logout': handleLogout,
         '/submit': handleSubmit,
-        '/issues': journalService.handleCreateIssue,
         '/posters/upload': handleUpload,
+        '/issues': journalService.handleCreateIssue,
+        '/events': eventService.handleCreate
     };
 
     // Check if the handler exists for this route
-    const handler = requestHandlers[req.originalUrl];
+    const handler = requestHandlers[req.path];
 
     if (handler) {
         // Call the specific handler

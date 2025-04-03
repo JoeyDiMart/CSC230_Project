@@ -6,9 +6,11 @@
 import * as userService from '../services/userService.js';
 import * as journalService from '../services/journalService.js';
 import * as posterService from '../services/posterService.js';
+import * as eventService from '../services/eventService.js';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import {client} from "../Database/Mongodb.js";
+import fs from "fs"
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -25,7 +27,9 @@ export const handleGetRequest = async (req, res) => {
             '/issues': journalService.handleGetIssues,  // Fixed function name
             '/review': journalService.handleGetReviews,
             '/api/photos': handleGetPhotos,
-            '/check-session': handleCheckSession
+            '/check-session': handleCheckSession,
+            '/events': eventService.handleGetAll,
+            '/events/range': eventService.handleGetByDateRange,
         };
     
         // Check if the handler exists for this route
@@ -65,9 +69,6 @@ export const handleGetRequest = async (req, res) => {
         res.status(500).json({ error: 'Internal server error' });
     }
 };
-
-
-import fs from "fs"
 
 
 let handleGetPhotos = async (req, res) => {
