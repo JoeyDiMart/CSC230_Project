@@ -12,6 +12,12 @@ export default {
       colors: {
         cirtGrey: "#363434",
         cirtRed: "#C8102E",
+        testingColorBlack: "#09090B",
+        testingColorGrey: "#27272A",
+        testingColorWhite: "#FAFAFA",
+        testingColorHover: "#E3E3E4",
+        testingColorOutline: "#27272A",
+        testingColorSubtitle: "#A1A1AA",
       },
     },
   },

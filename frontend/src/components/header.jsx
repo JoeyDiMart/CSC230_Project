@@ -15,7 +15,7 @@ function Header() {
             </div>
             <Navbar /> {/* Add navbar to header */}
         </header>
-        <h1>Criminology Institute for Research and Training</h1>
+        <h1 className="px-4">Criminology Institute for Research and Training</h1>
         </>
     );
 }

@@ -1,5 +1,4 @@
 @tailwind base;
-/*Cards will be costumized in components (@layer components)*/
 @tailwind components;
 @tailwind utilities;
 
@@ -9,13 +8,11 @@ a {
   text-decoration: inherit;
 }
 
-body{
-  width: 100%;
+body {
   margin: 0;
-  display: flex;
-  place-items: center;
   min-width: 320px;
   min-height: 100vh;
+  width: 100%;
 }
 
 h1 {
@@ -30,21 +27,7 @@ button {
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
-  background-color: #1a1a1a;
+  background-color: #C8102E;
   cursor: pointer;
   transition: border-color 0.25s;
 }
-button:hover {
-  border-color: #000000;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
-}
-
-  a:hover {
-    color: #000000;
-  }
-  button {
-    background-color: #C8102E;
-  }
