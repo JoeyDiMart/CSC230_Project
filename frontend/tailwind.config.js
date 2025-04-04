@@ -18,6 +18,8 @@ export default {
         testingColorHover: "#E3E3E4",
         testingColorOutline: "#27272A",
         testingColorSubtitle: "#A1A1AA",
+        testingColorHover: "#18181A",
+        testingColorSidebar: "#F4F4F5"
       },
     },
   },

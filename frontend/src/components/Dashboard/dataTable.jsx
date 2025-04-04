@@ -44,7 +44,7 @@ export default function DataTable() {
                 <div className={`flex items-center gap-2 px-2 py-1 rounded-full text-xs font-bold w-20
                     ${isDone ? "bg-none border-solid border-1 border-testingColorGrey text-testingColorSubtitle " : isLoading ? "bg-none border-solid border-1 border-testingColorGrey text-testingColorSubtitle" : "bg-none border-solid border-1 border-testingColorGrey text-testingColorSubtitle"}`}>
                     {isDone && <FaRegCircleCheck className="text-green-500" />}
-                    {isLoading && <PiSpinnerBold className=" text-testingColorSubtitle " />}
+                    {isLoading && <PiSpinnerBold className=" text-yellow-300 animation:spin" />}
                     <span>{status.charAt(0).toUpperCase() + status.slice(1)}</span>
                   </div>
             )
@@ -64,9 +64,9 @@ export default function DataTable() {
   return (
     <div className="bg-none rounded-xl shadow p-4 relative border-7 border-solid border-2 border-testingColorGrey">
       <h2 className="text-xl font-semibold mb-4 text-testingColorSubtitle">Recent Publications</h2>
-      <div className="overflow-x-auto">
-        <table className="min-w-full table-auto border border-gray-300">
-          <thead className="bg-white">
+      <div className="overflow-hidden rounded-t-lg">
+        <table className="min-w-full table-auto  border-gray-300 border-spacing-0">
+          <thead className="bg-testingColorOutline">
             {table.getHeaderGroups().map(headerGroup => (
               <tr key={headerGroup.id}>
                 {headerGroup.headers.map(header => (
@@ -79,7 +79,7 @@ export default function DataTable() {
           </thead>
           <tbody>
             {table.getRowModel().rows.map(row => (
-              <tr key={row.id} className="hover:bg-gray-50">
+              <tr key={row.id} className="hover:bg-testingColorHover">
                 {row.getVisibleCells().map(cell => (
                   <td key={cell.id} className="px-4 py-2 border text-sm text-testingColorSubtitle">
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
