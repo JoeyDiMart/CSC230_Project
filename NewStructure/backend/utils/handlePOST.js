@@ -28,7 +28,7 @@ export const handlePostRequest = async (req, res) => {
         '/logout': handleLogout,
         '/submit': handleSubmit,
         '/posters/upload': handleUpload,
-        '/issues': journalService.handleCreateIssue,
+        '/issues': publicationService.handleCreateIssue,
         '/events': eventService.handleCreate
     };
 
@@ -42,9 +42,9 @@ export const handlePostRequest = async (req, res) => {
         const reviewMatch = req.path.match(/^\/([^\/]+)\/review$/);
         if (reviewMatch) {
             req.params = { id: reviewMatch[1] };
-            return journalService.upload.single('annotated')(req, res, (err) => {
+            return publicationService.upload.single('annotated')(req, res, (err) => {
                 if (err) return res.status(400).json({ error: err.message });
-                return journalService.handleReview(req, res);
+                return publicationService.handleReview(req, res);
             });
         }
     
@@ -140,9 +140,9 @@ const handleLogout = (req, res) => {
 
 // Manuscript submission handler
 const handleSubmit = async (req, res) => {
-    return journalService.upload.single('manuscript')(req, res, (err) => {
+    return publicationService.upload.single('manuscript')(req, res, (err) => {
         if (err) return res.status(400).json({ error: err.message });
-        return journalService.handleSubmit(req, res);
+        return publicationService.handleSubmit(req, res);
     });
 };
 
