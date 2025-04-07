@@ -1,4 +1,4 @@
- import React, {useState, useEffect} from "react";
+import React, {useState, useEffect} from "react";
 import { useDropzone } from 'react-dropzone';
 import Navbar from "../components/navbar.jsx";
 import "./publicationsPage.css"
@@ -20,13 +20,14 @@ function Publications({ role, email, name }) {
     const handleChange = (e) => {
         const { name, value } = e.target;
         if (name === "keywords") {
-            setUploadFile({ ...uploadFile, keywords: value.split(",") });
+            setUploadFile(prev => ({ ...prev, keywords: value.split(",") }));
         } else if (name === "author") {
-            setUploadFile({ ...uploadFile, author: value.split(",") });
+            setUploadFile(prev => ({ ...prev, author: value.split(",") }));
         } else {
-            setUploadFile({ ...uploadFile, file: value });
+            setUploadFile(prev => ({ ...prev, [name]: value }));
         }
     };
+
 
     const handleSubmit = async (e) => {
         e.preventDefault();
