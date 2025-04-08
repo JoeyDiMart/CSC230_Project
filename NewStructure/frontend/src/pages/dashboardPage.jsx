@@ -1,32 +1,23 @@
-import { useEffect } from "react";
-import Sidebar from "../components/Dashboard/sidebar";
+import { useEffect, useState } from "react"
+import Sidebar from "../components/Dashboard/sidebar"
+import Navbar from "../components/Dashboard/dashboardNavbar"
+import SectionCards from "../components/Dashboard/sectionCards"
+import DataTable from "../components/Dashboard/dataTable"
 
 export default function DashboardPage() {
-  useEffect(() => {
-    const root = document.getElementById("root");
-
-    if (root) {
-      // Store original styles
-      const originalPadding = root.style.padding;
-      const originalMargin = root.style.margin;
-
-      // Override them
-      root.style.padding = "0";
-      root.style.margin = "0";
-
-      // Cleanup function when the component unmounts
-      return () => {
-        root.style.padding = originalPadding;
-        root.style.margin = originalMargin;
-      };
-    }
-  }, []);
 
   return (
-    <div className="h-screen w-screen overflow-hidden">
-      <div className="flex h-full">
-        <Sidebar />
+    <div className="h-screen w-screen overflow-hidden bg-testingColorGrey">
+      <div className="flex h-screen overflow-x-hidden">
+        <Sidebar/>
+        <div className="flex flex-col flex-1 overflow-y-auto p-2">
+          <main className=" bg-testingColorBlack w-full h-full rounded-xl px-4 py-6 space-y-6">
+            <Navbar  />
+            <SectionCards />
+            <DataTable />
+          </main>
+        </div>
       </div>
     </div>
-  );
+  )
 }
