@@ -1,12 +1,6 @@
 "use client"
 import React, { useEffect, useMemo, useState } from "react"
-import {
-  useReactTable,
-  getCoreRowModel,
-  getSortedRowModel,
-  getPaginationRowModel,
-  flexRender,
-} from "@tanstack/react-table"
+import {useReactTable,getCoreRowModel, getSortedRowModel, getPaginationRowModel, flexRender,} from "@tanstack/react-table"
 import { FaRegCircleCheck } from "react-icons/fa6";
 import { PiSpinnerBold } from "react-icons/pi";
 
@@ -41,10 +35,10 @@ export default function DataTable() {
             const isDone = status === "Done"
             const isLoading = status === "In Process"
             return (
-                <div className={`flex items-center gap-2 px-2 py-1 rounded-full text-xs font-bold w-20
+                <div className={`inline-flex items-center gap-2 px-2 py-1 rounded-md text-xs font-bold border border-testingColorGrey text-testingColorSubtitle min-w-[100px]
                     ${isDone ? "bg-none border-solid border-1 border-testingColorGrey text-testingColorSubtitle " : isLoading ? "bg-none border-solid border-1 border-testingColorGrey text-testingColorSubtitle" : "bg-none border-solid border-1 border-testingColorGrey text-testingColorSubtitle"}`}>
-                    {isDone && <FaRegCircleCheck className="text-green-500" />}
-                    {isLoading && <PiSpinnerBold className=" text-yellow-300 animation:spin" />}
+                    {isDone && <FaRegCircleCheck className="text-green-500 " />}
+                    {isLoading && <PiSpinnerBold className=" text-yellow-300 " />}
                     <span>{status.charAt(0).toUpperCase() + status.slice(1)}</span>
                   </div>
             )
@@ -70,7 +64,7 @@ export default function DataTable() {
             {table.getHeaderGroups().map(headerGroup => (
               <tr key={headerGroup.id}>
                 {headerGroup.headers.map(header => (
-                  <th key={header.id} className="px-4 py-2 border text-left text-sm font-medium text-testingColorSubtitle">
+                  <th key={header.id} className="px-4 py-2 border text-center text-sm font-medium text-testingColorSubtitle  ">
                     {flexRender(header.column.columnDef.header, header.getContext())}
                   </th>
                 ))}
@@ -97,15 +91,12 @@ export default function DataTable() {
           Page {table.getState().pagination.pageIndex + 1} of {table.getPageCount()}
         </div>
         <div className="flex gap-2">
-          <button
-            onClick={() => table.previousPage()}
-            disabled={!table.getCanPreviousPage()}
-            className=" text-black px-3 py-1 border rounded bg-gray-100 text-sm disabled:opacity-50"
-          >
+          <button onClick={() => table.previousPage()} disabled={!table.getCanPreviousPage()} 
+          className=" text-black px-3 py-1 w-20 border rounded bg-gray-100 text-sm disabled:opacity-50">
             Previous
           </button>
           <button onClick={() => table.nextPage()} disabled={!table.getCanNextPage()} 
-          className=" text-black px-3 py-1 border rounded bg-gray-100 text-sm disabled:opacity-50">
+          className=" text-black px-3 py-1 border  w-20 rounded bg-gray-100 text-sm disabled:opacity-50">
             Next
           </button>
         </div>

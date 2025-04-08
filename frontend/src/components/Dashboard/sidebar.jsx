@@ -39,11 +39,8 @@ const Sidebar = () => {
       <nav className="h-full flex flex-col bg-testingColorOutline">
         {/* Sidebar Header */}
         <Header isCollapsed={isCollapsed} toggleSidebar={toggleSidebar} />
-
-
         {/* Navigation Links */}
         <SidebarItems isCollapsed={isCollapsed} />
-        
         {/* User Information */}
         <UserInfo user={user} isCollapsed={isCollapsed} handleLogout={handleLogout}/>
       </nav>

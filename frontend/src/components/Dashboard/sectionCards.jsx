@@ -63,7 +63,7 @@ const StatCard = ({ title, value, trend, trendIcon, trendDirection, footer, desc
 
 const SectionCards = () => {
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 px-4">
+    <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
       {stats.map((card, index) => (
         <StatCard key={index} {...card} />
       ))}
