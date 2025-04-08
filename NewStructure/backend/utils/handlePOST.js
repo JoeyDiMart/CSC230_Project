@@ -6,6 +6,9 @@ import {client} from "../Database/Mongodb.js";
 import bcrypt from "bcryptjs";
 import path from 'path';
 import { fileURLToPath } from 'url';
+import multer from "multer";
+import fs from "fs";
+
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -27,7 +30,8 @@ export const handlePostRequest = async (req, res) => {
         '/login': handleLogin,
         '/logout': handleLogout,
         '/submit': handleSubmit,
-        '/events': eventService.handleCreate
+        '/events': eventService.handleCreate,
+        '/api/publications': handlePublication
     };
     /*
      '/posters/upload': handleUpload,
@@ -156,3 +160,75 @@ const handleUpload = async (req, res) => {
     });
 };
 */
+
+
+// Set up Multer storage
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        const uploadDir = './uploads';
+        if (!fs.existsSync(uploadDir)) fs.mkdirSync(uploadDir);
+        cb(null, uploadDir);
+    },
+    filename: (req, file, cb) => {
+        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+        cb(null, uniqueSuffix + '-' + file.originalname);
+    }
+});
+
+const upload = multer({ storage: storage });
+
+// Wrap in middleware to use in the main handler
+export const handlePublication = async (req, res) => {
+    console.log("📥 handlePublication triggered...");
+
+    // Run multer first to parse the multipart/form-data
+    upload.single('file')(req, res, async function (err) {
+        if (err) {
+            console.error("❌ Multer error:", err);
+            return res.status(400).json({ error: err.message });
+        }
+
+        console.log("✅ Multer finished parsing request");
+        console.log("📝 Fields:", req.body);
+        console.log("📎 File info:", req.file);
+
+        try {
+            // Extract fields and parse arrays
+            const title = req.body.title;
+            const author = JSON.parse(req.body.author || '[]');
+            const keywords = JSON.parse(req.body.keywords || '[]');
+            const filePath = req.file?.path || '';
+
+            // Validate fields
+            if (!title || !author.length  || !keywords.length || !filePath) {
+                console.warn("⚠️ Missing required fields");
+                return res.status(400).json({ error: 'All fields are required' });
+            }
+
+            const db = client.db('CIRT');
+            const collection = db.collection('PUBLICATIONS');
+
+            const publication = {
+                title,
+                author,
+                keywords,
+                filePath,
+                uploadedAt: new Date()
+            };
+
+            console.log("💾 Inserting publication:", publication);
+            const result = await collection.insertOne(publication);
+
+            if (result.insertedId) {
+                console.log("✅ Publication inserted:", result.insertedId);
+                return res.status(201).json({ message: "Upload successful", publicationId: result.insertedId });
+            } else {
+                console.error("❌ Insertion failed");
+                return res.status(500).json({ error: "Could not save publication" });
+            }
+        } catch (error) {
+            console.error("💥 Server error:", error);
+            return res.status(500).json({ error: "Internal server error" });
+        }
+    });
+};
