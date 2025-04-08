@@ -8,7 +8,7 @@ function Publications({ role, email, name }) {
     const [errorMessage, setErrorMessage] = useState("");
     const [publications, setPublications] = useState([]);
     const [loading, setLoading] = useState(true);
-    role = 'publisher';  // need to delete later
+    role = 'publisher';
 
     const [uploadFile, setUploadFile] =
         useState({
@@ -100,9 +100,9 @@ function Publications({ role, email, name }) {
                                     <input type="text" name="author" placeholder="Author(s)" value={uploadFile.author} onChange={handleChange} required />
                                     <input type="text" name="keywords" placeholder="Keywords" value={uploadFile.keywords} onChange={handleChange} required />
                                 </div>
-                                <div {...getRootProps()} className="dropzone">
+                                <div {...getRootProps()} className="drop-container">
                                     <input {...getInputProps()} />
-                                    <p>Drag & Drop PDF here, or click to select</p>
+                                    <p>Drop files here, or click to select</p>
                                     {uploadFile && <p>File uploaded is {uploadFile.name} {uploadFile.title}</p>}
                                 </div>
                                 <button type="submit" className="submit-upload">Submit</button>
