@@ -22,7 +22,6 @@ export const handleGetRequest = async (req, res) => {
         const requestHandlers = {
             '/posters/pending': posterService.handleGetPending,
             '/posters': posterService.handleGetAll,
-            '/users': userService.handleGetAll,
             '/profile': userService.handleProfile,  // Fixed function name
             '/issues': publicationService.handleGetIssues,  // Fixed function name
             '/review': publicationService.handleGetReviews,
@@ -31,6 +30,7 @@ export const handleGetRequest = async (req, res) => {
             '/events': eventService.handleGetAll,
             '/events/range': eventService.handleGetByDateRange,
         };
+        //  '/users': userService.handleGetAll,
     
         // Check if the handler exists for this route
         const handler = requestHandlers[req.path];  // Use req.path instead of req.originalUrl

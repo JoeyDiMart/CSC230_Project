@@ -27,10 +27,12 @@ export const handlePostRequest = async (req, res) => {
         '/login': handleLogin,
         '/logout': handleLogout,
         '/submit': handleSubmit,
-        '/posters/upload': handleUpload,
-        '/issues': publicationService.handleCreateIssue,
         '/events': eventService.handleCreate
     };
+    /*
+     '/posters/upload': handleUpload,
+     '/issues': publicationService.handleCreateIssue,
+     */
 
     // Check if the handler exists for this route
     const handler = requestHandlers[req.path];
@@ -145,7 +147,7 @@ const handleSubmit = async (req, res) => {
         return publicationService.handleSubmit(req, res);
     });
 };
-
+/*
 // Poster upload handler
 const handleUpload = async (req, res) => {
     return posterService.upload.single('poster')(req, res, (err) => {
@@ -153,3 +155,4 @@ const handleUpload = async (req, res) => {
         return posterService.handleUpload(req, res);
     });
 };
+*/
