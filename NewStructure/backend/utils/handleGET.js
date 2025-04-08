@@ -30,7 +30,7 @@ export const handleGetRequest = async (req, res) => {
             '/events': eventService.handleGetAll,
             '/events/range': eventService.handleGetByDateRange,
         };
-        //  '/users': userService.handleGetAll,
+        //  '/users': userService.handleGetAll, this caused an error
     
         // Check if the handler exists for this route
         const handler = requestHandlers[req.path];  // Use req.path instead of req.originalUrl

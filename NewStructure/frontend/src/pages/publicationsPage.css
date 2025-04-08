@@ -16,10 +16,16 @@
     transition: opacity 0.3s ease;
     border-radius: 20px;
 }
+.publisher-stuff {
+    position: relative;
+}
 
 .upload {
-    margin-left: auto;
+    position: absolute;
+    top: 0;
+    right: 2%;
 }
+
 .upload:hover {
     transform: scale(1.05);
     transition: transform 0.3s ease;
