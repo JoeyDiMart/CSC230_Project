@@ -13,6 +13,10 @@
     z-index: 3;
 
 }
+.h1-title {
+    margin-top: 80px;
+    text-align: center;
+}
 
 .branding {
     display: flex;

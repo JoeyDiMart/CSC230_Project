@@ -6,7 +6,9 @@ import "./publicationsPage.css"
 function Publications({ role, email, name }) {
     const [showUpload, setShowUpload] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
-    role = 'publisher';
+    const [publications, setPublications] = useState([]);
+    const [loading, setLoading] = useState(true);
+    role = 'publisher';  // need to delete later
 
     const [uploadFile, setUploadFile] =
         useState({
@@ -111,6 +113,7 @@ function Publications({ role, email, name }) {
 
 
                     <h2>Under Review</h2>
+                    {}
                 </div>
             )}
             <h2>Publications</h2>
