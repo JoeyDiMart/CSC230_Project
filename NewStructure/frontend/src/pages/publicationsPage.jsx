@@ -18,7 +18,7 @@ function Publications({ role, email, name }) {
             keywords: [],
             file: '',
         });
-
+    console.log('email is '+ email);
     const handleChange = (e) => {
         const { name, value } = e.target;
         if (name === "keywords") {
@@ -39,6 +39,7 @@ function Publications({ role, email, name }) {
             alert("Please fill all fields.");
             return;
         }
+        console.log('email is '+ email);
         const formData = new FormData();
         formData.append("title", uploadFile.title);
         formData.append("author", JSON.stringify(uploadFile.author));
