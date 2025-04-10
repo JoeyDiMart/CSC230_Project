@@ -38,7 +38,7 @@ export default function DataTable() {
                 <div className={`inline-flex items-center gap-2 px-2 py-1 rounded-md text-xs font-bold border border-testingColorGrey text-testingColorSubtitle min-w-[100px]
                     ${isDone ? "bg-none border-solid border-1 border-testingColorGrey text-testingColorSubtitle " : isLoading ? "bg-none border-solid border-1 border-testingColorGrey text-testingColorSubtitle" : "bg-none border-solid border-1 border-testingColorGrey text-testingColorSubtitle"}`}>
                     {isDone && <FaRegCircleCheck className="text-green-500 " />}
-                    {isLoading && <PiSpinnerBold className=" text-yellow-300 " />}
+                    {isLoading && <PiSpinnerBold className=" text-yellow-300" />}
                     <span>{status.charAt(0).toUpperCase() + status.slice(1)}</span>
                   </div>
             )
@@ -86,7 +86,7 @@ export default function DataTable() {
       </div>
 
       {/* Pagination */}
-      <div className="mt-4 flex items-center justify-between">
+      <div className="mt-2 flex items-center justify-between">
         <div className="text-sm text-gray-500">
           Page {table.getState().pagination.pageIndex + 1} of {table.getPageCount()}
         </div>

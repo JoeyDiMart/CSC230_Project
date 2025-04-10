@@ -1,10 +1,7 @@
-// User Information in Sidebar
-import React, { useState } from "react";
+import React from "react";
 import { HiDotsVertical } from "react-icons/hi";
 
 const UserInfo = ({ user, isCollapsed, handleLogout }) => {
-    const [click, setClick] = useState(false)
-
   return (
     <div className="mt-auto py-4 w-full">
         <div className=" flex items-center justify-start gap-2 p-2 ">
@@ -18,9 +15,10 @@ const UserInfo = ({ user, isCollapsed, handleLogout }) => {
                 <p className="text-[12px] m-0 p-0 text-testingColorSubtitle">{user.email}</p>
             </div>
             <div>
-                <button className="bg-transparent border-none flex"> <HiDotsVertical/> </button>
+                <HiDotsVertical className="text-testingColorWhite"/>
             </div>
             </>
+
             }
         </div>
     </div>
