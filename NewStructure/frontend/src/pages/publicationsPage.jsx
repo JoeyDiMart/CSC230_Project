@@ -17,6 +17,7 @@ function Publications({ role, email, name }) {
             email: email,
             keywords: [],
             file: '',
+            status: '',
         });
 
     const handleChange = (e) => {

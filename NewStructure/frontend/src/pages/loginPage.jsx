@@ -20,6 +20,7 @@ function Login({ role, setRole, name, setName, email, setEmail }) {
     const [formData, setFormData] = useState({
         email: "",
         password: "",
+        role: "guest"
     });
 
     const navigate = useNavigate();
@@ -37,7 +38,12 @@ function Login({ role, setRole, name, setName, email, setEmail }) {
                 method: "POST",
                 headers: {"Content-Type": "application/json"},
                 credentials: 'include', //It tells the browser to send cookies with the request & allows session cookie to be saved in the browser
-                body: JSON.stringify(formData),
+                body: JSON.stringify({
+                    name: formData.name,
+                    email: formData.email.toLowerCase(),
+                    password: formData.password,
+                    role: formData.role
+                }),
             });
 
             if (response.ok) {
