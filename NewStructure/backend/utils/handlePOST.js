@@ -1,9 +1,7 @@
 //imports
-import * as journalService from '../services/publicationService.js';
-import * as posterService from '../services/posterService.js';
+
 import * as eventService from '../services/eventService.js';
 import {client} from "../Database/Mongodb.js";
-import bcrypt from "bcryptjs";
 import path from 'path';
 import { fileURLToPath } from 'url';
 import multer from "multer";
@@ -177,6 +175,7 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
+// chatgpt helped with debugging
 // Wrap in middleware to use in the main handler
 export const handlePublication = async (req, res) => {
     console.log("📥 handlePublication triggered...");
@@ -197,10 +196,11 @@ export const handlePublication = async (req, res) => {
             const title = req.body.title;
             const author = JSON.parse(req.body.author || '[]');
             const keywords = JSON.parse(req.body.keywords || '[]');
+            const email = req.body.email;
             const filePath = req.file?.path || '';
 
             // Validate fields
-            if (!title || !author.length  || !keywords.length || !filePath) {
+            if (!title || !email || !author.length  || !keywords.length || !filePath) {
                 console.warn("⚠️ Missing required fields");
                 return res.status(400).json({ error: 'All fields are required' });
             }
@@ -212,6 +212,7 @@ export const handlePublication = async (req, res) => {
                 title,
                 author,
                 keywords,
+                email,
                 filePath,
                 uploadedAt: new Date()
             };
