@@ -7,6 +7,7 @@ function Publications({ role, email, name }) {
     const [showUpload, setShowUpload] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
     const [publications, setPublications] = useState([]);
+    //const [searchPubName, setSearchPubName] = useState([]); // should drop everythinf form first list when search
     const [loading, setLoading] = useState(true);
     role = 'publisher';
 
