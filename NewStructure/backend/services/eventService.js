@@ -11,7 +11,7 @@ export const handleCreate = async (req, res) => {
     }
 
     try {
-        const eventCollection = client.db('CIRT').collection('events');
+        const eventCollection = client.db('CIRT').collection('EVENTS');
         const event = {
             eventName: req.body.eventName,
             eventDetails: req.body.eventDetails,
