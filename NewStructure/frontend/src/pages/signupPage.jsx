@@ -91,25 +91,26 @@ function Signup({ role, setRole, name, setName, email, setEmail }) {
 
 
     return (
-        <div className="signup-page">
-            <div className="signup-container">
-                <h1>Sign Up</h1>
+        <div className="Signup-Page">
+            <div className="SignupWrapper">
                 <form onSubmit={handleSubmit}>
-                    <div className="input-container">
+                    <h2>Sign Up</h2>
+                    <div className="input-field">
                         <input type="text" name="name" placeholder="Name" value={formData.name} onChange={handleChange} required />
                         <input type="email" name="email" placeholder="Email" value={formData.email} onChange={handleChange} required />
                     </div>
-                    <div className="input-container">
+                    <div className="input-field">
                         <input type={showPassword ? "text" : "password"} name="password" placeholder="Password" value={formData.password} onChange={handleChange} required />
                         <span className="eye-icon" onClick={togglePasswordVisibility}>{showPassword ? <FaEye /> : <FaEyeSlash />}</span>
                     </div>
-                    <div className="input-container">
+                    <div className="input-field">
                         <input type={showVerifyPassword ? "text" : "password"} name="verifyPassword" placeholder="Verify Password" value={formData.verifyPassword} onChange={handleChange} required/>
                         <span className="eye-icon" onClick={toggleVerifyPasswordVisibility}>{showVerifyPassword ? <FaEye /> : <FaEyeSlash />}</span>
                     </div>
-
                     {errorMessage && <p className="error-message">{errorMessage}</p>}
-                    <button type="submit">Sign Up</button>
+                    <div className="submit-button">
+                        <button type="submit">Sign Up</button>
+                    </div>
                 </form>
             </div>
         </div>

@@ -1,7 +1,7 @@
 /////////////////////
 // GET HANDLER CODE//
 /////////////////////
-
+// http://localhost:8081/api/publications
 // Imports
 import * as userService from '../services/userService.js';
 import * as publicationService from '../services/publicationService.js';
@@ -26,6 +26,7 @@ export const handleGetRequest = async (req, res) => {
             '/issues': publicationService.handleGetIssues,  // Fixed function name
             '/review': publicationService.handleGetReviews,
             '/api/photos': handleGetPhotos,
+            '/api/publications': handleGetPublications,
             '/check-session': handleCheckSession,
             '/events': eventService.handleGetAll,
             '/events/range': eventService.handleGetByDateRange,
@@ -92,6 +93,34 @@ let handleGetPhotos = async (req, res) => {
             });
 
         res.json(imageData); // Send Base64-encoded images as JSON
+    } catch (err) {
+        console.error(err);
+        res.sendStatus(500);
+    }
+};
+
+let handleGetPublications = async (req, res) => {
+    try {
+        const db = client.db('CIRT');  // connect to database
+        const collection = db.collection('PUBLICATIONS');  // link to PHOTOS section of database
+
+
+        // Fetch three random photos instead of fixed names
+        const count = await collection.estimatedDocumentCount();
+        const publications = await collection.aggregate([{ $sample: { size: count } }]).toArray();
+
+        publications.forEach((publication, index) => {
+            publication._id = index + 1;
+            console.log(publication)
+          });
+          
+        
+        if (publications.length === 0) {
+            return res.status(404).json({ message: "No publications found" });
+        }
+
+
+        res.json(publications); // Send Base64-encoded images as JSON
     } catch (err) {
         console.error(err);
         res.sendStatus(500);
