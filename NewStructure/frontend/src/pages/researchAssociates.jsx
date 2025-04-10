@@ -1,29 +1,16 @@
-import React from "react";
+import React from 'react';
 import "./researchAssociates.css"
 
 function ResearchAssociates() {
     return(
         <div className="researchAssociates">
-            <div className="pictureContainers">
+            <div className="pictureContainer">
                 <div className="row">
 
                     <div className="col-sm-6 col-md-3">
                         <div className="box">
                             <div className="box-image">
-                                <img src="#" alt="Name1"/>
-                            </div>
-                            <div className="box-content">
-                                <h3 className="name">Name1</h3>
-                                <h4>JobTitle</h4>
-                                <a href="mailto:blank@ut.edu" className="emailButton">Email me.</a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div className="col-sm-6 col-md-3">
-                        <div className="box">
-                            <div className="box-image">
-                                <img src="#" alt="Brandon Dulisse"/>
+                                <img src="https://www.ut.edu/directory/dulisse-brandon-c" alt="Brandon Dulisse"/>
                             </div>
                             <div className="box-content">
                                 <h3 className="name">Brandon Dulisse</h3>
@@ -36,7 +23,7 @@ function ResearchAssociates() {
                     <div className="col-sm-6 col-md-3">
                         <div className="box">
                             <div className="box-image">
-                                <img src="#" alt="Nate Connealy"/>
+                                <img src="https://www.ut.edu/directory/placeholder" alt="Nate Connealy"/>
                             </div>
                             <div className="box-content">
                                 <h3 className="name">Nate Connealy</h3>
@@ -49,7 +36,7 @@ function ResearchAssociates() {
                     <div className="col-sm-6 col-md-3">
                         <div className="box">
                             <div className="box-image">
-                                <img src="#" alt="Chivon Fitch"/>
+                                <img src="https://www.ut.edu/directory/placeholder" alt="Chivon Fitch"/>
                             </div>
                             <div className="box-content">
                                 <h3 className="name">Chivon Fitch</h3>
@@ -62,11 +49,11 @@ function ResearchAssociates() {
                     <div className="col-sm-6 col-md-3">
                         <div className="box">
                             <div className="box-image">
-                                <img src="#" alt="Tim Hart"/>
+                                <img src="https://www.ut.edu/directory/placeholder" alt="Tim Hart"/>
                             </div>
                             <div className="box-content">
                                 <h3 className="name">Tim Hart</h3>
-                                <h4>Associate Director of Research and Engagementv</h4>
+                                <h4>Associate Director of Research and Engagement</h4>
                                 <a href="mailto:Thart@ut.edu" className="emailButton">Email me.</a>
                             </div>
                         </div>
@@ -77,3 +64,18 @@ function ResearchAssociates() {
         </div>
 )
 }
+
+/*
+<div className="col-sm-6 col-md-3">
+                        <div className="box">
+                            <div className="box-image">
+                                <img src="#" alt="Name1"/>
+                            </div>
+                            <div className="box-content">
+                                <h3 className="name">Name1</h3>
+                                <h4>JobTitle</h4>
+                                <a href="mailto:blank@ut.edu" className="emailButton">Email me.</a>
+                            </div>
+                        </div>
+                    </div>
+ */
