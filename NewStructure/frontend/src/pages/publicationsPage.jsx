@@ -2,15 +2,19 @@ import React, {useState, useEffect} from "react";
 import { useDropzone } from 'react-dropzone';
 import Navbar from "../components/navbar.jsx";
 import "./publicationsPage.css"
+import Pubs from './publications.jsx';
 
 function Publications({ role, email, name }) {
     const [showUpload, setShowUpload] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
     const [publications, setPublications] = useState([]);
-    //const [searchPubName, setSearchPubName] = useState([]); // should drop everythinf form first list when search
+    //const [searchPubName, setSearchPubName] = useState([]); // should drop everything form first list when search
     const [loading, setLoading] = useState(true);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(1);
     role = 'publisher';
 
+    // list for uploading a publication
     const [uploadFile, setUploadFile] =
         useState({
             title: '',
@@ -20,7 +24,21 @@ function Publications({ role, email, name }) {
             file: '',
             status: '',
         });
-    console.log('email is '+ email);
+
+    useEffect(() => {
+        fetch("http://localhost:8081/api/publications?limit=10")
+            .then(response => response.json())  // Expecting an array of publications
+            .then((data) => {
+                setPublications(data);
+            })
+            .catch((error) => {
+                console.error("Error fetching publications:", error);
+                setErrorMessage("Failed to load publications. Please try again later.");
+            });
+    }, []);
+
+
+    // Handles typing in for uploading a new publication
     const handleChange = (e) => {
         const { name, value } = e.target;
         if (name === "keywords") {
@@ -32,7 +50,7 @@ function Publications({ role, email, name }) {
         }
     };
 
-
+    // submition handler for uploading new publications
     const handleSubmit = async (e) => {
         e.preventDefault();
         setErrorMessage("");  // remove previous errors before sending new message
@@ -119,6 +137,7 @@ function Publications({ role, email, name }) {
                     {}
                 </div>
             )}
+
             <h2>Publications</h2>
             <div className="search-bar">
                 <input type="text" id="search" className="search-bar" onKeyUp="searchText()" placeholder="Search..."/>
@@ -128,9 +147,10 @@ function Publications({ role, email, name }) {
                     <option value="keyword">by Keyword</option>
                 </select>
             </div>
-
+            <div className="pagination">
+                <Pubs pubs={publications} />
+            </div>
         </div>
     );
 }
-
 export default Publications;
