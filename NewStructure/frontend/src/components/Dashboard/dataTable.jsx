@@ -12,7 +12,14 @@ import { fetchUsers } from "./api"
 export default function DataTable() {
   const [data, setData] = useState([])
 
-  useEffect(() => {fetchUsers().then(setData)}, [])
+  useEffect(() => {
+    fetchUsers()
+    .then(setData)
+    .catch(
+      (err) => {
+        console.log("Error loading users:", err)
+      });
+  }, []);
 
   const columns = useMemo(() => [
     {
