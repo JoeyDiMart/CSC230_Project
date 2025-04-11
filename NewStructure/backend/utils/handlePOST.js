@@ -6,6 +6,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import multer from "multer";
 import fs from "fs";
+import {ReviewStatus} from "../Database/schemas.js";
 
 
 const __filename = fileURLToPath(import.meta.url);
@@ -29,7 +30,7 @@ export const handlePostRequest = async (req, res) => {
         '/logout': handleLogout,
         '/submit': handleSubmit,
         '/events': eventService.handleCreate,
-        '/api/publications': handlePublication
+        '/api/publications': handlePublication,
     };
     /*
      '/posters/upload': handleUpload,
@@ -184,7 +185,7 @@ export const handlePublication = async (req, res) => {
     upload.single('file')(req, res, async function (err) {
         if (err) {
             console.error("❌ Multer error:", err);
-            return res.status(400).json({ error: err.message });
+            return res.status(400).json({error: err.message});
         }
 
         console.log("✅ Multer finished parsing request");
@@ -198,12 +199,12 @@ export const handlePublication = async (req, res) => {
             const keywords = JSON.parse(req.body.keywords || '[]');
             const email = req.body.email;
             const filePath = req.file?.path || '';
-            let reviewed = "under review";
+            let reviewed = ReviewStatus.UNDER_REVIEW;
 
             // Validate fields
-            if (!title || !email || !author.length  || !keywords.length || !filePath) {
+            if (!title || !email || !author.length || !keywords.length || !filePath) {
                 console.warn("⚠️ Missing required fields");
-                return res.status(400).json({ error: 'All fields are required' });
+                return res.status(400).json({error: 'All fields are required'});
             }
 
             const db = client.db('CIRT');
@@ -224,14 +225,14 @@ export const handlePublication = async (req, res) => {
 
             if (result.insertedId) {
                 console.log("✅ Publication inserted:", result.insertedId);
-                return res.status(201).json({ message: "Upload successful", publicationId: result.insertedId });
+                return res.status(201).json({message: "Upload successful", publicationId: result.insertedId});
             } else {
                 console.error("❌ Insertion failed");
-                return res.status(500).json({ error: "Could not save publication" });
+                return res.status(500).json({error: "Could not save publication"});
             }
         } catch (error) {
             console.error("💥 Server error:", error);
-            return res.status(500).json({ error: "Internal server error" });
+            return res.status(500).json({error: "Internal server error"});
         }
     });
-};
+}
