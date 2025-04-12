@@ -10,7 +10,7 @@ const UserInfo = ({ user, isCollapsed, handleLogout }) => {
     <div className="mt-auto py-4 w-full">
         <div className=" flex items-center justify-start gap-2 p-2 ">
             <div>
-                <img  className="w-8 h-8 rounded-full object-cover flex justify-center" src={user?.avatar || "/UTampa_mark.png"} alt="User Avatar" />
+                <img  className="w-8 h-8 rounded-full object-cover flex justify-center" src={"/UTampa_mark.png"} />
             </div>
             {!isCollapsed &&
             <>           
