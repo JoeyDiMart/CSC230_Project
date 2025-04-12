@@ -44,11 +44,11 @@ export async function insertPublication(filePath, publicationName, contentType) 
         console.error("Error inserting publication into MongoDB:", error);
     }
 }
-
+/*
 // Example publications
 const pubPath1 = path.join(__dirname, 'uploads', 'Publications', 'esp_wroom_32_datasheet_en.pdf');
 insertPublication(pubPath1, 'espWroom', 'application/pdf');
-
+*/
 
 // Retrieve a publication by name
 export async function getPublicationByName(publicationName) {

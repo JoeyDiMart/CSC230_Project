@@ -45,8 +45,8 @@ export async function insertPhoto(imagePath, imageName) {
         console.error("Error inserting image into MongoDB:", error);
     }
 }
-
-// example one
+/*
+// example one these are not in database
 const imagePath = path.join(__dirname,'uploads','Photos', 'Picture1.jpg'); // Corrected path
 insertPhoto(imagePath, 'Pickleball');
 
@@ -55,7 +55,7 @@ insertPhoto(imagePath1, 'joey');
 
 const imagePath2 = path.join(__dirname,'uploads','Photos', 'gourd-jean.jpg'); // Corrected path
 insertPhoto(imagePath2, 'gourd');
-
+*/
 // get the image from the database
 export async function getImageByName(imageName) {
     try {

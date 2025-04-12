@@ -12,7 +12,6 @@ function Publications({ role, email, name }) {
     const [loading, setLoading] = useState(true);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
-    role = 'publisher';
 
     // list for uploading a publication
     const [uploadFile, setUploadFile] =
@@ -25,6 +24,7 @@ function Publications({ role, email, name }) {
             status: '',
         });
 
+    // get publications from database
     useEffect(() => {
         fetch("http://localhost:8081/api/publications?limit=10")
             .then(response => response.json())  // Expecting an array of publications
@@ -59,7 +59,6 @@ function Publications({ role, email, name }) {
             alert("Please fill all fields.");
             return;
         }
-        console.log('email is '+ email);
         const formData = new FormData();
         formData.append("title", uploadFile.title);
         formData.append("author", JSON.stringify(uploadFile.author));
@@ -148,7 +147,9 @@ function Publications({ role, email, name }) {
                 </select>
             </div>
             <div className="pagination">
-                <Pubs pubs={publications} />
+                <div className="pubs-scroll-wrapper">
+                    <Pubs pubs={publications} />
+                </div>
             </div>
         </div>
     );
