@@ -12,6 +12,9 @@ function Publications({ role, email, name }) {
     const [loading, setLoading] = useState(true);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
+    // search for text in that specific filter
+    const [searchText, setSearchText] = useState("");
+    const [searchFilter, setSearchFilter] = useState("title");
 
     // list for uploading a publication
     const [uploadFile, setUploadFile] =
@@ -102,6 +105,22 @@ function Publications({ role, email, name }) {
         accept: '.pdf',
         multiple: false
     });
+    // hit search button sends text and filter to backend
+    const handleSearch = async () => {
+        try {
+            const response = await fetch(`http://localhost:8081/api/publications/search?${searchFilter}=${searchText}`);
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(data.message || "Search failed.");
+            }
+
+            setPublications(data);
+        } catch (err) {
+            setErrorMessage(err.message);
+            console.error("Search failed:", err);
+        }
+    };
 
     return (
         <div className="publisher-stuff">
@@ -139,12 +158,25 @@ function Publications({ role, email, name }) {
 
             <h2>Publications</h2>
             <div className="search-bar">
-                <input type="text" id="search" className="search-bar" onKeyUp="searchText()" placeholder="Search..."/>
-                <select id="filter" className="filter-menu" onChange="searchText()">
+                <input
+                    type="text"
+                    id="search"
+                    className="search-bar"
+                    value={searchText}
+                    onChange={(e) => setSearchText(e.target.value)}
+                    placeholder="Search..."
+                />
+                <select
+                    id="filter"
+                    className="filter-menu"
+                    value={searchFilter}
+                    onChange={(e) => setSearchFilter(e.target.value)}
+                >
                     <option value="title">by Title</option>
                     <option value="author">by Author</option>
                     <option value="keyword">by Keyword</option>
                 </select>
+                <button onClick={handleSearch}>Search</button>
             </div>
             <div className="pagination">
                 <div className="pubs-scroll-wrapper">

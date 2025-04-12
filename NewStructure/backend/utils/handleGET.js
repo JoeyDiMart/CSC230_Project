@@ -30,6 +30,8 @@ export const handleGetRequest = async (req, res) => {
             '/check-session': handleCheckSession,
             '/events': eventService.handleGetAll,
             '/events/range': eventService.handleGetByDateRange,
+            '/api/publications/search': handleSearchPublications,
+
         };
         //  '/users': userService.handleGetAll, this caused an error
     
@@ -155,3 +157,30 @@ const handleCheckSession = async (req, res) => {
     return res.status(401).json({ message: 'No active session' });
 };
 
+
+// search for the filter in the database and send it to frontend
+const handleSearchPublications = async (req, res) => {
+    try {
+        const db = client.db('CIRT');
+        const collection = db.collection('PUBLICATIONS');
+
+        const { title, author, keyword } = req.query;
+
+        let query = {};
+
+        if (title) query.title = { $regex: title, $options: "i" };
+        if (author) query.author = { $regex: author, $options: "i" };
+        if (keyword) query.keywords = { $regex: keyword, $options: "i" };
+
+        const publications = await collection.find(query).toArray();
+
+        if (publications.length === 0) {
+            return res.status(404).json({ message: "No matching publications found." });
+        }
+
+        res.status(200).json(publications);
+    } catch (err) {
+        console.error("Search error:", err);
+        res.status(500).json({ error: "Error searching publications." });
+    }
+};
