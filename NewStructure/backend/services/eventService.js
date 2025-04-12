@@ -62,7 +62,7 @@ export const handleGetByDateRange = async (req, res) => {
 
 export const handleGetById = async (req, res) => {
     try {
-        const eventCollection = client.db('CIRT').collection('events');
+        const eventCollection = client.db('CIRT').collection('EVENTS');
         const event = await eventCollection.findOne({ 
             _id: new ObjectId(req.params.id) 
         });
