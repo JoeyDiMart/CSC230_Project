@@ -125,12 +125,6 @@ let handleGetPublications = async (req, res) => {
         const count = await collection.estimatedDocumentCount();
         const publications = await collection.aggregate([{ $sample: { size: count } }]).toArray();
 
-        publications.forEach((publication, index) => {
-            publication._id = index + 1;
-            console.log(publication)
-          });
-          
-        
         if (publications.length === 0) {
             return res.status(404).json({ message: "No publications found" });
         }
