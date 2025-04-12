@@ -8,8 +8,8 @@ const Header = ({ isCollapsed, toggleSidebar }) => {
       {!isCollapsed && (
        <Link to="/"> <img className="w-8 h-8" src="/UTampa_mark.png" alt="Logo" /> </Link> 
       )}
-      <button onClick={toggleSidebar} className="text-testingColorSidebar focus:outline-none ml-auto  bg-transparent">
-        {isCollapsed ? (<FaChevronCircleRight size={20} />) : (<FaChevronCircleLeft size={16} />)}
+      <button onClick={toggleSidebar} className="text-testingColorSidebar focus:outline-none ml-auto  bg-transparent text-lg">
+        {isCollapsed ? (<FaChevronCircleRight  />) : (<FaChevronCircleLeft  />)}
       </button>
     </div>
   );

@@ -14,15 +14,15 @@ const SidebarItems = ({ isCollapsed }) => {
   const { pathname } = useLocation();
 
   return (
-    <ul className="flex flex-col p-4 pt-0 list-none space-y-3">
+    <ul className="flex flex-col p-2 pt-0 list-none space-y-3">
       {links.map(({ link, label, icon }) => (
         <li key={label}>
           <Link to={link} 
-          className={`py-2 px-4 flex items-center rounded-lg transition-all duration-300 
-            ${pathname === link ? "bg-cirtGrey text-white" : "bg-opacity-60 text-white hover:bg-cirtGrey hover:bg-opacity-100"} ${!isCollapsed ? "justify-start" : "justify-center"}`}>
-            <div className={`flex items-center w-full ${isCollapsed ? "justify-center" : "justify-start"}`}>
-              <span className="text-xl">{icon}</span>
-              <span className={`ml-3 text-[16px] transition-all duration-200 
+          className={` flex items-center p-4 pb-2 pt-4 gap-4 rounded-lg transition-all duration-300 
+            ${pathname === link ? "bg-testingColorHover text-white" : "bg-opacity-60 text-white hover:bg-testingColorHover hover:bg-opacity-100"} ${!isCollapsed ? "justify-start" : "justify-center"}`}>
+            <div className={`flex w-full ${isCollapsed ? "justify-right" : "justify-start"}`}>
+              <span className="text-lg justify-center">{icon}</span>
+              <span className={`ml-3 text-[16px] whitespace-nowrap
                 ${isCollapsed ? "overflow-hidden w-0 scale-0 opacity-0" : "opacity-100 scale-95 w-auto"}`}>{label}
               </span>
             </div>
