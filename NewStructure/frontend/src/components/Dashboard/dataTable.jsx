@@ -27,8 +27,8 @@ export default function DataTable() {
         header : () => <span className="font-semibold">Publication Title</span>
     },
     {
-      accessorKey: "name",
-      header: () => <span className="font-semibold">Name</span>,
+      accessorKey: "author",
+      header: () => <span className="font-semibold">Author</span>,
     },
     {
       accessorKey: "email",

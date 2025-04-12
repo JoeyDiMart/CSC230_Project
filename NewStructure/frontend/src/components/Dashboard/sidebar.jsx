@@ -2,10 +2,11 @@ import React from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { MdSpaceDashboard } from "react-icons/md";
 import { FaUserPlus, FaCamera, FaChevronCircleLeft, FaChevronCircleRight, FaSignOutAlt } from "react-icons/fa";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import UserInfo from "../Dashboard/Sidebar/UserInfo"
 import SidebarItems from "../Dashboard/Sidebar/SidebarItem";
 import Header from "../Dashboard/Sidebar/Header"
+
 
 
 const links = [
@@ -14,11 +15,7 @@ const links = [
   { link: "/dashboard/photoGalleryUpload", label: "Photo Gallery", icon: <FaCamera size={20} /> },
 ];
 
-const user = {
-    name: "Sebastian",
-    email: "sebastian@example.com",
-    avatar: "/UTampa_mark.png",
-  };
+
 
 const Sidebar = () => {
   const { pathname } = useLocation();
@@ -26,13 +23,33 @@ const Sidebar = () => {
 
   const [isCollapsed, setIsCollapsed] = useState(false);
   const toggleSidebar = () => setIsCollapsed(!isCollapsed);
+  const [user, setUser] = useState(null);
 
   const handleLogout = () => {
     localStorage.removeItem("authToken");
     sessionStorage.removeItem("authToken");
     navigate("/"); // Navigate to the home page after logout
   };
-  
+
+  useEffect(() => {
+    fetch("/check-session")
+      .then((res) => {
+        if (!res.ok) throw new Error("Not authenticated");
+        return res.json();
+      })
+      .then((data) => {
+        console.log("Session Data: !!!", data)
+        setUser({
+          name: data.user.name,
+          email: data.user.email,
+          avatar: "/UTampa_mark.png", // add avatar if not provided by backend
+        });
+      })
+      .catch((err) => {
+        console.log("Session error:", err);
+        setUser(null);
+      });
+  }, []);
 
   return (
     <aside className={`h-screen overflow-hidden transition-all duration-200 ease-in-out ${isCollapsed ? "w-16" : "w-48"} `}>
@@ -42,7 +59,10 @@ const Sidebar = () => {
         {/* Navigation Links */}
         <SidebarItems isCollapsed={isCollapsed} />
         {/* User Information */}
-        <UserInfo user={user} isCollapsed={isCollapsed} handleLogout={handleLogout}/>
+        {user && (
+          <UserInfo user={user} isCollapsed={isCollapsed} handleLogout={handleLogout}/>
+          )}
+        
       </nav>
     </aside>
   );

@@ -51,7 +51,7 @@ export const handleGetRequest = async (req, res) => {
             }
 
 
-            // CHAT GPT SUGGESTION
+            // CHATGPT SUGGESTION
             const knownApiRoutes = Object.keys(requestHandlers);
             const isApiRoute = knownApiRoutes.includes(req.path);
             const isStaticAsset =
@@ -142,11 +142,13 @@ let handleGetPublications = async (req, res) => {
 };
 
 const handleCheckSession = async (req, res) => {
-    if (req.session && req.session.user) {
+    if (req.session && req.session.user ) {
         return res.status(200).json({
             user: {
                 name: req.session.user.name,
+                email: req.session.user.email,
                 role: req.session.user.role
+                
             }
         });
     }
