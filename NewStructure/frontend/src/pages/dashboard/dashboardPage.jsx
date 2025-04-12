@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react"
-import Sidebar from "../components/Dashboard/sidebar"
-import Navbar from "../components/Dashboard/dashboardNavbar"
-import SectionCards from "../components/Dashboard/sectionCards"
-import DataTable from "../components/Dashboard/dataTable"
+import Sidebar from "../../components/Dashboard/sidebar"
+import Navbar from "../../components/Dashboard/dashboardNavbar"
+import SectionCards from "../../components/Dashboard/sectionCards"
+import DataTable from "../../components/Dashboard/dataTable"
+
 
 export default function DashboardPage() {
 

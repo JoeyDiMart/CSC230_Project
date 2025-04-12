@@ -50,12 +50,26 @@ export const handleGetRequest = async (req, res) => {
                 return;
             }
 
-            const manuscriptMatch = req.path.match(/^\/([^\/]+)$/);
-            if (manuscriptMatch && manuscriptMatch[1] !== 'favicon.ico') {
-                req.params = { id: manuscriptMatch[1] };
-                await publicationService.handleGetManuscript(req, res);
-                return;
+
+            // CHAT GPT SUGGESTION
+            const knownApiRoutes = Object.keys(requestHandlers);
+            const isApiRoute = knownApiRoutes.includes(req.path);
+            const isStaticAsset =
+                req.path.startsWith('/static') ||
+                req.path.endsWith('.js') ||
+                req.path.endsWith('.css') ||
+                req.path.endsWith('.ico');
+
+            if (!isApiRoute && !isStaticAsset) {
+                console.log("Serving frontend for unmatched route:", req.path);
+                return res.sendFile(path.resolve(__dirname, '../../frontend/dist/index.html'), err => {
+                    if (err) {
+                        console.error('Error sending file:', err);
+                        res.status(500).json({ error: 'Error serving frontend' });
+                    }
+                });
             }
+
 
             // Default route - serve frontend
             res.sendFile(path.resolve(__dirname, '../../frontend/dist/index.html'), err => {

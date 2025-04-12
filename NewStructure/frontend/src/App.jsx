@@ -4,21 +4,23 @@ import { useState, useEffect } from "react";
 
 import Header from './components/header.jsx';
 import Footer from './components/footer.jsx';
-
 import Home from './pages/homePage.jsx';
 import Login from './pages/loginPage.jsx';
 import Signup from "./pages/signupPage.jsx";
 import Account from "./pages/accountPage.jsx";
-import Dashboard from "./pages/dashboardPage.jsx";
+import Dashboard from "./pages/dashboard/dashboardPage.jsx"
 import Publications from './pages/publicationsPage.jsx';
 import Events from './pages/eventsPage.jsx'
+import AddUsers from './pages/dashboard/addUsersPage.jsx'
+
 
 // ✅ Wrapper to use useLocation and hide header/footer on certain routes
 function AppWrapper({ role, setRole, name, setName, email, setEmail }) {
   const location = useLocation();
   const path = location.pathname.toLowerCase();
 
-  const hideHeaderFooter = path.startsWith("/dashboard");
+  const hideHeaderFooter = path.startsWith("/dashboard") || path.startsWith("/addusers");
+ 
 
   return (
     <>
@@ -38,6 +40,7 @@ function AppWrapper({ role, setRole, name, setName, email, setEmail }) {
         />
         <Route path="/account" element={<Account />} />
         <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/addusers" element={<AddUsers />} />
         <Route
           path="/publications"
           element={<Publications role={role} setRole={setRole} name={name} setName={setName} email={email} setEmail={setEmail} />}

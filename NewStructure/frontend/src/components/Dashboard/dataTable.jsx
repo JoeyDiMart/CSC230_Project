@@ -34,24 +34,24 @@ export default function DataTable() {
       accessorKey: "email",
       header: () => <span className="font-semibold">Email</span>,
     },
-    {
-        accessorKey: "status",
-        header: () => <span className="font-semibold">Status</span>,
-        cell: ({getValue}) => {
-            const status = getValue()
-            const isDone = status === "Done"
-            const isLoading = status === "In Process"
-            return (
-                <div className={`inline-flex items-center gap-2 px-2 py-1 rounded-md text-xs font-bold border border-testingColorGrey text-testingColorSubtitle min-w-[100px]
-                    ${isDone ? "bg-none border-solid border-1 border-testingColorGrey text-testingColorSubtitle " : isLoading ? "bg-none border-solid border-1 border-testingColorGrey text-testingColorSubtitle" : "bg-none border-solid border-1 border-testingColorGrey text-testingColorSubtitle"}`}>
-                    {isDone && <FaRegCircleCheck className="text-green-500 " />}
-                    {isLoading && <PiSpinnerBold className=" text-yellow-300 " />}
-                    <span>{status.charAt(0).toUpperCase() + status.slice(1)}</span>
-                  </div>
-            )
+    // {
+    //     accessorKey: "status",
+    //     header: () => <span className="font-semibold">Status</span>,
+    //     cell: ({getValue}) => {
+    //         const status = getValue()
+    //         const isDone = status === "Done"
+    //         const isLoading = status === "In Process"
+    //         return (
+    //             <div className={`inline-flex items-center gap-2 px-2 py-1 rounded-md text-xs font-bold border border-testingColorGrey text-testingColorSubtitle min-w-[100px]
+    //                 ${isDone ? "bg-none border-solid border-1 border-testingColorGrey text-testingColorSubtitle " : isLoading ? "bg-none border-solid border-1 border-testingColorGrey text-testingColorSubtitle" : "bg-none border-solid border-1 border-testingColorGrey text-testingColorSubtitle"}`}>
+    //                 {isDone && <FaRegCircleCheck className="text-green-500 " />}
+    //                 {isLoading && <PiSpinnerBold className=" text-yellow-300 " />}
+    //                 <span>{status.charAt(0).toUpperCase() + status.slice(1)}</span>
+    //               </div>
+    //         )
 
-        }
-    },
+    //     }
+    // },
   ], [])
 
   const table = useReactTable({
