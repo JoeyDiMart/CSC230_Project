@@ -220,164 +220,166 @@ function Events({ role, email, name }) {
     };
 
     return (
-        <div className="events-page">
-            <div className="events-header">
-                <h1>Events Calendar</h1>
-                {['admin', 'publisher'].includes(role) && (
-                    <button
-                        onClick={() => setShowAddModal(true)}
-                        className="add-event-btn"
-                    >
-                        Add Event
-                    </button>
-                )}
-            </div>
-
-            <div className="calendar-container">
-                <div className="calendar-controls">
-                    <div className="view-controls">
-                        <button 
-                            onClick={() => setView('month')}
-                            className={view === 'month' ? 'active' : ''}
+        <div className="calendar-wrapper">
+            <div className="events-page">
+                <div className="events-header">
+                    <h1>Events Calendar</h1>
+                    {['admin', 'publisher'].includes(role) && (
+                        <button
+                            onClick={() => setShowAddModal(true)}
+                            className="add-event-btn"
                         >
-                            Month
+                            Add Event
                         </button>
-                        <button 
-                            onClick={() => setView('week')}
-                            className={view === 'week' ? 'active' : ''}
-                        >
-                            Week
-                        </button>
-                        <button 
-                            onClick={() => setView('day')}
-                            className={view === 'day' ? 'active' : ''}
-                        >
-                            Day
-                        </button>
-                    </div>
-                    <div className="current-date">
-                        {formatDateLabel()}
-                    </div>
-                    <div className="navigation-controls">
-                        <button onClick={() => handleNavigate('PREV')}>Previous</button>
-                        <button onClick={() => handleNavigate('TODAY')}>Today</button>
-                        <button onClick={() => handleNavigate('NEXT')}>Next</button>
-                    </div>
+                    )}
                 </div>
-                <Calendar
-                    localizer={localizer}
-                    events={events}
-                    startAccessor="start"
-                    endAccessor="end"
-                    style={{ height: 500 }}
-                    onSelectSlot={handleSelectSlot}
-                    onSelectEvent={handleSelectEvent}
-                    selectable
-                    tooltipAccessor={event => `${event.eventName}\n${event.eventDetails || ''}`}
-                    eventPropGetter={(event) => ({
-                        style: {
-                            backgroundColor: '#C8102E',
-                            color: 'white',
-                            border: 'none',
-                            borderRadius: '4px'
-                        }
-                    })}
-                    views={['month', 'week', 'day']}
-                    view={view}
-                    onView={setView}
-                    date={date}
-                    onNavigate={handleNavigate}
-                    toolbar={false}
-                />
-            </div>
 
-            {showAddModal && (
-                <div className="modal-overlay">
-                    <div className="modal-content">
-                        <h2>{selectedEvent ? 'Edit Event' : 'Add New Event'}</h2>
-                        <form onSubmit={handleSubmit} className="event-form">
-                            <div className="form-group">
-                                <label>Event Name</label>
-                                <input
-                                    type="text"
-                                    value={newEvent.eventName}
-                                    onChange={(e) => setNewEvent({...newEvent, eventName: e.target.value})}
-                                    required
-                                />
-                            </div>
-                            <div className="form-group">
-                                <label>Event Details</label>
-                                <textarea
-                                    value={newEvent.eventDetails}
-                                    onChange={(e) => setNewEvent({...newEvent, eventDetails: e.target.value})}
-                                    required
-                                />
-                            </div>
-                            <div className="form-group">
-                                <label>Location</label>
-                                <input
-                                    type="text"
-                                    value={newEvent.location}
-                                    onChange={(e) => setNewEvent({...newEvent, location: e.target.value})}
-                                    required
-                                />
-                            </div>
-                            <div className="form-group checkbox">
-                                <label>
+                <div className="calendar-container">
+                    <div className="calendar-controls">
+                        <div className="view-controls">
+                            <button 
+                                onClick={() => setView('month')}
+                                className={view === 'month' ? 'active' : ''}
+                            >
+                                Month
+                            </button>
+                            <button 
+                                onClick={() => setView('week')}
+                                className={view === 'week' ? 'active' : ''}
+                            >
+                                Week
+                            </button>
+                            <button 
+                                onClick={() => setView('day')}
+                                className={view === 'day' ? 'active' : ''}
+                            >
+                                Day
+                            </button>
+                        </div>
+                        <div className="current-date">
+                            {formatDateLabel()}
+                        </div>
+                        <div className="navigation-controls">
+                            <button onClick={() => handleNavigate('PREV')}>Previous</button>
+                            <button onClick={() => handleNavigate('TODAY')}>Today</button>
+                            <button onClick={() => handleNavigate('NEXT')}>Next</button>
+                        </div>
+                    </div>
+                    <Calendar
+                        localizer={localizer}
+                        events={events}
+                        startAccessor="start"
+                        endAccessor="end"
+                        style={{ height: 500 }}
+                        onSelectSlot={handleSelectSlot}
+                        onSelectEvent={handleSelectEvent}
+                        selectable
+                        tooltipAccessor={event => `${event.eventName}\n${event.eventDetails || ''}`}
+                        eventPropGetter={(event) => ({
+                            style: {
+                                backgroundColor: '#C8102E',
+                                color: 'white',
+                                border: 'none',
+                                borderRadius: '4px'
+                            }
+                        })}
+                        views={['month', 'week', 'day']}
+                        view={view}
+                        onView={setView}
+                        date={date}
+                        onNavigate={handleNavigate}
+                        toolbar={false}
+                    />
+                </div>
+
+                {showAddModal && (
+                    <div className="modal-overlay">
+                        <div className="modal-content">
+                            <h2>{selectedEvent ? 'Edit Event' : 'Add New Event'}</h2>
+                            <form onSubmit={handleSubmit} className="event-form">
+                                <div className="form-group">
+                                    <label>Event Name</label>
                                     <input
-                                        type="checkbox"
-                                        checked={newEvent.isOnline}
-                                        onChange={(e) => setNewEvent({...newEvent, isOnline: e.target.checked})}
+                                        type="text"
+                                        value={newEvent.eventName}
+                                        onChange={(e) => setNewEvent({...newEvent, eventName: e.target.value})}
+                                        required
                                     />
-                                    Online Event
-                                </label>
-                            </div>
-                            <div className="form-group">
-                                <label>Start Date</label>
-                                <input
-                                    type="datetime-local"
-                                    value={format(newEvent.startDate, "yyyy-MM-dd'T'HH:mm")}
-                                    onChange={(e) => setNewEvent({...newEvent, startDate: new Date(e.target.value)})}
-                                    required
-                                />
-                            </div>
-                            <div className="form-group">
-                                <label>End Date</label>
-                                <input
-                                    type="datetime-local"
-                                    value={format(newEvent.endDate, "yyyy-MM-dd'T'HH:mm")}
-                                    onChange={(e) => setNewEvent({...newEvent, endDate: new Date(e.target.value)})}
-                                    required
-                                />
-                            </div>
-                            <div className="form-actions">
-                                {selectedEvent && (
+                                </div>
+                                <div className="form-group">
+                                    <label>Event Details</label>
+                                    <textarea
+                                        value={newEvent.eventDetails}
+                                        onChange={(e) => setNewEvent({...newEvent, eventDetails: e.target.value})}
+                                        required
+                                    />
+                                </div>
+                                <div className="form-group">
+                                    <label>Location</label>
+                                    <input
+                                        type="text"
+                                        value={newEvent.location}
+                                        onChange={(e) => setNewEvent({...newEvent, location: e.target.value})}
+                                        required
+                                    />
+                                </div>
+                                <div className="form-group checkbox">
+                                    <label>
+                                        <input
+                                            type="checkbox"
+                                            checked={newEvent.isOnline}
+                                            onChange={(e) => setNewEvent({...newEvent, isOnline: e.target.checked})}
+                                        />
+                                        Online Event
+                                    </label>
+                                </div>
+                                <div className="form-group">
+                                    <label>Start Date</label>
+                                    <input
+                                        type="datetime-local"
+                                        value={format(newEvent.startDate, "yyyy-MM-dd'T'HH:mm")}
+                                        onChange={(e) => setNewEvent({...newEvent, startDate: new Date(e.target.value)})}
+                                        required
+                                    />
+                                </div>
+                                <div className="form-group">
+                                    <label>End Date</label>
+                                    <input
+                                        type="datetime-local"
+                                        value={format(newEvent.endDate, "yyyy-MM-dd'T'HH:mm")}
+                                        onChange={(e) => setNewEvent({...newEvent, endDate: new Date(e.target.value)})}
+                                        required
+                                    />
+                                </div>
+                                <div className="form-actions">
+                                    {selectedEvent && (
+                                        <button
+                                            type="button"
+                                            onClick={handleDelete}
+                                            className="delete-button"
+                                        >
+                                            Delete
+                                        </button>
+                                    )}
                                     <button
                                         type="button"
-                                        onClick={handleDelete}
-                                        className="delete-button"
+                                        onClick={handleModalClose}
+                                        className="cancel-btn"
                                     >
-                                        Delete
+                                        Cancel
                                     </button>
-                                )}
-                                <button
-                                    type="button"
-                                    onClick={handleModalClose}
-                                    className="cancel-btn"
-                                >
-                                    Cancel
-                                </button>
-                                <button
-                                    type="submit"
-                                    className="submit-btn"
-                                >
-                                    {selectedEvent ? 'Update' : 'Create'}
-                                </button>
-                            </div>
-                        </form>
+                                    <button
+                                        type="submit"
+                                        className="submit-btn"
+                                    >
+                                        {selectedEvent ? 'Update' : 'Create'}
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
                     </div>
-                </div>
-            )}
+                )}
+            </div>
         </div>
     );
 }

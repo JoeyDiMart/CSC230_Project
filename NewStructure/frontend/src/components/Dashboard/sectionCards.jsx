@@ -3,8 +3,8 @@ import {BiTrendingUp,BiTrendingDown} from 'react-icons/bi';
 
 const stats = [
   {
-    title: 'Total Views',
-    value: '$1,250.00',
+    title: 'Total Website Views',
+    value: '1,250.00',
     trendIcon: <BiTrendingUp />,
     trend: '+12.5%',
     trendDirection: 'up',

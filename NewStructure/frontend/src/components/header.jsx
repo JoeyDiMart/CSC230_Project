@@ -15,7 +15,6 @@ function Header({ role, setRole, name, setName }) {
             </div>
             <Navbar role={role} setRole={setRole} name={name} setName={setName}/>
         </header>
-            <h1 className="h1-title">Criminology Institute for Research and Training</h1>
         </>
     );
 }
