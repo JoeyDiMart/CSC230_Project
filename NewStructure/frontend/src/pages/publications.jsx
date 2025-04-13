@@ -13,6 +13,7 @@ function Pubs({ pubs }) {
                             <p><strong>Title:</strong> {publication.title}</p>
                             <p><strong>Author(s):</strong> {publication.author?.join(", ")}</p>
                             <p><strong>Keywords:</strong> {publication.keywords?.join(", ")}</p>
+                            <p><strong>Status:</strong> {publication.status}</p>
                             <a
                                 href={`http://localhost:8081/${fixedPath}`}
                                 download={fileName}
