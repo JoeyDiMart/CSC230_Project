@@ -199,7 +199,8 @@ export const handlePublication = async (req, res) => {
             const keywords = JSON.parse(req.body.keywords || '[]');
             const email = req.body.email;
             const filePath = req.file?.path || '';
-            let status = ReviewStatus.UNDER_REVIEW;
+            const status = req.body.status;
+            const comments = JSON.parse(req.body.comments || '[]');
 
             // Validate fields
             if (!title || !email || !author.length || !keywords.length || !filePath) {
@@ -217,6 +218,7 @@ export const handlePublication = async (req, res) => {
                 email,
                 status,
                 filePath,
+                comments,
                 uploadedAt: new Date()
             };
 
