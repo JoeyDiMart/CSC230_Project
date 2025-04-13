@@ -7,10 +7,10 @@ const UserInfo = ({ user, isCollapsed, handleLogout }) => {
     const [click, setClick] = useState(false)
 
   return (
-    <div className="mt-auto py-4 w-full">
-        <div className=" flex items-center justify-start gap-2 p-2 ">
+    <div className="mt-auto py-4 w-full ">
+        <div className=" flex items-center justify-start p-2 ml-2 rounded-lg transition-all duration-300  hover:bg-testingColorHover ">
             <div>
-                <img  className="w-8 h-8 rounded-full object-cover flex justify-center" src={"/UTampa_mark.png"} />
+                <img className="w-8 h-8 rounded-full object-cover flex justify-center" src={"/UTampa_mark.png"} />
             </div>
             {!isCollapsed &&
             <>           

@@ -3,10 +3,39 @@ import React, { useEffect, useMemo, useState } from "react"
 import {useReactTable,getCoreRowModel, getSortedRowModel, getPaginationRowModel, flexRender,} from "@tanstack/react-table"
 import { FaRegCircleCheck } from "react-icons/fa6";
 import { PiSpinnerBold } from "react-icons/pi";
+import { ImCross } from "react-icons/im";
 
 
 {/*API Simulation for backend call */}
 import { fetchUsers } from "./api"
+
+
+// // SAMPLE API
+// const fetchUsers = () => {
+//   return Promise.resolve([
+//     {
+//       _id: "1",
+//       title: "AI and Ethics in Society",
+//       author: "Jane Doe",
+//       email: "jane@example.com",
+//       status: "under review"
+//     },
+//     {
+//       _id: "2",
+//       title: "Quantum Computing Advances",
+//       author: "John Smith",
+//       email: "john@example.com",
+//       status: "accepted"
+//     },
+//     {
+//       _id: "3",
+//       title: "Climate Change Models",
+//       author: "Alice Johnson",
+//       email: "alice@example.com",
+//       status: "denied"
+//     }
+//   ]);
+// };
 
 
 export default function DataTable() {
@@ -34,25 +63,71 @@ export default function DataTable() {
       accessorKey: "email",
       header: () => <span className="font-semibold">Email</span>,
     },
-    // {
-    //     accessorKey: "status",
-    //     header: () => <span className="font-semibold">Status</span>,
-    //     cell: ({getValue}) => {
-    //         const status = getValue()
-    //         const isDone = status === "Done"
-    //         const isLoading = status === "In Process"
-    //         return (
-    //             <div className={`inline-flex items-center gap-2 px-2 py-1 rounded-md text-xs font-bold border border-testingColorGrey text-testingColorSubtitle min-w-[100px]
-    //                 ${isDone ? "bg-none border-solid border-1 border-testingColorGrey text-testingColorSubtitle " : isLoading ? "bg-none border-solid border-1 border-testingColorGrey text-testingColorSubtitle" : "bg-none border-solid border-1 border-testingColorGrey text-testingColorSubtitle"}`}>
-    //                 {isDone && <FaRegCircleCheck className="text-green-500 " />}
-    //                 {isLoading && <PiSpinnerBold className=" text-yellow-300 " />}
-    //                 <span>{status.charAt(0).toUpperCase() + status.slice(1)}</span>
-    //               </div>
-    //         )
+    {
+      accessorKey: "status",
+      header: () => <span className="font-semibold">Status</span>,
+      cell: ({ getValue, row }) => {
+        const status = getValue();
+        const id = row.original._id;
 
-    //     }
-    // },
+        return <StatusButton status={status} id={id} />
+      },
+    },
   ], [])
+
+  function StatusButton ({ status, id}) {
+    const [open, setOpen] = useState(false);
+
+    const handleUpdateStatus = async (newStatus) => {
+      try {
+        const response = await fetch(`http://localhost:8081/publications/${id}`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ status: newStatus }),
+    });
+
+    if (!response.ok) throw new Error("Failed to update status");
+
+    setOpen(false);
+    } catch (err) {
+      console.log("Error updating status:", err);
+      alert("Failed to update status");
+      }
+    };
+
+    const isDone = status === "accepted";
+    const isLoading = status === "under review";
+    const isDenied = status === "denied"
+
+    const formatStatus =(s) =>  
+      s ? s.charAt(0).toUpperCase() + s.slice(1) : "Unknown";
+
+    return (
+      <div className="relative inline-flex">
+        <button onClick={() => setOpen(!open)} className={` bg-transparent inline-flex items-center gap-2 px-2 py-1 rounded-md text-xs font-bold border border-testingColorGrey text-testingColorSubtitle min-w-[100px]
+          ${isDone ? "text-green-500" : isDenied ? "text-red-500" : "text-testingColorSubtitle"}`}>
+          {isDone && <FaRegCircleCheck className="text-green-500" />}
+          {isLoading && <PiSpinnerBold className="text-yellow-300" />}
+          {isDenied && <ImCross className="text-red-500" />}
+          <span>{formatStatus(status)}</span>
+        </button>
+        {open && (
+          <div className=" flex bg-transparent z-2 text-xs">
+            <button onClick={() => {handleUpdateStatus("accepted")
+            }} className=" bg-transparent w-full text-left px-4 py-2 hover:bg-green-500 transition-colors duration-300 ease-in-out ">
+              Accept
+            </button>
+            <button onClick={() => {handleUpdateStatus("denied") }} className=" bg-transparent w-full text-left px-4 py-2 hover:bg-red-500 transition-colors duration-300 ease-in-out">
+              Deny
+            </button>
+          </div>
+        )}
+      </div>
+    );
+
+  }
 
   const table = useReactTable({
     data,

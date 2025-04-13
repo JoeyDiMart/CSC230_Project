@@ -11,23 +11,23 @@ export default function DashboardPage() {
   const [loading, setLoading] =useState(true); //Wait for the session check
   const [isAuthenticated, setIsAuthenticated] =useState(false)
 
-  useEffect (() => {
-    fetch("check-session", {credentials : "include"})
-    .then(res => {
-      if(!res.ok) throw new Error("Not authenticated");
-      return res.json();
-    })
-    .then(data => {
-      setIsAuthenticated(true);
-      setLoading(false);
-      })
-      .catch(err => {
-        navigate("/login");
-        });
-  }, []);
+  // useEffect (() => {
+  //   fetch("check-session", {credentials : "include"})
+  //   .then(res => {
+  //     if(!res.ok) throw new Error("Not authenticated");
+  //     return res.json();
+  //   })
+  //   .then(data => {
+  //     setIsAuthenticated(true);
+  //     setLoading(false);
+  //     })
+  //     .catch(err => {
+  //       navigate("/login");
+  //       });
+  // }, []);
 
-  if (loading) return <div>Loading...</div>;
-  if (!isAuthenticated) return <div>Not authenticated</div>;
+  // if (loading) return <div>Loading...</div>;
+  // if (!isAuthenticated) return <div>Not authenticated</div>;
 
   return (
     <div className="h-screen w-screen overflow-hidden bg-testingColorGrey">

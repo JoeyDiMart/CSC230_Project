@@ -5,7 +5,8 @@ import { FaUserPlus, FaCamera, FaChevronCircleLeft, FaChevronCircleRight, FaSign
 import { useState, useEffect } from "react";
 import UserInfo from "../Dashboard/Sidebar/UserInfo"
 import SidebarItems from "../Dashboard/Sidebar/SidebarItem";
-import Header from "../Dashboard/Sidebar/Header"
+import Header from "../Dashboard/Sidebar/Header";
+// import Logout from "../Dashboard/Sidebar/Logout";
 
 
 
@@ -23,7 +24,15 @@ const Sidebar = () => {
 
   const [isCollapsed, setIsCollapsed] = useState(false);
   const toggleSidebar = () => setIsCollapsed(!isCollapsed);
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState(false)
+
+
+  // Sample Test for User info 
+
+  // const [user, setUser] = useState({
+  //   name: "Admin",
+  //   email: "admin@example.com",
+  // });
 
   const handleLogout = () => {
     localStorage.removeItem("authToken");
@@ -31,6 +40,8 @@ const Sidebar = () => {
     navigate("/"); // Navigate to the home page after logout
   };
 
+
+  // Authentication Section Dashboard, Uncomment before testing
   useEffect(() => {
     fetch("/check-session")
       .then((res) => {
@@ -39,10 +50,11 @@ const Sidebar = () => {
       })
       .then((data) => {
         console.log("Session Data: !!!", data)
+
         setUser({
           name: data.user.name,
           email: data.user.email,
-          avatar: "/UTampa_mark.png", // add avatar if not provided by backend
+          avatar: "/UTampa_mark.png", // Need to add avatar if we want to
         });
       })
       .catch((err) => {
