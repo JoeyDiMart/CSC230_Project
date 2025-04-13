@@ -24,13 +24,13 @@ function Publications({ role, email, name }) {
             email: email,
             keywords: [],
             file: '',
-            status: 'awaiting review',
+            status: 'under review',
             comments: ''
         });
 
     // get publications from database
     useEffect(() => {
-        fetch("http://localhost:8081/api/publications?limit=10")
+        fetch("http://localhost:8081/api/publications")
             .then(response => response.json())  // Expecting an array of publications
             .then((data) => {
                 setPublications(data);

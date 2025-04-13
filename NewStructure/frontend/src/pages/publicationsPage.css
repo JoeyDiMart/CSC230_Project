@@ -50,6 +50,7 @@
 
 .input-container {
     background-color: rgb(236, 235, 230);
+    flex: 0 0 calc(25% - 16px);
     border-radius: 30px;
     padding: 15px;
     width: 400px;
