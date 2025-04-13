@@ -24,7 +24,8 @@ function Publications({ role, email, name }) {
             email: email,
             keywords: [],
             file: '',
-            status: '',
+            status: 'awaiting review',
+            comments: ''
         });
 
     // get publications from database
@@ -68,6 +69,8 @@ function Publications({ role, email, name }) {
         formData.append("email", uploadFile.email);
         formData.append("keywords", JSON.stringify(uploadFile.keywords));
         formData.append("file", uploadFile.file);
+        formData.append("status", uploadFile.status);
+        formData.append("comments", JSON.stringify(uploadFile.comments));
 
         try {
             setShowUpload(false);  // delete this soon
