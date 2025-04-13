@@ -7,6 +7,7 @@ function Pubs({ pubs }) {
                 pubs.map((publication, idx) => {
                     const fixedPath = publication.filePath.replace(/\\/g, "/");
                     const fileName = fixedPath.split("/").pop();
+
                     return (
                         <div key={idx} className="publication-container">
                             <p><strong>Title:</strong> {publication.title}</p>
