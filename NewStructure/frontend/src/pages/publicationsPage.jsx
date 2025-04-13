@@ -181,15 +181,6 @@ function Publications({ role, email, name }) {
             <div className="pubs-scroll-wrapper">
                 <Pubs pubs={publications} />
             </div>
-        <div className="pagination">
-            <button onClick={() => {}} disabled={currentPage === 1}>
-                Previous
-            </button>
-            <span>Page {currentPage} of {totalPages}</span>
-            <button onClick={() => {}} disabled={currentPage === totalPages}>
-                Next
-            </button>
-        </div>
         </div>
     );
 }

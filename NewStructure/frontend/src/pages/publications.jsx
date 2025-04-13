@@ -9,17 +9,15 @@ function Pubs({ pubs }) {
                     const fileName = fixedPath.split("/").pop();
                     return (
                         <div key={idx} className="publication-container">
-                            <p><strong>ID:</strong> {publication._id}</p>
                             <p><strong>Title:</strong> {publication.title}</p>
                             <p><strong>Author(s):</strong> {publication.author?.join(", ")}</p>
                             <p><strong>Keywords:</strong> {publication.keywords?.join(", ")}</p>
-
                             <a
                                 href={`http://localhost:8081/${fixedPath}`}
                                 download={fileName}
                                 style={{ color: "blue", textDecoration: "underline", display: "inline-block", marginTop: "8px" }}
                             >
-                                Download File
+                                Download File {`http://localhost:8081/${fixedPath}`}
                             </a>
                         </div>
                     );

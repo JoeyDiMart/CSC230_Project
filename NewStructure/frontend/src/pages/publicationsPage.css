@@ -24,6 +24,7 @@
 }
 .publisher-stuff {
     position: relative;
+    margin-top: 80px;
 }
 
 .upload {
@@ -115,7 +116,7 @@
 }
 
 .publication-container {
-    min-width: 250px;   /* Width per card — adjust to fit 4 at a time */
+    min-width: 250px;
     flex: 0 0 auto;
     scroll-snap-align: start;
     border: 1px solid #ccc;
