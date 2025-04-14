@@ -1,3 +1,9 @@
+.publications-wrapper {
+    display: flex;
+    padding-top: 80px;
+    padding-bottom: 80px;
+}
+
 .upload-popup {
     position: fixed;
     top: 50%;
@@ -18,6 +24,7 @@
 }
 .publisher-stuff {
     position: relative;
+    margin-top: 80px;
 }
 
 .upload {
@@ -43,6 +50,7 @@
 
 .input-container {
     background-color: rgb(236, 235, 230);
+    flex: 0 0 calc(25% - 16px);
     border-radius: 30px;
     padding: 15px;
     width: 400px;
@@ -109,7 +117,7 @@
 }
 
 .publication-container {
-    min-width: 250px;   /* Width per card — adjust to fit 4 at a time */
+    min-width: 250px;
     flex: 0 0 auto;
     scroll-snap-align: start;
     border: 1px solid #ccc;

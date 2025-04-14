@@ -118,19 +118,17 @@ let handleGetPhotos = async (req, res) => {
 let handleGetPublications = async (req, res) => {
     try {
         const db = client.db('CIRT');  // connect to database
-        const collection = db.collection('PUBLICATIONS');  // link to PHOTOS section of database
+        const collection = db.collection('PUBLICATIONS');  // link to PUBLICATIONS section of database
 
 
         // Fetch three random photos instead of fixed names
-        const count = await collection.estimatedDocumentCount();
-        const publications = await collection.aggregate([{ $sample: { size: count } }]).toArray();
+        const publications = await collection.aggregate([{ $sample: { size: 10 } }]).toArray();
 
         if (publications.length === 0) {
             return res.status(404).json({ message: "No publications found" });
         }
 
-
-        res.json(publications); // Send Base64-encoded images as JSON
+        res.json(publications);
     } catch (err) {
         console.error(err);
         res.sendStatus(500);

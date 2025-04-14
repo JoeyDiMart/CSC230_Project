@@ -175,8 +175,9 @@ const storage = multer.diskStorage({
         cb(null, uploadDir);
     },
     filename: (req, file, cb) => {
-        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-        cb(null, uniqueSuffix + '-' + file.originalname);
+        // Use the original file name, replacing spaces with underscores
+        const cleanFileName = file.originalname.replace(/\s+/g, '_');
+        cb(null, cleanFileName);
     }
 });
 
@@ -204,11 +205,19 @@ export const handlePublication = async (req, res) => {
             const author = JSON.parse(req.body.author || '[]');
             const keywords = JSON.parse(req.body.keywords || '[]');
             const email = req.body.email;
-            const filePath = req.file?.path || '';
-            let reviewed = ReviewStatus.UNDER_REVIEW;
+            const status = req.body.status;
+            const comments = JSON.parse(req.body.comments || '[]');
 
+            // Ensure file exists
+            if (!req.file) {
+                return res.status(400).json({ error: 'No file uploaded' });
+            }
+
+            const fileData = fs.readFileSync(req.file.path);
+            const contentType = req.file.mimetype;
+            const originalName = req.file.originalname;
             // Validate fields
-            if (!title || !email || !author.length || !keywords.length || !filePath) {
+            if (!title || !email || !author.length || !keywords.length) {
                 console.warn("⚠️ Missing required fields");
                 return res.status(400).json({error: 'All fields are required'});
             }
@@ -221,8 +230,13 @@ export const handlePublication = async (req, res) => {
                 author,
                 keywords,
                 email,
-                reviewed,
-                filePath,
+                status,
+                comments,
+                file: {
+                    name: originalName,
+                    data: fileData,
+                    contentType: contentType,
+                },
                 uploadedAt: new Date()
             };
 

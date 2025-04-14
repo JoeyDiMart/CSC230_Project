@@ -24,12 +24,13 @@ function Publications({ role, email, name }) {
             email: email,
             keywords: [],
             file: '',
-            status: '',
+            status: 'under review',
+            comments: ''
         });
 
     // get publications from database
     useEffect(() => {
-        fetch("http://localhost:8081/api/publications?limit=10")
+        fetch("http://localhost:8081/api/publications")
             .then(response => response.json())  // Expecting an array of publications
             .then((data) => {
                 setPublications(data);
@@ -68,6 +69,8 @@ function Publications({ role, email, name }) {
         formData.append("email", uploadFile.email);
         formData.append("keywords", JSON.stringify(uploadFile.keywords));
         formData.append("file", uploadFile.file);
+        formData.append("status", uploadFile.status);
+        formData.append("comments", JSON.stringify(uploadFile.comments));
 
         try {
             setShowUpload(false);  // delete this soon
@@ -178,10 +181,8 @@ function Publications({ role, email, name }) {
                 </select>
                 <button onClick={handleSearch}>Search</button>
             </div>
-            <div className="pagination">
-                <div className="pubs-scroll-wrapper">
-                    <Pubs pubs={publications} />
-                </div>
+            <div className="pubs-scroll-wrapper">
+                <Pubs pubs={publications} />
             </div>
         </div>
     );

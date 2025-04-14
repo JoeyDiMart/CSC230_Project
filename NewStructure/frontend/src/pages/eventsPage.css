@@ -1,7 +1,9 @@
 .events-page {
     padding: 2rem;
     max-width: 1200px;
-    margin: 0 auto;
+    margin: 80px auto 0; /* Added top margin to account for the banner */
+    position: relative;
+    z-index: 1;
 }
 
 .events-header {

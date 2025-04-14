@@ -5,26 +5,35 @@ function Pubs({ pubs }) {
         <div className="pubs-scroll-wrapper">
             {pubs.length > 0 ? (
                 pubs.map((publication, idx) => {
-                    const fixedPath = publication.filePath.replace(/\\/g, "/");
-                    const fileName = fixedPath.split("/").pop();
+                    const fileName = publication.file?.name;
+                    const downloadLink = fileName ? `http://localhost:8081/files/${fileName}` : null;
+                    console.log(downloadLink);
                     return (
                         <div key={idx} className="publication-container">
-                            <p><strong>ID:</strong> {publication._id}</p>
                             <p><strong>Title:</strong> {publication.title}</p>
                             <p><strong>Author(s):</strong> {publication.author?.join(", ")}</p>
                             <p><strong>Keywords:</strong> {publication.keywords?.join(", ")}</p>
+                            <p><strong>Status:</strong> {publication.status}</p>
 
-                            <a
-                                href={`http://localhost:8081/${fixedPath}`}
-                                download={fileName}
-                                style={{ color: "blue", textDecoration: "underline", display: "inline-block", marginTop: "8px" }}
-                            >
-                                Download File
-                            </a>
+                            {downloadLink && (
+                                <a
+                                    href={downloadLink}
+                                    download={fileName}
+                                    style={{
+                                        color: "blue",
+                                        textDecoration: "underline",
+                                        display: "inline-block",
+                                        marginTop: "8px"
+                                    }}
+                                >
+                                    Download File
+                                </a>
+                            )}
                         </div>
                     );
                 })
             ) : (
+
                 <p>No publications found.</p>
             )}
         </div>

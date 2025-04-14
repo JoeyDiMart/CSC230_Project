@@ -5,7 +5,8 @@ import { FaUserPlus, FaCamera, FaChevronCircleLeft, FaChevronCircleRight, FaSign
 import { useState, useEffect } from "react";
 import UserInfo from "../Dashboard/Sidebar/UserInfo"
 import SidebarItems from "../Dashboard/Sidebar/SidebarItem";
-import Header from "../Dashboard/Sidebar/Header"
+import Header from "../Dashboard/Sidebar/Header";
+// import Logout from "../Dashboard/Sidebar/Logout";
 
 
 
@@ -23,33 +24,45 @@ const Sidebar = () => {
 
   const [isCollapsed, setIsCollapsed] = useState(false);
   const toggleSidebar = () => setIsCollapsed(!isCollapsed);
-  const [user, setUser] = useState(null);
+  //const [user, setUser] = useState(false)
 
+
+  // Sample Test for User info 
+  const [user, setUser] = useState({
+    name: "Admin",
+    email: "admin@example.com",
+  });
+
+  // Authentication Section Dashboard, Uncomment before testing
+  // useEffect(() => {
+  //   fetch("/check-session")
+  //     .then((res) => {
+  //       if (!res.ok) throw new Error("Not authenticated");
+  //       return res.json();
+  //     })
+  //     .then((data) => {
+  //       console.log("Session Data: !!!", data)
+
+
+  //       setUser({
+  //         name: data.user.name,
+  //         email: data.user.email,
+  //         avatar: "/UTampa_mark.png", // Need to add avatar if we want to
+  //       });
+  //     })
+  //     .catch((err) => {
+  //       console.log("Session error:", err);
+  //       setUser(null);
+  //     });
+  // }, []);
+  
   const handleLogout = () => {
     localStorage.removeItem("authToken");
     sessionStorage.removeItem("authToken");
     navigate("/"); // Navigate to the home page after logout
   };
 
-  useEffect(() => {
-    fetch("/check-session")
-      .then((res) => {
-        if (!res.ok) throw new Error("Not authenticated");
-        return res.json();
-      })
-      .then((data) => {
-        console.log("Session Data: !!!", data)
-        setUser({
-          name: data.user.name,
-          email: data.user.email,
-          avatar: "/UTampa_mark.png", // add avatar if not provided by backend
-        });
-      })
-      .catch((err) => {
-        console.log("Session error:", err);
-        setUser(null);
-      });
-  }, []);
+
 
   return (
     <aside className={`h-screen overflow-hidden transition-all duration-200 ease-in-out ${isCollapsed ? "w-16" : "w-48"} `}>
@@ -58,6 +71,23 @@ const Sidebar = () => {
         <Header isCollapsed={isCollapsed} toggleSidebar={toggleSidebar} />
         {/* Navigation Links */}
         <SidebarItems isCollapsed={isCollapsed} />
+
+        <div className="flex h-[580px] p-2 pt-0 list-none space-y-3">  
+          <div className="flex items-end w-full ">    
+            <button onClick={handleLogout} className={`w-full bg-transparent flex items-center gap-4 rounded-lg transition-all duration-300 whitespace-nowrap hover:bg-testingColorHover 
+              ${isCollapsed ? "justify-center" : "justify-start"}`}> 
+              <div className="flex w-full">
+                <span className="text-lg flex items-center "> 
+                  <FaSignOutAlt size={20} />
+                </span>
+                <span className={`ml-3 text-[16px] whitespace-nowrap flex items-center`}>
+                  {!isCollapsed && "Logout"}
+                </span>
+              </div>
+            </button>
+          </div>  
+        </div>
+
         {/* User Information */}
         {user && (
           <UserInfo user={user} isCollapsed={isCollapsed} handleLogout={handleLogout}/>
