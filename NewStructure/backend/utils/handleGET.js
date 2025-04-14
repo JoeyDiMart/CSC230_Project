@@ -22,11 +22,12 @@ export const handleGetRequest = async (req, res) => {
         const requestHandlers = {
             '/posters/pending': posterService.handleGetPending,
             '/posters': posterService.handleGetAll,
-            '/profile': userService.handleProfile,  // Fixed function name
-            '/issues': publicationService.handleGetIssues,  // Fixed function name
+            '/profile': userService.handleProfile,
+            '/issues': publicationService.handleGetIssues,
             '/review': publicationService.handleGetReviews,
             '/api/photos': handleGetPhotos,
             '/api/publications': handleGetPublications,
+            '/api/publications/byEmail': handleGetMyPublications,
             '/check-session': handleCheckSession,
             '/events': eventService.handleGetAll,
             '/events/range': eventService.handleGetByDateRange,
@@ -49,6 +50,13 @@ export const handleGetRequest = async (req, res) => {
                 console.log('Found handler for route:', req.path); // Debug log
                 req.params = { id: posterMatch[1] };
                 await posterService.handleGetById(req, res);
+                return;
+            }
+
+            const emailMatch = req.path.match(/^\/api\/publications\/byEmail\/([^\/]+)$/);
+            if (emailMatch) {
+                req.params = { email: decodeURIComponent(emailMatch[1]) };
+                await handleGetMyPublications(req, res);
                 return;
             }
 
@@ -131,6 +139,29 @@ let handleGetPublications = async (req, res) => {
         res.json(publications);
     } catch (err) {
         console.error(err);
+        res.sendStatus(500);
+    }
+};
+
+const handleGetMyPublications = async (req, res) => {
+    try {
+        const db = client.db('CIRT');
+        const collection = db.collection('PUBLICATIONS');
+        const email = req.params.email;
+        console.log("The myPub body: ", req.body);
+
+        if (!email) {
+            return res.status(400).json({ message: "Email is required" });
+        }
+
+        const publications = await collection.find({ email }).toArray();
+
+        if (!publications.length) {
+            return res.status(404).json({ message: "No publications found for this user" });
+        }
+        res.json(publications);
+    } catch (err) {
+        console.error("Error in handleGetMyPublications:", err);
         res.sendStatus(500);
     }
 };

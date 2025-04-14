@@ -8,10 +8,9 @@ function Publications({ role, email, name }) {
     const [showUpload, setShowUpload] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
     const [publications, setPublications] = useState([]);
+    const [myPublications, setMyPublications] = useState([]);
     //const [searchPubName, setSearchPubName] = useState([]); // should drop everything form first list when search
     const [loading, setLoading] = useState(true);
-    const [currentPage, setCurrentPage] = useState(1);
-    const [totalPages, setTotalPages] = useState(1);
     // search for text in that specific filter
     const [searchText, setSearchText] = useState("");
     const [searchFilter, setSearchFilter] = useState("title");
@@ -40,6 +39,22 @@ function Publications({ role, email, name }) {
                 setErrorMessage("Failed to load publications. Please try again later.");
             });
     }, []);
+
+
+    // for my publications only
+    useEffect(() => {
+        if (!email) return;
+        console.log("Fetching publications for:", email);
+
+        fetch(`http://localhost:8081/api/publications/byEmail/${email}`)
+            .then(response => response.json())
+            .then((data) => {
+                setMyPublications(data);
+            })
+            .catch((error) => {
+                console.error("Error fetching user publications:", error);
+            });
+    }, [email]);
 
 
     // Handles typing in for uploading a new publication
@@ -152,10 +167,9 @@ function Publications({ role, email, name }) {
                         </div>
                         </form>
                     )}
-
-
-                    <h2>Under Review</h2>
-                    {}
+                    <div className="pubs-scroll-wrapper">
+                        <Pubs pubs={myPublications} />
+                    </div>
                 </div>
             )}
 
