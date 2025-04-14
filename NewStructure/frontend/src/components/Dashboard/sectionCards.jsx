@@ -5,7 +5,6 @@ const stats = [
   {
     title: 'Total Website Views',
     value: '1,250.00',
-    trendIcon: <BiTrendingUp />,
     trend: '+12.5%',
     trendDirection: 'up',
     footer: 'Trending up this month',
@@ -14,7 +13,6 @@ const stats = [
   {
     title: 'New Users',
     value: '1,234',
-    trendIcon: <BiTrendingUp />,
     trend: '-20%',
     trendDirection: 'down',
     footer: 'Down 20% this period',
@@ -23,7 +21,6 @@ const stats = [
   {
     title: 'Total Publications',
     value: '45,678',
-    trendIcon: <BiTrendingUp />,
     trend: '+12.5%',
     trendDirection: 'up',
     footer: 'Strong user retention',
@@ -32,7 +29,6 @@ const stats = [
   {
     title: 'Growth Rate',
     value: '4.5%',
-    trendIcon: <BiTrendingUp />,
     trend: '+4.5%',
     trendDirection: 'up',
     footer: 'Steady performance',
@@ -40,9 +36,10 @@ const stats = [
   }
 ];
 
-const StatCard = ({ title, value, trend, trendIcon, trendDirection, footer, description }) => {
-    const Icon = trendDirection === 'up' ? <BiTrendingUp/> : <BiTrendingDown />;
-    const trendColor = trendDirection === 'up' ? 'text-green-600' : 'text-red-500';
+const StatCard = ({ title, value, trend, trendDirection, footer, description }) => {
+    const isUp = trendDirection === 'up';
+    const trendIcon = isUp ? <BiTrendingUp/> : <BiTrendingDown />;
+    const trendColor = isUp ? 'text-green-600' : 'text-red-500';
 
   return (
     <div className="bg-none rounded-xl shadow p-4 relative border-solid border-2 border-testingColorGrey ">
