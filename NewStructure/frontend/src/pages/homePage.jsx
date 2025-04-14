@@ -11,12 +11,11 @@ function Home() {
                 <Hero />
             </div>
             <div>
-                <Gallery />
-            </div>
-            <div>
                 <Cards />
             </div>
-            
+            <div>
+                <Gallery />
+            </div>
 
         </div>
     );
