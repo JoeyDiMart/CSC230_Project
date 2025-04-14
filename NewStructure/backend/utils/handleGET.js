@@ -128,12 +128,13 @@ let handleGetPublications = async (req, res) => {
         const db = client.db('CIRT');  // connect to database
         const collection = db.collection('PUBLICATIONS');  // link to PUBLICATIONS section of database
 
-
-        // Fetch three random photos instead of fixed names
-        const publications = await collection.aggregate([{ $sample: { size: 10 } }]).toArray();
+        const publications = await collection.aggregate([
+            { $match: { status: "accepted" } },       // filter by accepted status
+            { $sample: { size: 10 } }                  // pick 10 random accepted publications
+        ]).toArray();
 
         if (publications.length === 0) {
-            return res.status(404).json({ message: "No publications found" });
+            return res.status(404).json({ message: "No accepted publications found" });
         }
 
         res.json(publications);
@@ -142,6 +143,7 @@ let handleGetPublications = async (req, res) => {
         res.sendStatus(500);
     }
 };
+
 
 const handleGetMyPublications = async (req, res) => {
     try {
