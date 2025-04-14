@@ -52,6 +52,12 @@ export const handlePostRequest = async (req, res) => {
                 return publicationService.handleReview(req, res);
             });
         }
+
+        const updateUserMatch = req.path.match(/^\/users\/([^\/]+)$/);
+        if (updateUserMatch) {
+            req.params = { id: updateUserMatch[1] };
+            return userService.handleUpdateUser(req, res);
+        }
     
         return res.status(404).json({ error: 'Route not found' });
     }

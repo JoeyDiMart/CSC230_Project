@@ -5,6 +5,20 @@ import * as eventService from '../services/eventService.js';
 
 export const handlePutRequest = async (req, res) => {
     // User routes
+    const passwordMatch = req.path.match(/^\/users\/([^\/]+)\/password$/);
+    if (passwordMatch) {
+        req.params = { id: passwordMatch[1] };
+        await userService.handleUpdatePassword(req, res);
+        return;
+    }
+
+    const userMatch = req.path.match(/^\/users\/([^\/]+)$/);    
+    if (userMatch) {
+        req.params = { id: userMatch[1] };
+        await userService.handleUpdateUser(req, res);
+        return;
+    }
+
     const roleMatch = req.path.match(/^\/role\/([^\/]+)$/);
     if (roleMatch) {
         req.params = { id: roleMatch[1] };
