@@ -11,7 +11,7 @@ import Account from "./pages/accountPage.jsx";
 import Dashboard from "./pages/dashboard/dashboardPage.jsx"
 import Publications from './pages/publicationsPage.jsx';
 import Events from './pages/eventsPage.jsx'
-import AddUsers from './pages/dashboard/addUsersPage.jsx'
+import Users from './pages/dashboard/usersPage.jsx'
 
 
 // ✅ Wrapper to use useLocation and hide header/footer on certain routes
@@ -40,7 +40,7 @@ function AppWrapper({ role, setRole, name, setName, email, setEmail }) {
         />
         <Route path="/account" element={<Account />} />
         <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/addusers" element={<AddUsers />} />
+        <Route path="/dashboard/users" element={<Users />} />
         <Route
           path="/publications"
           element={<Publications role={role} setRole={setRole} name={name} setName={setName} email={email} setEmail={setEmail} />}
