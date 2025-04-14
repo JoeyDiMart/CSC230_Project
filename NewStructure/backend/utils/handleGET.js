@@ -32,7 +32,7 @@ export const handleGetRequest = async (req, res) => {
             '/events': eventService.handleGetAll,
             '/events/range': eventService.handleGetByDateRange,
             '/api/publications/search': handleSearchPublications,
-            '/users': userService.handleGetAll 
+            '/users': userService.handleGetAll
         };
         //  '/users': userService.handleGetAll, this caused an error
     
@@ -207,3 +207,6 @@ const handleSearchPublications = async (req, res) => {
         res.status(500).json({ error: "Error searching publications." });
     }
 };
+
+
+

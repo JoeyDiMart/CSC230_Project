@@ -7,6 +7,7 @@ import { fileURLToPath } from 'url';
 import multer from "multer";
 import fs from "fs";
 import {ReviewStatus} from "../Database/schemas.js";
+import { ObjectId } from 'mongodb';
 
 
 const __filename = fileURLToPath(import.meta.url);
@@ -31,6 +32,7 @@ export const handlePostRequest = async (req, res) => {
         '/submit': handleSubmit,
         '/events': eventService.handleCreate,
         '/api/publications': handlePublication,
+        '/publications/update': handleUpdateStatus
     };
     /*
      '/posters/upload': handleUpload,
@@ -256,3 +258,21 @@ export const handlePublication = async (req, res) => {
         }
     });
 }
+
+const handleUpdateStatus = async (req, res) => {
+    try {
+        const db = client.db('CIRT');
+        const collection = db.collection('PUBLICATIONS');
+
+        let docId = req.body.id
+        const result = await collection.findOneAndUpdate(
+            { _id: new ObjectId(docId) },
+            { $set: { status: req.body.status } },
+          );
+        return res.status(200).json({ message: "Status Successfuly Updated" });
+
+    } catch (error) {
+        console.log("Internal revenue Error", error);
+        return res.status(500).json({ error: "Service temporarily unavailable" });
+    }
+};

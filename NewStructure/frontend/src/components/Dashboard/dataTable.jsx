@@ -80,21 +80,21 @@ export default function DataTable() {
 
     const handleUpdateStatus = async (newStatus) => {
       try {
-        const response = await fetch(`http://localhost:8081/publications/${id}`, {
-          method: "PUT",
+        const response = await fetch(`http://localhost:8081/publications/update`, {
+          method: "POST",
           headers: {
-            "Content-Type": "application/json",
+            "Content-Type": "application/json"
           },
-          body: JSON.stringify({ status: newStatus }),
+          body: JSON.stringify({ status: newStatus, id }),
     });
 
     if (!response.ok) throw new Error("Failed to update status");
 
     setOpen(false);
-    } catch (err) {
-      console.log("Error updating status:", err);
-      alert("Failed to update status");
-      }
+   } catch (err) {
+     console.log("Error updating status:", err);
+     alert("Failed to update status", err);
+     }
     };
 
     const isDone = status === "accepted";
