@@ -94,7 +94,10 @@ function Signup({ role, setRole, name, setName, email, setEmail }) {
         <div className="Signup-Page">
             <div className="SignupWrapper">
                 <form onSubmit={handleSubmit}>
-                    <h2>Sign Up</h2>
+                    <div className="flex">
+                        <span className="p-1"><h2>Sign Up</h2></span>
+                        <span className="flex items-center p-1"><img src="/tampa-spartans-logo.png" alt="Tampa img" className="w-8 h-auto" /></span>
+                    </div>
                     <div className="input-field">
                         <input type="text" name="name" placeholder="Name" value={formData.name} onChange={handleChange} required />
                         <input type="email" name="email" placeholder="Email" value={formData.email} onChange={handleChange} required />
