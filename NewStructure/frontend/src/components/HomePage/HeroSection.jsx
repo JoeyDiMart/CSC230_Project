@@ -24,10 +24,10 @@ const HeroSection = () => {
             Learn More
           </a>
           <a
-            href="#publications"
+            href="/publications"
             className="border border-cirtRed text-cirtRed px-6 py-3 rounded-full font-semibold hover:bg-cirtRed hover:text-white transition duration-300"
           >
-            View Research
+            View Publications
           </a>
         </div>
       </div>
