@@ -109,7 +109,7 @@ export default function DataTable() {
         <button onClick={() => setOpen(!open)} className={` bg-transparent inline-flex items-center gap-2 px-2 py-1 rounded-md text-xs font-bold border border-testingColorGrey text-testingColorSubtitle min-w-[100px]
           ${isDone ? "text-green-500" : isDenied ? "text-red-500" : "text-testingColorSubtitle"}`}>
           {isDone && <FaRegCircleCheck className="text-green-500" />}
-          {isLoading && <PiSpinnerBold className="text-yellow-300" />}
+          {isLoading && <PiSpinnerBold className="text-yellow-300 animate-spin" />}
           {isDenied && <ImCross className="text-red-500" />}
           <span>{formatStatus(status)}</span>
         </button>

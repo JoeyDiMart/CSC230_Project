@@ -7,8 +7,8 @@ const UserInfo = ({ user, isCollapsed, handleLogout }) => {
     const [click, setClick] = useState(false)
 
   return (
-    <div className="mt-auto py-4 w-full ">
-        <div className=" flex items-center justify-start p-2 ml-2 rounded-lg transition-all duration-300  hover:bg-testingColorHover ">
+    <div className="py-1 pl-2">
+        <div className=" flex items-center justify-start p-4 pb-2 pt-4 rounded-lg transition-all duration-300  hover:bg-testingColorHover ">
             <div>
                 <img className="w-8 h-8 rounded-full object-cover flex justify-center" src={"/UTampa_mark.png"} />
             </div>
@@ -19,7 +19,7 @@ const UserInfo = ({ user, isCollapsed, handleLogout }) => {
                 <p className="text-[12px] m-0 p-0 text-testingColorSubtitle">{user?.email}</p>
             </div>
             <div>
-                <button className="bg-transparent border-none flex"> <HiDotsVertical/> </button>
+                {/* <button className="bg-transparent border-none flex"> <HiDotsVertical/> </button> */}
             </div>
             </>
             }
