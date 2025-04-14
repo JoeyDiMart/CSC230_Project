@@ -36,7 +36,7 @@ export const handleCreate = async (req, res) => {
 
 export const handleGetAll = async (req, res) => {
     try {
-        const eventCollection = client.db('CIRT').collection('events');
+        const eventCollection = client.db('CIRT').collection('EVENTS');
         const events = await eventCollection.find().toArray();
         res.json(events);
     } catch (err) {
@@ -48,7 +48,7 @@ export const handleGetAll = async (req, res) => {
 export const handleGetByDateRange = async (req, res) => {
     try {
         const { startDate, endDate } = req.query;
-        const eventCollection = client.db('CIRT').collection('events');
+        const eventCollection = client.db('CIRT').collection('EVENTS');
         const events = await eventCollection.find({
             startDate: { $gte: new Date(startDate) },
             endDate: { $lte: new Date(endDate) }
@@ -84,7 +84,7 @@ export const handleUpdate = async (req, res) => {
     }
 
     try {
-        const eventCollection = client.db('CIRT').collection('events');
+        const eventCollection = client.db('CIRT').collection('EVENTS');
         const event = await eventCollection.findOne({ 
             _id: new ObjectId(req.params.id) 
         });
@@ -124,7 +124,7 @@ export const handleDelete = async (req, res) => {
     }
 
     try {
-        const eventCollection = client.db('CIRT').collection('events');
+        const eventCollection = client.db('CIRT').collection('EVENTS');
         const event = await eventCollection.findOne({ 
             _id: new ObjectId(req.params.id) 
         });

@@ -6,7 +6,7 @@ import { FaUserPlus, FaCamera, FaHome } from "react-icons/fa";
 
 const links = [
   { link: "/dashboard", label: "Dashboard", icon: <MdSpaceDashboard size={20} /> },
-  { link: "/addusers", label: "Add User", icon: <FaUserPlus size={20} /> },
+  { link: "/dashboard/users", label: "Users", icon: <FaUserPlus size={20} /> },
   { link: "/dashboard/photoGalleryUpload", label: "Photo Gallery", icon: <FaCamera size={20} /> },
   { link: "/", label: "Home", icon: <FaHome size={20} /> },
 ];

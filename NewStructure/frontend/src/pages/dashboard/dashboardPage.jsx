@@ -11,6 +11,7 @@ export default function DashboardPage() {
   const [loading, setLoading] =useState(true); //Wait for the session check
   const [isAuthenticated, setIsAuthenticated] =useState(false)
 
+
   // useEffect (() => {
   //   fetch("check-session", {credentials : "include"})
   //   .then(res => {
