@@ -43,7 +43,10 @@ export default function DataTable() {
 
   useEffect(() => {
     fetchUsers()
-    .then(setData)
+    .then((users) => {
+    const sorted = users.sort((a, b) => new Date(b.uploadedAt) - new Date(a.uploadedAt));
+    setData(sorted)
+    })
     .catch(
       (err) => {
         console.log("Error loading users:", err)
@@ -55,6 +58,7 @@ export default function DataTable() {
   const refreshData = async () => {
     try {
       const users = await fetchUsers();
+      const sorted = users.sort((a, b) => new Date(b.uploadedAt) - new Date(a.uploadedAt));
       setData(users);
     } catch(err) {
       console.log("Error Refreshing Data", err)
