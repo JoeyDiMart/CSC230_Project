@@ -1,13 +1,6 @@
 .researchAssociates {
-    padding: 20px;
+    padding: 100px;
     background-color: #fff;
-}
-
-.pictureContainer {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-
 }
 
 .box{
@@ -53,4 +46,27 @@
 .emailButton{
     color: #fff;
     margin-top: 1px;
+}
+
+.emailButton:hover {
+    background-color: #C8102E;
+}
+
+.grid{
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2rem;
+    padding: 2rem 0;
+}
+
+@media (max-width: 1024px) {
+    .grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .grid {
+        grid-template-columns: repeat(1, 1fr);
+    }
 }
