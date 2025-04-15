@@ -50,6 +50,17 @@ export default function DataTable() {
       });
   }, []);
 
+
+  // Refresh DataTable For Accept/Deny Buttons
+  const refreshData = async () => {
+    try {
+      const users = await fetchUsers();
+      setData(users);
+    } catch(err) {
+      console.log("Error Refreshing Data", err)
+    }
+  };
+
   const columns = useMemo(() => [
     {
         accessorKey: "title",
@@ -70,13 +81,29 @@ export default function DataTable() {
         const status = getValue();
         const id = row.original._id;
 
-        return <StatusButton status={status} id={id} />
+        return <StatusButton status={status} id={id} refreshData={refreshData} />
       },
     },
   ], [])
 
   function StatusButton ({ status, id}) {
     const [open, setOpen] = useState(false);
+    const dropdownRef = React.useRef(null)
+
+
+    // Click Outside Event Listener for Accept/Deny Button
+    useEffect (() => {
+      const handleClickOutside = (event) => {
+        if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+          setOpen(false); 
+        }
+      };
+      document.addEventListener("mousedown", handleClickOutside)
+      return () => {
+        document.removeEventListener("mousedown", handleClickOutside);
+      }
+  },[]);
+
 
     const handleUpdateStatus = async (newStatus) => {
       try {
@@ -91,6 +118,7 @@ export default function DataTable() {
     if (!response.ok) throw new Error("Failed to update status");
 
     setOpen(false);
+    await refreshData();
    } catch (err) {
      console.log("Error updating status:", err);
      alert("Failed to update status", err);
@@ -105,7 +133,7 @@ export default function DataTable() {
       s ? s.charAt(0).toUpperCase() + s.slice(1) : "Unknown";
 
     return (
-      <div className="relative inline-flex">
+      <div ref={dropdownRef} className="relative inline-flex">
         <button onClick={() => setOpen(!open)} className={` bg-transparent inline-flex items-center gap-2 px-2 py-1 rounded-md text-xs font-bold border border-testingColorGrey text-testingColorSubtitle min-w-[100px]
           ${isDone ? "text-green-500" : isDenied ? "text-red-500" : "text-testingColorSubtitle"}`}>
           {isDone && <FaRegCircleCheck className="text-green-500" />}
