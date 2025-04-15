@@ -2,8 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Sidebar from '../../components/Dashboard/sidebar';
 import Navbar from '../../components/Dashboard/dashboardNavbar';
+import { useReactTable, getCoreRowModel, getPaginationRowModel, flexRender } from '@tanstack/react-table';
 
 export default function UsersPage() {
+  const trimText = (text, maxLength = 50) => {
+    return text.length > maxLength ? `${text.substring(0, maxLength)}...` : text;
+  };
+
   const navigate = useNavigate();
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -12,6 +17,61 @@ export default function UsersPage() {
   const [showEditModal, setShowEditModal] = useState(false);
   const [showPasswordModal, setShowPasswordModal] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
+  
+  const columns = [
+    {
+      accessorKey: 'name',
+      header: 'Name',
+      cell: ({ row }) => <span title={row.original.name}>{trimText(row.original.name)}</span>
+    },
+    {
+      accessorKey: 'email',
+      header: 'Email'
+    },
+    {
+      accessorKey: 'role',
+      header: 'Role'
+    },
+    {
+      id: 'actions',
+      header: 'Actions',
+      cell: ({ row }) => (
+        <div className="space-x-2">
+          <button
+            onClick={() => {
+              setSelectedUser(row.original);
+              setFormData({
+                name: row.original.name,
+                email: row.original.email,
+                role: row.original.role
+              });
+              setShowEditModal(true);
+            }}
+            className="bg-blue-500 text-white px-2 py-1 rounded text-sm hover:bg-blue-600"
+          >
+            Edit
+          </button>
+          <button
+            onClick={() => {
+              setSelectedUser(row.original);
+              setShowPasswordModal(true);
+            }}
+            className="bg-gray-500 text-white px-2 py-1 rounded text-sm hover:bg-gray-600"
+          >
+            Password
+          </button>
+        </div>
+      )
+    }
+  ];
+
+  const table = useReactTable({
+    data: users,
+    columns,
+    getCoreRowModel: getCoreRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+  });
+
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -114,73 +174,104 @@ export default function UsersPage() {
   if (error) return <div>Error: {error}</div>;
 
   return (
-    <div className="h-screen w-screen overflow-hidden bg-testingColorGrey">
-      <div className="flex h-screen overflow-x-hidden">
+    <div className="h-screen w-screen overflow-hidden bg-testingColorBlack">
+      <div className="flex h-screen overflow-x-hidden bg-testingColorBlack">
         <Sidebar />
-        <div className="flex flex-col flex-1 overflow-y-auto p-2">
-          <main className="bg-testingColorBlack w-full h-full rounded-xl px-4 py-6 space-y-6">
+        <div className="flex flex-col flex-1 overflow-hidden p-2 bg-testingColorBlack min-h-screen">
+          <main className="flex-1 p-6 bg-testingColorBlack overflow-hidden">
             <Navbar />
             
             {/* Users Management Section */}
-            <div className="bg-none rounded-xl shadow p-4 border-solid border-2 border-testingColorGrey">
-              <div className="flex justify-between items-center mb-4">
-                <h2 className="text-xl font-semibold text-testingColorWhite">Users Management</h2>
-                <button
-                  onClick={() => setShowAddModal(true)}
-                  className="bg-cirtGrey text-white px-4 py-2 rounded-md hover:bg-opacity-80"
-                >
-                  Add New User
-                </button>
-              </div>
+            <div className="flex flex-col h-[calc(100vh-8rem)] bg-testingColorBlack rounded-lg shadow-lg border border-testingColorGrey/30">
+              <div className="flex flex-col flex-1 p-4 min-h-0">
+                <div className="flex justify-between items-center mb-4">
+                  <h2 className="text-xl font-semibold text-testingColorSubtitle">User Management</h2>
+                  <button
+                    onClick={() => setShowAddModal(true)}
+                    className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+                  >
+                    Add User
+                  </button>
+                </div>
 
-              {/* Users Table */}
-              <div className="overflow-x-auto">
-                <table className="min-w-full divide-y divide-gray-700">
-                  <thead>
-                    <tr>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-testingColorSubtitle uppercase tracking-wider">Name</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-testingColorSubtitle uppercase tracking-wider">Email</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-testingColorSubtitle uppercase tracking-wider">Role</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-testingColorSubtitle uppercase tracking-wider">Actions</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-gray-700">
-                    {users.map((user) => (
-                      <tr key={user._id} className="hover:bg-testingColorGrey/10">
-                        <td className="px-6 py-4 whitespace-nowrap text-testingColorWhite">{user.name}</td>
-                        <td className="px-6 py-4 whitespace-nowrap text-testingColorWhite">{user.email}</td>
-                        <td className="px-6 py-4 whitespace-nowrap text-testingColorWhite">{user.role}</td>
-                        <td className="px-6 py-4 whitespace-nowrap">
-                          <button
-                            onClick={() => {
-                              setSelectedUser(user);
-                              setFormData({
-                                name: user.name,
-                                email: user.email,
-                                role: user.role
-                              });
-                              setShowEditModal(true);
-                            }}
-                            className="text-blue-400 hover:text-blue-300 mr-4"
-                          >
-                            Edit
-                          </button>
-                         
-                          <button
-                            onClick={() => {
-                              setSelectedUser(user);
-                              setFormData({ password: '' });
-                              setShowPasswordModal(true);
-                            }}
-                            className="text-green-400 hover:text-green-300"
-                          >
-                            Change Password
-                          </button>
-                        </td>
-                      </tr>
+                {/* Users Table */}
+                <div className="flex-1 overflow-auto rounded-lg border border-testingColorGrey bg-testingColorBlack min-h-0">
+                  <table className="min-w-full table-auto border-gray-300 border-spacing-0">
+                    <thead className="bg-testingColorOutline">
+                      {table.getHeaderGroups().map(headerGroup => (
+                        <tr key={headerGroup.id}>
+                          {headerGroup.headers.map(header => (
+                            <th key={header.id} className="px-4 py-2 border text-center text-sm font-medium text-testingColorSubtitle">
+                              {flexRender(header.column.columnDef.header, header.getContext())}
+                            </th>
+                          ))}
+                        </tr>
+                      ))}
+                    </thead>
+                    <tbody>
+                      {table.getRowModel().rows.map(row => (
+                        <tr key={row.id} className="hover:bg-testingColorHover">
+                          {row.getVisibleCells().map(cell => (
+                            <td key={cell.id} className="px-4 py-2 border text-sm text-testingColorSubtitle">
+                              {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                            </td>
+                          ))}
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              
+              {/* Pagination */}
+              <div className="border-t border-testingColorGrey">
+                <div className="flex items-center justify-between px-6 py-4">
+                  <div className="flex items-center gap-4">
+                    <button
+                      className="px-3 py-1 text-sm text-testingColorSubtitle disabled:opacity-50 hover:bg-testingColorHover rounded"
+                      onClick={() => table.setPageIndex(0)}
+                      disabled={!table.getCanPreviousPage()}
+                    >
+                      {'<<'}
+                    </button>
+                    <button
+                      className="px-3 py-1 text-sm text-testingColorSubtitle disabled:opacity-50 hover:bg-testingColorHover rounded"
+                      onClick={() => table.previousPage()}
+                      disabled={!table.getCanPreviousPage()}
+                    >
+                      {'<'}
+                    </button>
+                    <span className="text-sm text-testingColorSubtitle font-medium">
+                      Page {table.getState().pagination.pageIndex + 1} of{' '}
+                      {table.getPageCount()}
+                    </span>
+                    <button
+                      className="px-3 py-1 text-sm text-testingColorSubtitle disabled:opacity-50 hover:bg-testingColorHover rounded"
+                      onClick={() => table.nextPage()}
+                      disabled={!table.getCanNextPage()}
+                    >
+                      {'>'}
+                    </button>
+                    <button
+                      className="px-3 py-1 text-sm text-testingColorSubtitle disabled:opacity-50 hover:bg-testingColorHover rounded"
+                      onClick={() => table.setPageIndex(table.getPageCount() - 1)}
+                      disabled={!table.getCanNextPage()}
+                    >
+                      {'>>'}
+                    </button>
+                  </div>
+                  <select
+                    className="px-3 py-1 text-sm bg-testingColorBlack text-testingColorSubtitle border border-testingColorGrey rounded hover:bg-testingColorHover"
+                    value={table.getState().pagination.pageSize}
+                    onChange={e => table.setPageSize(Number(e.target.value))}
+                  >
+                    {[10, 20, 30, 40, 50].map(pageSize => (
+                      <option key={pageSize} value={pageSize}>
+                        Show {pageSize}
+                      </option>
                     ))}
-                  </tbody>
-                </table>
+                  </select>
+                </div>
               </div>
             </div>
 
