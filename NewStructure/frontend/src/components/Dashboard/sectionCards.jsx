@@ -98,11 +98,29 @@ const SectionCards = () => {
                 console.error('Error fetching total views:', error);
             }
         };
+        // gets the total amount of users
+        const fetchTotalUsers = async () => {
+            try {
+                const response = await fetch('http://localhost:8081/api/users/count'); // Replace with your API endpoint
+                if (!response.ok) {
+                    throw new Error('Failed to fetch total users');
+                }
+                const { total } = await response.json();
 
+                setStats((prevStats) =>
+                    prevStats.map((stat) =>
+                        stat.title === 'New Users' ? { ...stat, value: total } : stat
+                    )
+                );
+            } catch (error) {
+                console.error('Error fetching total users:', error);
+            }
+        };
+
+        fetchTotalUsers();
         fetchTotalViews();
         fetchTotalPublications();
 
-        // get total views
 
     }, []);
 

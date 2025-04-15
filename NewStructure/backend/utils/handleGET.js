@@ -34,6 +34,7 @@ export const handleGetRequest = async (req, res) => {
             '/events/range': eventService.handleGetByDateRange,
             '/api/publications/search': handleSearchPublications,
             '/users': userService.handleGetAll,
+            '/api/users/count': handleGetTotalUsers,
             '/api/publications/count': handleGetTotalPublications,
             '/api/views/count': handleGetTotalViews,
 
@@ -270,3 +271,17 @@ const handleGetTotalViews = async (req, res) => {
     }
 };
 
+const handleGetTotalUsers = async (req, res) => {
+    try {
+        const db = client.db('CIRT');
+        const collection = db.collection('USERS');
+
+        // Count the total number of documents in the USERS collection
+        const totalUsers = await collection.countDocuments();
+
+        res.status(200).json({ total: totalUsers });
+    } catch (err) {
+        console.error("Error fetching total users:", err);
+        res.status(500).json({ error: "Internal server error" });
+    }
+};
