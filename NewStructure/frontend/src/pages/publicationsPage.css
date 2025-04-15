@@ -23,8 +23,10 @@
     border-radius: 20px;
 }
 .publisher-stuff {
+    justify-content: center;
     position: relative;
     margin-top: 80px;
+    width: 100%;
 }
 
 .upload {
@@ -46,6 +48,115 @@
     text-align: center;
     margin: 0;
     width: 100%;
+}
+
+.search-bar-container {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin: 20px 0 0 0;
+}
+.animated-search-form {
+    --timing: 0.3s;
+    --border-color: #C8102E;
+    display: flex;
+    align-items: center;
+    position: relative;
+    width: 300px;
+    height: 45px;
+    padding-inline: 1em;
+    background-color: white;
+    border-radius: 999px;
+    transition: border-radius var(--timing) ease, box-shadow var(--timing) ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+.animated-search-input::placeholder {
+    color: #C8102E;
+}
+
+/* Animated underline */
+.animated-search-form::before {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 2px;
+    width: 100%;
+    background-color: var(--border-color);
+    transform: scaleX(0); /* make line go away when not clicked */
+    transform-origin: center;
+    transition: transform var(--timing) ease;
+}
+
+/* Square edges on focus + underline */
+.animated-search-form:focus-within {
+    border-radius: 0;
+    box-shadow: none;
+}
+
+.animated-search-form:focus-within::before {
+    transform: scaleX(1);
+}
+
+/* Input */
+.animated-search-input {
+    flex: 1;
+    color: var(--border-color);
+    font-size: 1rem;
+    border: none;
+    outline: none;
+    background-color: transparent;
+    padding: 0.5em;
+}
+
+/* Icon button */
+.search-icon {
+    background: none;
+    border: none;
+    padding: 0;
+    margin-right: 0.5em;
+    display: flex;
+    align-items: center;
+    color: #555;
+    cursor: default; /* optional: since it’s not interactive */
+}
+.select-wrapper {
+    position: relative;
+    display: inline-block;
+}
+
+.select-inner {
+    display: flex;
+    align-items: center;
+    background: transparent;
+    padding: 0.4em 0.6em;
+    border-radius: 6px;
+    position: relative;
+}
+
+.search-filter {
+    appearance: none;
+    background: transparent;
+    border: none;
+    color: var(--border-color);
+    font-size: 0.95rem;
+    font-weight: 500;
+    padding: 0.5em 2.2em 0.5em 1em;
+    border-radius: 6px;
+    cursor: pointer;
+    outline: none;
+}
+
+.dropdown-arrow {
+    position: absolute;
+    pointer-events: none;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.search-filter:focus {
+    outline: none;
 }
 
 .input-container {

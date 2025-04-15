@@ -175,27 +175,41 @@ function Publications({ role, email, name }) {
             )}
 
             <h2>Publications</h2>
-            <div className="search-bar">
-                <input
-                    type="text"
-                    id="search"
-                    className="search-bar"
-                    value={searchText}
-                    onChange={(e) => setSearchText(e.target.value)}
-                    placeholder="Search..."
-                />
-                <select
-                    id="filter"
-                    className="filter-menu"
-                    value={searchFilter}
-                    onChange={(e) => setSearchFilter(e.target.value)}
-                >
-                    <option value="title">by Title</option>
-                    <option value="author">by Author</option>
-                    <option value="keyword">by Keyword</option>
-                </select>
-                <button onClick={handleSearch}>Search</button>
+            <div className="search-bar-container">
+                <form className="animated-search-form" onSubmit={(e) => { e.preventDefault(); handleSearch(); }}>
+                    <button type="submit" className="search-icon">
+                        <svg width="17" height="16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M7.667 12.667A5.333 5.333 0 107.667 2a5.333 5.333 0 000 10.667zM14.334 14l-2.9-2.9"
+                                  stroke="currentColor" strokeWidth="1.333" strokeLinecap="round" strokeLinejoin="round" />
+                        </svg>
+                    </button>
+
+                    <input
+                        type="text"
+                        className="animated-search-input"
+                        placeholder="Search..."
+                        value={searchText}
+                        onChange={(e) => setSearchText(e.target.value)}
+                    />
+
+                    <div className="select-wrapper" style={{ position: "relative", display: "inline-block" }}>
+                        <select className="search-filter" value={searchFilter} onChange={(e) => setSearchFilter(e.target.value)}>
+                            <option value="title">by Title</option>
+                            <option value="author">by Author</option>
+                            <option value="keyword">by Keyword</option>
+                        </select>
+                        <svg
+                            className="dropdown-arrow"  width="16"  height="16"  viewBox="0 0 24 24"  fill="none"
+                            stroke="#aaa"  strokeWidth="2"  strokeLinecap="round"  strokeLinejoin="round"
+                        >
+                            <polyline points="6 9 12 15 18 9" />
+                        </svg>
             </div>
+
+        </form>
+
+            </div>
+
             <div className="pubs-scroll-wrapper">
                 <Pubs pubs={publications} />
             </div>
