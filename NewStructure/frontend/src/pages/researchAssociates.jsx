@@ -64,6 +64,7 @@ function ResearchAssociates() {
         </div>
 )
 }
+export default ResearchAssociates;
 
 /*
 <div className="col-sm-6 col-md-3">
