@@ -29,7 +29,7 @@ function Publications({ role, email, name }) {
 
     // get publications from database
     useEffect(() => {
-        fetch("http://localhost:8081/api/publications")
+        fetch("http://localhost:8081/api/publications1")
             .then(response => response.json())  // Expecting an array of publications
             .then((data) => {
                 setPublications(data);

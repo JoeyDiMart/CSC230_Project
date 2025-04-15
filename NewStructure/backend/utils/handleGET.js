@@ -26,7 +26,8 @@ export const handleGetRequest = async (req, res) => {
             '/issues': publicationService.handleGetIssues,
             '/review': publicationService.handleGetReviews,
             '/api/photos': handleGetPhotos,
-            '/api/publications': handleGetPublications,
+            '/api/publications1': handleGetPublications1,
+            '/api/publications2': handleGetPublications2,
             '/api/publications/byEmail': handleGetMyPublications,
             '/check-session': handleCheckSession,
             '/events': eventService.handleGetAll,
@@ -123,14 +124,34 @@ let handleGetPhotos = async (req, res) => {
     }
 };
 
-let handleGetPublications = async (req, res) => {
+let handleGetPublications1 = async (req, res) => {
     try {
-        const db = client.db('CIRT');  // connect to database
-        const collection = db.collection('PUBLICATIONS');  // link to PUBLICATIONS section of database
+        const db = client.db('CIRT'); 
+        const collection = db.collection('PUBLICATIONS'); 
 
         const publications = await collection.aggregate([
-            { $match: { status: "accepted" } },       // filter by accepted status
-            { $sample: { size: 10 } }                  // pick 10 random accepted publications
+            { $match: { status: "accepted" } },      
+            { $sample: { size: 10 } }                  
+        ]).toArray();
+
+        if (publications.length === 0) {
+            return res.status(404).json({ message: "No accepted publications found" });
+        }
+
+        res.json(publications);
+    } catch (err) {
+        console.error(err);
+        res.sendStatus(500);
+    }
+};
+
+let handleGetPublications2 = async (req, res) => {
+    try {
+        const db = client.db('CIRT');  
+        const collection = db.collection('PUBLICATIONS');  
+
+        const publications = await collection.aggregate([     
+            { $sample: { size: 10 } }                  
         ]).toArray();
 
         if (publications.length === 0) {
