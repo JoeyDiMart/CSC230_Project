@@ -33,7 +33,9 @@ export const handleGetRequest = async (req, res) => {
             '/events': eventService.handleGetAll,
             '/events/range': eventService.handleGetByDateRange,
             '/api/publications/search': handleSearchPublications,
-            '/users': userService.handleGetAll
+            '/users': userService.handleGetAll,
+            '/api/publications/count': handleGetTotalPublications,
+
         };
         //  '/users': userService.handleGetAll, this caused an error
     
@@ -230,5 +232,19 @@ const handleSearchPublications = async (req, res) => {
     }
 };
 
+// Add this function to handleGET.js
+const handleGetTotalPublications = async (req, res) => {
+    try {
+        const db = client.db('CIRT');
+        const collection = db.collection('PUBLICATIONS');
 
+        // Count the total number of documents in the PUBLICATIONS collection
+        const total = await collection.countDocuments();
+
+        res.status(200).json({ total });
+    } catch (err) {
+        console.error("Error fetching total publications:", err);
+        res.status(500).json({ error: "Internal server error" });
+    }
+};
 

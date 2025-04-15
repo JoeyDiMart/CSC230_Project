@@ -1,7 +1,7 @@
-import React from 'react';
 import {BiTrendingUp,BiTrendingDown} from 'react-icons/bi';
+import React, { useState, useEffect } from 'react';
 
-const stats = [
+const statsTemplate = [
   {
     title: 'Total Website Views',
     value: '1,250.00',
@@ -59,13 +59,36 @@ const StatCard = ({ title, value, trend, trendDirection, footer, description }) 
 };
 
 const SectionCards = () => {
-  return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
-      {stats.map((card, index) => (
-        <StatCard key={index} {...card} />
-      ))}
-    </div>
-  );
-};
+    const [stats, setStats] = useState(statsTemplate);
 
+    useEffect(() => {
+        const fetchTotalPublications = async () => {
+            try {
+                const response = await fetch('http://localhost:8081/api/publications/count'); // Replace ith your API endpoint
+                if (!response.ok) {
+                    throw new Error('Failed to fetch total publications');
+                }
+                const { total } = await response.json();
+
+                setStats((prevStats) =>
+                    prevStats.map((stat) =>
+                        stat.title === 'Total Publications' ? { ...stat, value: total } : stat
+                    )
+                );
+            } catch (error) {
+                console.error('Error fetching total publications:', error);
+            }
+        };
+
+        fetchTotalPublications();
+    }, []);
+
+    return (
+        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
+            {stats.map((card, index) => (
+                <StatCard key={index} {...card} />
+            ))}
+        </div>
+    );
+};
 export default SectionCards;
