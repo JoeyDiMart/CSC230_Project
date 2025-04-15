@@ -96,6 +96,7 @@ function Publications({ role, email, name }) {
 
             const data = await res.json();
 
+
             if (res.ok) {
                 //setShowUpload(false); move it here after we get it from backend
                 alert("Upload successful!");
