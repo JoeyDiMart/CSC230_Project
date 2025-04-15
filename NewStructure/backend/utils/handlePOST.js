@@ -32,7 +32,9 @@ export const handlePostRequest = async (req, res) => {
         '/submit': handleSubmit,
         '/events': eventService.handleCreate,
         '/api/publications': handlePublication,
-        '/publications/update': handleUpdateStatus
+        '/publications/update': handleUpdateStatus,
+        '/api/views/increment': handleIncrementViews,
+
     };
     /*
      '/posters/upload': handleUpload,
@@ -274,5 +276,24 @@ const handleUpdateStatus = async (req, res) => {
     } catch (error) {
         console.log("Internal revenue Error", error);
         return res.status(500).json({ error: "Service temporarily unavailable" });
+    }
+};
+
+const handleIncrementViews = async (req, res) => {
+    try {
+        const db = client.db('CIRT');
+        const collection = db.collection('VIEWS');
+
+        // Increment the view count (assuming a single document in the collection)
+        const result = await collection.updateOne(
+            { _id: "websiteViews" }, // Use a specific identifier for the document
+            { $inc: { count: 1 } },
+            { upsert: true } // Create the document if it doesn't exist
+        );
+
+        res.status(200).json({ message: "View count incremented", result });
+    } catch (err) {
+        console.error("Error incrementing views:", err);
+        res.status(500).json({ error: "Internal server error" });
     }
 };

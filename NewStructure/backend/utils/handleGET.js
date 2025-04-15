@@ -35,10 +35,12 @@ export const handleGetRequest = async (req, res) => {
             '/api/publications/search': handleSearchPublications,
             '/users': userService.handleGetAll,
             '/api/publications/count': handleGetTotalPublications,
+            '/api/views/count': handleGetTotalViews,
+
 
         };
         //  '/users': userService.handleGetAll, this caused an error
-    
+
         // Check if the handler exists for this route
         const handler = requestHandlers[req.path];  // Use req.path instead of req.originalUrl
     
@@ -232,7 +234,7 @@ const handleSearchPublications = async (req, res) => {
     }
 };
 
-// Add this function to handleGET.js
+// gets total publications
 const handleGetTotalPublications = async (req, res) => {
     try {
         const db = client.db('CIRT');
@@ -244,6 +246,26 @@ const handleGetTotalPublications = async (req, res) => {
         res.status(200).json({ total });
     } catch (err) {
         console.error("Error fetching total publications:", err);
+        res.status(500).json({ error: "Internal server error" });
+    }
+};
+
+// gets total views
+const handleGetTotalViews = async (req, res) => {
+    try {
+        const db = client.db('CIRT');
+        const collection = db.collection('VIEWS');
+
+        // Aggregate the total views (assuming a `count` field exists)
+        const totalViews = await collection.aggregate([
+            { $group: { _id: null, total: { $sum: "$count" } } }
+        ]).toArray();
+
+        const total = totalViews.length > 0 ? totalViews[0].total : 0;
+
+        res.status(200).json({ total });
+    } catch (err) {
+        console.error("Error fetching total views:", err);
         res.status(500).json({ error: "Internal server error" });
     }
 };

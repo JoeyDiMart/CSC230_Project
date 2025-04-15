@@ -62,6 +62,7 @@ const SectionCards = () => {
     const [stats, setStats] = useState(statsTemplate);
 
     useEffect(() => {
+        // get total publications
         const fetchTotalPublications = async () => {
             try {
                 const response = await fetch('http://localhost:8081/api/publications/count'); // Replace ith your API endpoint
@@ -79,8 +80,30 @@ const SectionCards = () => {
                 console.error('Error fetching total publications:', error);
             }
         };
+        // get total views
+        const fetchTotalViews = async () => {
+            try {
+                const response = await fetch('http://localhost:8081/api/views/count'); // Replace with your API endpoint
+                if (!response.ok) {
+                    throw new Error('Failed to fetch total views');
+                }
+                const { total } = await response.json();
 
+                setStats((prevStats) =>
+                    prevStats.map((stat) =>
+                        stat.title === 'Total Website Views' ? { ...stat, value: total } : stat
+                    )
+                );
+            } catch (error) {
+                console.error('Error fetching total views:', error);
+            }
+        };
+
+        fetchTotalViews();
         fetchTotalPublications();
+
+        // get total views
+
     }, []);
 
     return (

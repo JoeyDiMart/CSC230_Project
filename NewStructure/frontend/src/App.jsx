@@ -81,7 +81,16 @@ function App() {
         console.error("Error checking session:", error);
       }
     };
+    const incrementViews = async () => {
+      try {
+        console.log()
+        await fetch("http://localhost:8081/api/views/increment", { method: "POST" });
+      } catch (error) {
+        console.error("Error incrementing views:", error);
+      }
+    };
 
+    incrementViews();
     checkSession();
   }, []);
 
