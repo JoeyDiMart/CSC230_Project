@@ -4,7 +4,7 @@ import "./researchAssociates.css";
 function ResearchAssociates() {
     return (
         <div className="researchAssociates">
-            <div className="grid">
+            <div className="grid-researchAssociates">
                 <div className="row">
 
                     <div className="col-sm-6 col-md-3">
