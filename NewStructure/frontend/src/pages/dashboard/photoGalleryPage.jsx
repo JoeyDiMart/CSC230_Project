@@ -1,6 +1,7 @@
 import React from "react";
 import Navbar from "../../components/Dashboard/dashboardNavbar";
 import Sidebar from "../../components/Dashboard/sidebar";
+import PhotoGalleryUpload from "../../components/Dashboard/photoGalleryUpload"
 
 const PhotoGallery = () => {
     return (
@@ -11,6 +12,9 @@ const PhotoGallery = () => {
             <main className=" bg-testingColorBlack w-full h-full rounded-xl px-4 py-6 space-y-6">
                 <div>
                     <Navbar/>
+                </div>
+                <div>
+                    <PhotoGalleryUpload/>
                 </div>
             </main>
           </div>
