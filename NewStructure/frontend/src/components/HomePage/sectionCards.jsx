@@ -12,10 +12,10 @@ function Cards (){
                 <div className="relative bg-white rounded-2xl shadow-lg p-6 space-y-4 transition-transform duration-500 hover:scale-[1.02] before:content-[''] before:absolute before:top-0 before:left-0 before:right-0 before:h-[6px] before:bg-cirtRed before:rounded-t-2xl">
                     <div className="flex items-center">
                         <span className="flex items-center"><IoInformationCircle className="text-cirtRed m-2" size={24}/></span>
-                        <span><h2 className="text-xl font-semibold text-testingColorBlack">About CIRT</h2></span>
+                        <span><h2 className="text-xl font-semibold text-testingColorBlack">Our Mission</h2></span>
                     </div>
                     <p>
-                        The Criminology Institute for Research and Training (CIRT), founded in 2023, aims to lead in criminal justice research locally and nationally. It supports education, professional training, research, and collaboration with justice agencies.                    
+                        The Criminology Institute for Research and Training (CIRT), aims to lead in criminal justice research locally and nationally. It supports education, professional training, research, and collaboration with justice agencies.                    
                     </p>
                 </div>
 

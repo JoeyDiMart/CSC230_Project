@@ -19,7 +19,9 @@ export default {
         testingColorOutline: "#27272A",
         testingColorSubtitle: "#A1A1AA",
         testingColorHover: "#18181A",
-        testingColorSidebar: "#F4F4F5"
+        testingColorSidebar: "#F4F4F5",
+        testingColorHomeBackground: "0b090a",
+        testingColorHomeCardBackground: "#161a1d",
       },
     },
   },
