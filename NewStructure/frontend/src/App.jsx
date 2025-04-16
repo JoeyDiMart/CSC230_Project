@@ -13,7 +13,7 @@ import Publications from './pages/publicationsPage.jsx';
 import Events from './pages/eventsPage.jsx'
 import Users from './pages/dashboard/usersPage.jsx'
 import ResearchAssociates from './pages/researchAssociates.jsx';
-import PhotoGallery from './pages/dashboard/photoGallery.jsx'
+import PhotoGallery from './pages/dashboard/photoGalleryPage.jsx'
 
 
 // ✅ Wrapper to use useLocation and hide header/footer on certain routes
