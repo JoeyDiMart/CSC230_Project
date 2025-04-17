@@ -37,7 +37,8 @@ export const handleCreate = async (req, res) => {
 export const handleGetAll = async (req, res) => {
     try {
         const eventCollection = client.db('CIRT').collection('EVENTS');
-        const events = await eventCollection.find().toArray();
+        // Sort events by startDate in ascending order (upcoming events first)
+        const events = await eventCollection.find().sort({ startDate: 1 }).toArray();
         res.json(events);
     } catch (err) {
         console.error('Error fetching events:', err);
@@ -52,7 +53,7 @@ export const handleGetByDateRange = async (req, res) => {
         const events = await eventCollection.find({
             startDate: { $gte: new Date(startDate) },
             endDate: { $lte: new Date(endDate) }
-        }).toArray();
+        }).sort({ startDate: 1 }).toArray();
         res.json(events);
     } catch (err) {
         console.error('Error fetching events by date range:', err);
