@@ -32,7 +32,8 @@ function Publications({ role, email, name }) {
         fetch("http://localhost:8081/api/publications1")
             .then(response => response.json())  // Expecting an array of publications
             .then((data) => {
-                setPublications(data);
+                const acceptedPublications = data.filter(pub => pub.status === "accepted");
+                setPublications(acceptedPublications);
             })
             .catch((error) => {
                 console.error("Error fetching publications:", error);
@@ -134,7 +135,8 @@ function Publications({ role, email, name }) {
                 throw new Error(data.message || "Search failed.");
             }
 
-            setPublications(data);
+            const accepted = data.filter(pub => pub.status === "accepted");
+            setPublications(accepted);
         } catch (err) {
             setErrorMessage(err.message);
             console.error("Search failed:", err);
@@ -209,7 +211,6 @@ function Publications({ role, email, name }) {
 
             </div>
             <div className="pubs-scroll-wrapper">
-                <Pubs pubs={publications} />
                 <Pubs pubs={publications} />
             </div>
         </div>
