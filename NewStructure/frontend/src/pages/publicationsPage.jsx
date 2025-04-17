@@ -210,6 +210,7 @@ function Publications({ role, email, name }) {
         </form>
 
             </div>
+
             <div className="pubs-scroll-wrapper">
                 <Pubs pubs={publications} />
             </div>

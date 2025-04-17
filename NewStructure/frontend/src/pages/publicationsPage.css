@@ -223,11 +223,13 @@
     overflow-x: auto;
     scroll-snap-type: x mandatory;
     padding: 1rem;
+    gap: 1rem;
     max-width: 100%;
 }
 
 .publication-container {
     min-width: 250px;
+    max-width: 500px;
     scroll-snap-align: start;
     border: 1px solid var(--border-color);
     border-radius: 12px;
