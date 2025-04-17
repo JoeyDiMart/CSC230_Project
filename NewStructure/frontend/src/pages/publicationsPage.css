@@ -222,7 +222,6 @@
     display: flex;
     overflow-x: auto;
     scroll-snap-type: x mandatory;
-    gap: 1rem;
     padding: 1rem;
     max-width: 100%;
 }
@@ -236,9 +235,10 @@
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
-    padding: 1rem;
     background: #fff;
     box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    padding: 0 1rem 1rem;
+    margin-top: 0;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 .publication-container:hover {
@@ -247,12 +247,13 @@
 }
 .publication-title {
     width: 100%;
-    display: flex;
-    text-align: center;
-    align-items: center;
     font-weight: bold;
+    display: flex;
+    align-items: start;
     font-size: 1.2em;
     margin-bottom: 10px;
+    padding-top: 0;
+    margin-top: 0;
 }
 
 

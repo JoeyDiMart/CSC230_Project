@@ -183,7 +183,6 @@ function Publications({ role, email, name }) {
                                   stroke="currentColor" strokeWidth="1.333" strokeLinecap="round" strokeLinejoin="round" />
                         </svg>
                     </button>
-
                     <input
                         type="text"
                         className="animated-search-input"
@@ -209,8 +208,8 @@ function Publications({ role, email, name }) {
         </form>
 
             </div>
-
             <div className="pubs-scroll-wrapper">
+                <Pubs pubs={publications} />
                 <Pubs pubs={publications} />
             </div>
         </div>
