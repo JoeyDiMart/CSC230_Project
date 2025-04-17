@@ -28,10 +28,11 @@ function Pubs({ pubs }) {
                     const downloadLink = window.URL.createObjectURL(theBlob);
                     return (
                         <div key={idx} className="publication-container">
-                            <p><strong>Title:</strong> {publication.title}</p>
+                            <div key={idx} className="publication-title">
+                                <p><strong>{publication.title}</strong></p>
+                            </div>
                             <p><strong>Author(s):</strong> {publication.author?.join(", ")}</p>
                             <p><strong>Keywords:</strong> {publication.keywords?.join(", ")}</p>
-                            <p><strong>Status:</strong> {publication.status}</p>
 
                             {downloadLink && (
                                 <a
