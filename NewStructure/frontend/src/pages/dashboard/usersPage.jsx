@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useReactTable, getCoreRowModel, getPaginationRowModel, flexRender } from '@tanstack/react-table';
+import { FaEdit } from "react-icons/fa";
+import { FaLock } from "react-icons/fa";
 
 export default function UsersPage() {
   const trimText = (text, maxLength = 50) => {
@@ -15,6 +17,25 @@ export default function UsersPage() {
   const [showEditModal, setShowEditModal] = useState(false);
   const [showPasswordModal, setShowPasswordModal] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
+
+  useEffect(() => {
+    // For development/testing only
+    const isDev = process.env.NODE_ENV === 'development';
+  
+    if (isDev) {
+      setUsers([
+        { _id: '1', name: 'Sebastian Carter', email: 'sebastian.carter@example.com', role: 'admin' },
+        { _id: '2', name: 'Natalie Dawson', email: 'natalie.dawson@example.com', role: 'reviewer' },
+        { _id: '3', name: 'Jackson Lee', email: 'jackson.lee@example.com', role: 'publisher' },
+        { _id: '4', name: 'Ava Thompson', email: 'ava.thompson@example.com', role: 'author' },
+        { _id: '5', name: 'Liam Wilson', email: 'liam.wilson@example.com', role: 'reviewer' },
+        { _id: '6', name: 'Emma Martinez', email: 'emma.martinez@example.com', role: 'admin' }
+      ]);
+      setLoading(false);
+    } else {
+      fetchUsers();
+    }
+  }, []);
   
   const columns = [
     {
@@ -45,18 +66,25 @@ export default function UsersPage() {
               });
               setShowEditModal(true);
             }}
-            className="bg-blue-500 text-white px-2 py-1 rounded text-sm hover:bg-blue-600"
+            className="bg-transparent text-white px-2 py-1 rounded border-solid border-testingColorOutline text-sm w-24"
           >
-            Edit
+            <div className="flex items-center justify-center gap-1">
+              <FaEdit size={12} className="text-testingColorWhite" />
+              <span>Edit</span>
+            </div>
+            
           </button>
           <button
             onClick={() => {
               setSelectedUser(row.original);
               setShowPasswordModal(true);
             }}
-            className="bg-gray-500 text-white px-2 py-1 rounded text-sm hover:bg-gray-600"
+            className="bg-transparent text-white px-2 py-1 rounded border-solid border-testingColorOutline text-sm w-24"
           >
-            Password
+            <div className="flex items-center justify-center gap-1">
+              <FaLock size={12} className="text-testingColorWhite"/>
+              <span>Password</span>
+            </div>
           </button>
         </div>
       )
@@ -78,24 +106,24 @@ export default function UsersPage() {
   });
 
   // Fetch users on component mount
-  useEffect(() => {
-    fetchUsers();
-  }, []);
+  // useEffect(() => {
+  //   fetchUsers();
+  // }, []);
 
-  const fetchUsers = async () => {
-    try {
-      const response = await fetch('http://localhost:8081/users', {
-        credentials: 'include'
-      });
-      if (!response.ok) throw new Error('Failed to fetch users');
-      const data = await response.json();
-      setUsers(data);
-      setLoading(false);
-    } catch (err) {
-      setError(err.message);
-      setLoading(false);
-    }
-  };
+  // const fetchUsers = async () => {
+  //   try {
+  //     const response = await fetch('http://localhost:8081/users', {
+  //       credentials: 'include'
+  //     });
+  //     if (!response.ok) throw new Error('Failed to fetch users');
+  //     const data = await response.json();
+  //     setUsers(data);
+  //     setLoading(false);
+  //   } catch (err) {
+  //     setError(err.message);
+  //     setLoading(false);
+  //   }
+  // };
 
   const handleAddUser = async (e) => {
     e.preventDefault();
@@ -183,7 +211,7 @@ export default function UsersPage() {
                   <h2 className="text-xl font-semibold text-testingColorSubtitle">User Management</h2>
                   <button
                     onClick={() => setShowAddModal(true)}
-                    className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+                    className="bg-transparent border border-solid border-testingColorOutline text-white px-4 py-2 rounded hover:bg-testingColorHover"
                   >
                     Add User
                   </button>
@@ -282,7 +310,7 @@ export default function UsersPage() {
                         type="text"
                         value={formData.name}
                         onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                        className="w-full p-2 rounded bg-testingColorBlack text-white border border-gray-700"
+                        className="w-full p-2 rounded bg-testingColorBlack text-white border border-gray-700 box-border"
                         required
                       />
                     </div>
@@ -292,7 +320,7 @@ export default function UsersPage() {
                         type="email"
                         value={formData.email}
                         onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                        className="w-full p-2 rounded bg-testingColorBlack text-white border border-gray-700"
+                        className="w-full p-2 rounded bg-testingColorBlack text-white border border-gray-700 box-border"
                         required
                       />
                     </div>
@@ -302,7 +330,7 @@ export default function UsersPage() {
                         type="password"
                         value={formData.password}
                         onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                        className="w-full p-2 rounded bg-testingColorBlack text-white border border-gray-700"
+                        className="w-full p-2 rounded bg-testingColorBlack text-white border border-gray-700 box-border"
                         required
                         placeholder="Enter password"
                       />

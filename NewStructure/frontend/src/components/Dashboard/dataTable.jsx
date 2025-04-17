@@ -10,7 +10,7 @@ import { ImCross } from "react-icons/im";
 import { fetchUsers } from "./api"
 
 
-// // SAMPLE API
+// SAMPLE API
 // const fetchUsers = () => {
 //   return Promise.resolve([
 //     {
@@ -33,7 +33,7 @@ import { fetchUsers } from "./api"
 //       author: "Alice Johnson",
 //       email: "alice@example.com",
 //       status: "denied"
-//     }
+//     },
 //   ]);
 // };
 
