@@ -8,6 +8,9 @@ import multer from "multer";
 import fs from "fs";
 import {ReviewStatus} from "../Database/schemas.js";
 import { ObjectId } from 'mongodb';
+import * as crypto from 'crypto';
+
+
 
 
 const __filename = fileURLToPath(import.meta.url);
@@ -32,7 +35,9 @@ export const handlePostRequest = async (req, res) => {
         '/submit': handleSubmit,
         '/events': eventService.handleCreate,
         '/api/publications': handlePublication,
-        '/publications/update': handleUpdateStatus
+        '/publications/update': handleUpdateStatus,
+        '/api/views/increment': handleIncrementViews,
+
     };
     /*
      '/posters/upload': handleUpload,
@@ -85,8 +90,9 @@ const handleSignup = async (req, res) => {
         if (existingUser) {  // test if email is already stored in database
             return res.status(400).json({ error: "User already exists" });  // tested by changing message, works
         }
-
-        const result = await collection.insertOne({name, email, password, role });  // collect all 4 variables from user inpus
+        
+        password = crypto.createHash('md5').update(password).digest('hex')
+        const result = await collection.insertOne({name, email, password , role });  // collect all 4 variables from user inpus
         if (result.insertedId) {  // if successfully created put into database
             const insertedUser = await collection.findOne(  // if successful collect
                 { _id: result.insertedId },
@@ -120,7 +126,10 @@ const handleLogin = async (req, res) => {
             return res.status(460).json({ error: 'Invalid email or password' });
         }
 
-        const isMatch = password === user.password;  // check if correct password NOT ENCRYPTED
+
+        
+        var enc_password = crypto.createHash('md5').update(password).digest('hex')
+        const isMatch = enc_password === user.password;  // check if correct password NOT ENCRYPTED
         if (!isMatch) {
             return res.status(401).json({ error: 'Invalid email or password' });
         }
@@ -135,8 +144,8 @@ const handleLogin = async (req, res) => {
         return res.json({ message: 'Logged in successfully',
             user: { name: user.name, role: user.role, email: user.email }  // return only name, email and role
         });
-    } catch (err) {
-        return res.status(500).json({ error: 'Internal server error' });
+   } catch (err) {
+       return res.status(500).json({ error: 'Internal server error' });
     }
 };
 
@@ -274,5 +283,24 @@ const handleUpdateStatus = async (req, res) => {
     } catch (error) {
         console.log("Internal revenue Error", error);
         return res.status(500).json({ error: "Service temporarily unavailable" });
+    }
+};
+
+const handleIncrementViews = async (req, res) => {
+    try {
+        const db = client.db('CIRT');
+        const collection = db.collection('VIEWS');
+
+        // Increment the view count (assuming a single document in the collection)
+        const result = await collection.updateOne(
+            { _id: "websiteViews" }, // Use a specific identifier for the document
+            { $inc: { count: 1 } },
+            { upsert: true } // Create the document if it doesn't exist
+        );
+
+        res.status(200).json({ message: "View count incremented", result });
+    } catch (err) {
+        console.error("Error incrementing views:", err);
+        res.status(500).json({ error: "Internal server error" });
     }
 };

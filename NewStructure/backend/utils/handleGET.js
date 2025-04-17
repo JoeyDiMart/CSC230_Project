@@ -33,10 +33,15 @@ export const handleGetRequest = async (req, res) => {
             '/events': eventService.handleGetAll,
             '/events/range': eventService.handleGetByDateRange,
             '/api/publications/search': handleSearchPublications,
-            '/users': userService.handleGetAll
+            '/users': userService.handleGetAll,
+            '/api/users/count': handleGetTotalUsers,
+            '/api/publications/count': handleGetTotalPublications,
+            '/api/views/count': handleGetTotalViews,
+
+
         };
         //  '/users': userService.handleGetAll, this caused an error
-    
+
         // Check if the handler exists for this route
         const handler = requestHandlers[req.path];  // Use req.path instead of req.originalUrl
     
@@ -230,5 +235,53 @@ const handleSearchPublications = async (req, res) => {
     }
 };
 
+// gets total publications
+const handleGetTotalPublications = async (req, res) => {
+    try {
+        const db = client.db('CIRT');
+        const collection = db.collection('PUBLICATIONS');
 
+        // Count the total number of documents in the PUBLICATIONS collection
+        const total = await collection.countDocuments();
 
+        res.status(200).json({ total });
+    } catch (err) {
+        console.error("Error fetching total publications:", err);
+        res.status(500).json({ error: "Internal server error" });
+    }
+};
+
+// gets total views
+const handleGetTotalViews = async (req, res) => {
+    try {
+        const db = client.db('CIRT');
+        const collection = db.collection('VIEWS');
+
+        // Aggregate the total views (assuming a `count` field exists)
+        const totalViews = await collection.aggregate([
+            { $group: { _id: null, total: { $sum: "$count" } } }
+        ]).toArray();
+
+        const total = totalViews.length > 0 ? totalViews[0].total : 0;
+
+        res.status(200).json({ total });
+    } catch (err) {
+        console.error("Error fetching total views:", err);
+        res.status(500).json({ error: "Internal server error" });
+    }
+};
+
+const handleGetTotalUsers = async (req, res) => {
+    try {
+        const db = client.db('CIRT');
+        const collection = db.collection('USERS');
+
+        // Count the total number of documents in the USERS collection
+        const totalUsers = await collection.countDocuments();
+
+        res.status(200).json({ total: totalUsers });
+    } catch (err) {
+        console.error("Error fetching total users:", err);
+        res.status(500).json({ error: "Internal server error" });
+    }
+};

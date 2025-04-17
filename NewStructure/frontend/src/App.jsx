@@ -13,6 +13,7 @@ import Publications from './pages/publicationsPage.jsx';
 import Events from './pages/eventsPage.jsx'
 import Users from './pages/dashboard/usersPage.jsx'
 import ResearchAssociates from './pages/researchAssociates.jsx';
+import PhotoGallery from './pages/dashboard/photoGalleryPage.jsx'
 
 
 // ✅ Wrapper to use useLocation and hide header/footer on certain routes
@@ -20,7 +21,7 @@ function AppWrapper({ role, setRole, name, setName, email, setEmail }) {
   const location = useLocation();
   const path = location.pathname.toLowerCase();
 
-  const hideHeaderFooter = path.startsWith("/dashboard") || path.startsWith("/addusers");
+  const hideHeaderFooter = path.startsWith("/dashboard") || path.startsWith("/addusers") || path.startsWith("/photogallery");
  
 
   return (
@@ -42,6 +43,7 @@ function AppWrapper({ role, setRole, name, setName, email, setEmail }) {
         <Route path="/account" element={<Account />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/dashboard/users" element={<Users />} />
+        <Route path="/photogallery" element={<PhotoGallery />} />
         <Route
           path="/publications"
           element={<Publications role={role} setRole={setRole} name={name} setName={setName} email={email} setEmail={setEmail} />}
@@ -79,7 +81,16 @@ function App() {
         console.error("Error checking session:", error);
       }
     };
+    const incrementViews = async () => {
+      try {
+        console.log()
+        await fetch("http://localhost:8081/api/views/increment", { method: "POST" });
+      } catch (error) {
+        console.error("Error incrementing views:", error);
+      }
+    };
 
+    incrementViews();
     checkSession();
   }, []);
 
