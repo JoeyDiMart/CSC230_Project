@@ -1,7 +1,7 @@
 import './photoGallery.css'
 import { useState, useEffect } from "react";
 
-function Gallery( {photos, setPhotos} ) {
+function Gallery () {
     const [photos, setPhotos] = useState([]);
     const [index, setIndex] = useState(0);
 
