@@ -1,5 +1,5 @@
 import './App.css';
-import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, useLocation, Outlet } from "react-router-dom";
 import { useState, useEffect } from "react";
 
 import Header from './components/header.jsx';
@@ -14,6 +14,7 @@ import Events from './pages/eventsPage.jsx'
 import Users from './pages/dashboard/usersPage.jsx'
 import ResearchAssociates from './pages/researchAssociates.jsx';
 import PhotoGallery from './pages/dashboard/photoGalleryPage.jsx'
+import DashboardLayout from './components/Dashboard/DashboardLayout.jsx'
 
 
 // ✅ Wrapper to use useLocation and hide header/footer on certain routes
@@ -41,8 +42,11 @@ function AppWrapper({ role, setRole, name, setName, email, setEmail }) {
           element={<Signup role={role} setRole={setRole} name={name} setName={setName} email={email} setEmail={setEmail} />}
         />
         <Route path="/account" element={<Account />} />
-        <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/dashboard/users" element={<Users />} />
+        {/* Dashboard routes with shared layout */}
+        <Route path="/dashboard" element={<DashboardLayout />}>
+          <Route index element={<Dashboard />} />
+          <Route path="users" element={<Users />} />
+        </Route>
         <Route path="/photogallery" element={<PhotoGallery />} />
         <Route
           path="/publications"

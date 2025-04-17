@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Sidebar from '../../components/Dashboard/sidebar';
-import Navbar from '../../components/Dashboard/dashboardNavbar';
 import { useReactTable, getCoreRowModel, getPaginationRowModel, flexRender } from '@tanstack/react-table';
 
 export default function UsersPage() {
@@ -170,16 +168,13 @@ export default function UsersPage() {
 
 
 
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error}</div>;
+  if (loading) return <div className="bg-testingColorBlack text-white p-4">Loading...</div>;
+  if (error) return <div className="bg-testingColorBlack text-white p-4">Error: {error}</div>;
 
   return (
-    <div className="h-screen w-screen overflow-hidden bg-testingColorBlack">
-      <div className="flex h-screen overflow-x-hidden bg-testingColorBlack">
-        <Sidebar />
+    <div className="bg-testingColorBlack">
         <div className="flex flex-col flex-1 overflow-hidden p-2 bg-testingColorBlack min-h-screen">
           <main className="flex-1 p-6 bg-testingColorBlack overflow-hidden">
-            <Navbar />
             
             {/* Users Management Section */}
             <div className="flex flex-col h-[calc(100vh-8rem)] bg-testingColorBlack rounded-lg shadow-lg border border-testingColorGrey/30">
@@ -450,7 +445,6 @@ export default function UsersPage() {
             )}
           </main>
         </div>
-      </div>
     </div>
   );
 }
