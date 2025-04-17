@@ -19,16 +19,13 @@ function Pubs({ pubs }) {
             {pubs.length > 0 ? (
                 pubs.map((publication, idx) => {
                     const fileName = publication.file?.name;
-                    // const downloadLink = fileName ? `http://localhost:8081/files/${fileName}` : null;
-
-                    // TODO: Convert publication.file?.data from Base64 to Binary
-                    const binaryVersionOfData = base64ToByteArray(publication.file?.data)
-                    var theBlob = new Blob([binaryVersionOfData], {type: publication.file?.type});
-                    console.log(theBlob);
+                    const binaryVersionOfData = base64ToByteArray(publication.file?.data);
+                    const theBlob = new Blob([binaryVersionOfData], { type: publication.file?.type });
                     const downloadLink = window.URL.createObjectURL(theBlob);
+
                     return (
                         <div key={idx} className="publication-container">
-                            <div key={idx} className="publication-title">
+                            <div className="publication-title">
                                 <p><strong>{publication.title}</strong></p>
                             </div>
                             <p><strong>Author(s):</strong> {publication.author?.join(", ")}</p>
@@ -52,11 +49,34 @@ function Pubs({ pubs }) {
                     );
                 })
             ) : (
+                <div>
+                    <p>No Publications</p>
+                {/*
+                <div key="empty" className="publication-container">
+                    <div className="publication-title">
+                        <p><strong>{'The Title'}</strong></p>
+                    </div>
+                    <p><strong>Author(s):</strong> {'Test Author'}</p>
+                    <p><strong>Keywords:</strong> {'Keyword1, keyword2'}</p>
 
-                <p>No publications found.</p>
+                    <a
+                        href="#"
+                        download="placeholder.txt"
+                        style={{
+                            color: "blue",
+                            textDecoration: "underline",
+                            display: "inline-block",
+                            marginTop: "8px"
+                        }}
+                    >
+                        Download File
+                    </a>
+                </div>
+            */}
+                </div>
             )}
         </div>
-
     );
 }
+
 export default Pubs;
