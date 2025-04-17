@@ -28,9 +28,9 @@ export const handleProfile = async (req, res) => {
 };
 
 export const handleUpdateRole = async (req, res) => {
-    if (!req.session.user) {
-        return res.status(403).json({ error: 'Forbidden' });
-    }
+    //if (!req.session.user) {
+    //    return res.status(403).json({ error: 'Forbidden' });
+    //}
 
     const { role } = req.body;
     if (!['author', 'reviewer', 'publisher', 'admin'].includes(role)) {
@@ -57,9 +57,9 @@ export const handleUpdateRole = async (req, res) => {
 
 export const handleGetAll = async (req, res) => {
     try {
-        if (!req.session.user) {
-            return res.status(403).json({ error: 'Forbidden' });
-        }
+        // if (!req.session.user) {
+        //     return res.status(403).json({ error: 'Forbidden' });
+        // }
         const db = client.db('CIRT');
         const collection = db.collection('USERS');
         const users = await collection.find().toArray();
@@ -72,9 +72,9 @@ export const handleGetAll = async (req, res) => {
 
 export const handleUpdateUser = async (req, res) => {
     try {
-        if (!req.session.user) {
-            return res.status(403).json({ error: 'Forbidden' });
-        }
+        // if (!req.session.user) {
+        //     return res.status(403).json({ error: 'Forbidden' });
+        // }
         const db = client.db('CIRT');
         const collection = db.collection('USERS');
         const result = await collection.updateOne(
@@ -93,9 +93,9 @@ export const handleUpdateUser = async (req, res) => {
 
 export const handleUpdatePassword = async (req, res) => {
     try {
-        if (!req.session.user || req.session.user.role !== 'admin') {
-            return res.status(403).json({ error: 'Forbidden' });
-        }
+        // if (!req.session.user || req.session.user.role !== 'admin') {
+        //     return res.status(403).json({ error: 'Forbidden' });
+        // }
 
         const { password } = req.body;
         if (!password) {
