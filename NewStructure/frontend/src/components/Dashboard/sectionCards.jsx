@@ -13,8 +13,8 @@ const statsTemplate = [
   {
     title: 'New Users',
     value: '1,234',
-    trend: '-20%',
-    trendDirection: 'down',
+    trend: '+20%',
+    trendDirection: 'up',
     footer: 'Down 20% this period',
     description: 'Acquisition needs attention'
   },

@@ -13,10 +13,10 @@ const DashboardLayout = () => {
       <div className="flex h-screen overflow-x-hidden">
         <Sidebar />
         <div className="flex flex-col flex-1 overflow-y-auto p-2">
-          <main className="bg-testingColorBlack w-full h-full rounded-xl px-4 py-6 space-y-6">
+          <main className="bg-testingColorBlack w-full min-h-screen rounded-xl  py-6">
             <Navbar />
             {/* Outlet renders the child route components */}
-            <div className="bg-testingColorBlack">
+            <div className="bg-transparent px-4">
               <Outlet />
             </div>
           </main>

@@ -3,6 +3,12 @@ import { useNavigate } from 'react-router-dom';
 import { useReactTable, getCoreRowModel, getPaginationRowModel, flexRender } from '@tanstack/react-table';
 import { FaEdit } from "react-icons/fa";
 import { FaLock } from "react-icons/fa";
+import { HiArrowSmRight } from "react-icons/hi";
+import { HiArrowSmLeft } from "react-icons/hi";
+import { TbArrowsRight } from "react-icons/tb";
+import { TbArrowsLeft } from "react-icons/tb";
+
+
 
 export default function UsersPage() {
   const trimText = (text, maxLength = 50) => {
@@ -18,24 +24,37 @@ export default function UsersPage() {
   const [showPasswordModal, setShowPasswordModal] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
 
-  useEffect(() => {
-    // For development/testing only
-    const isDev = process.env.NODE_ENV === 'development';
+  // useEffect(() => {
+  //   // For development/testing only
+  //   const isDev = process.env.NODE_ENV === 'development';
   
-    if (isDev) {
-      setUsers([
-        { _id: '1', name: 'Sebastian Carter', email: 'sebastian.carter@example.com', role: 'admin' },
-        { _id: '2', name: 'Natalie Dawson', email: 'natalie.dawson@example.com', role: 'reviewer' },
-        { _id: '3', name: 'Jackson Lee', email: 'jackson.lee@example.com', role: 'publisher' },
-        { _id: '4', name: 'Ava Thompson', email: 'ava.thompson@example.com', role: 'author' },
-        { _id: '5', name: 'Liam Wilson', email: 'liam.wilson@example.com', role: 'reviewer' },
-        { _id: '6', name: 'Emma Martinez', email: 'emma.martinez@example.com', role: 'admin' }
-      ]);
-      setLoading(false);
-    } else {
-      fetchUsers();
-    }
-  }, []);
+  //   if (isDev) {
+  //     setUsers([
+  //       { _id: '1', name: 'Sebastian Carter', email: 'sebastian.carter@example.com', role: 'admin' },
+  //       { _id: '2', name: 'Natalie Dawson', email: 'natalie.dawson@example.com', role: 'reviewer' },
+  //       { _id: '3', name: 'Jackson Lee', email: 'jackson.lee@example.com', role: 'publisher' },
+  //       { _id: '4', name: 'Ava Thompson', email: 'ava.thompson@example.com', role: 'author' },
+  //       { _id: '5', name: 'Liam Wilson', email: 'liam.wilson@example.com', role: 'reviewer' },
+  //       { _id: '6', name: 'Emma Martinez', email: 'emma.martinez@example.com', role: 'admin' },
+  //       { _id: '1', name: 'Sebastian Carter', email: 'sebastian.carter@example.com', role: 'admin' },
+  //       { _id: '2', name: 'Natalie Dawson', email: 'natalie.dawson@example.com', role: 'reviewer' },
+  //       { _id: '3', name: 'Jackson Lee', email: 'jackson.lee@example.com', role: 'publisher' },
+  //       { _id: '4', name: 'Ava Thompson', email: 'ava.thompson@example.com', role: 'author' },
+  //       { _id: '5', name: 'Liam Wilson', email: 'liam.wilson@example.com', role: 'reviewer' },
+  //       { _id: '6', name: 'Emma Martinez', email: 'emma.martinez@example.com', role: 'admin' },
+  //       { _id: '1', name: 'Sebastian Carter', email: 'sebastian.carter@example.com', role: 'admin' },
+  //       { _id: '2', name: 'Natalie Dawson', email: 'natalie.dawson@example.com', role: 'reviewer' },
+  //       { _id: '3', name: 'Jackson Lee', email: 'jackson.lee@example.com', role: 'publisher' },
+  //       { _id: '4', name: 'Ava Thompson', email: 'ava.thompson@example.com', role: 'author' },
+  //       { _id: '5', name: 'Liam Wilson', email: 'liam.wilson@example.com', role: 'reviewer' },
+  //       { _id: '6', name: 'Emma Martinez', email: 'emma.martinez@example.com', role: 'admin' },
+        
+  //     ]);
+  //     setLoading(false);
+  //   } else {
+  //     fetchUsers();
+  //   }
+  // }, []);
   
   const columns = [
     {
@@ -105,25 +124,27 @@ export default function UsersPage() {
     role: 'author'
   });
 
+  // UNCOMMENT FOR REAL TESTING
+  
   // Fetch users on component mount
-  // useEffect(() => {
-  //   fetchUsers();
-  // }, []);
+  useEffect(() => {
+    fetchUsers();
+  }, []);
 
-  // const fetchUsers = async () => {
-  //   try {
-  //     const response = await fetch('http://localhost:8081/users', {
-  //       credentials: 'include'
-  //     });
-  //     if (!response.ok) throw new Error('Failed to fetch users');
-  //     const data = await response.json();
-  //     setUsers(data);
-  //     setLoading(false);
-  //   } catch (err) {
-  //     setError(err.message);
-  //     setLoading(false);
-  //   }
-  // };
+  const fetchUsers = async () => {
+    try {
+      const response = await fetch('http://localhost:8081/users', {
+        credentials: 'include'
+      });
+      if (!response.ok) throw new Error('Failed to fetch users');
+      const data = await response.json();
+      setUsers(data);
+      setLoading(false);
+    } catch (err) {
+      setError(err.message);
+      setLoading(false);
+    }
+  };
 
   const handleAddUser = async (e) => {
     e.preventDefault();
@@ -200,12 +221,11 @@ export default function UsersPage() {
   if (error) return <div className="bg-testingColorBlack text-white p-4">Error: {error}</div>;
 
   return (
-    <div className="bg-testingColorBlack">
-        <div className="flex flex-col flex-1 overflow-hidden p-2 bg-testingColorBlack min-h-screen">
-          <main className="flex-1 p-6 bg-testingColorBlack overflow-hidden">
+        <div className="flex overflow-hidden bg-transparent">
+          <main className="flex-1 p-6 bg-transparent overflow-hidden">
             
             {/* Users Management Section */}
-            <div className="flex flex-col h-[calc(100vh-8rem)] bg-testingColorBlack rounded-lg shadow-lg border border-testingColorGrey/30">
+            <div className="flex flex-col bg-transparent rounded-lg  border-solid border-2 border-testingColorOutline">
               <div className="flex flex-col flex-1 p-4 min-h-0">
                 <div className="flex justify-between items-center mb-4">
                   <h2 className="text-xl font-semibold text-testingColorSubtitle">User Management</h2>
@@ -218,8 +238,8 @@ export default function UsersPage() {
                 </div>
 
                 {/* Users Table */}
-                <div className="flex-1 overflow-auto rounded-lg border border-testingColorGrey bg-testingColorBlack min-h-0">
-                  <table className="min-w-full table-auto border-gray-300 border-spacing-0">
+                <div className="flex-1 overflow-x-auto w-full rounded-lg border border-testingColorGrey bg-testingColorBlack min-h-0">
+                  <table className="min-w-full table-auto border-gray-300 border-spacing-0 ">
                     <thead className="bg-testingColorOutline">
                       {table.getHeaderGroups().map(headerGroup => (
                         <tr key={headerGroup.id}>
@@ -251,36 +271,36 @@ export default function UsersPage() {
                 <div className="flex items-center justify-between px-6 py-4">
                   <div className="flex items-center gap-4">
                     <button
-                      className="px-3 py-1 text-sm text-testingColorSubtitle disabled:opacity-50 hover:bg-testingColorHover rounded"
+                      className="px-3 py-1 text-sm text-testingColorBlack  bg-testingColorSubtitle border  disabled:opacity-50  rounded"
                       onClick={() => table.setPageIndex(0)}
                       disabled={!table.getCanPreviousPage()}
                     >
-                      {'<<'}
+                      <span><TbArrowsLeft size={16} className="flex items-center" /></span>
                     </button>
                     <button
-                      className="px-3 py-1 text-sm text-testingColorSubtitle disabled:opacity-50 hover:bg-testingColorHover rounded"
+                      className="px-3 py-1 text-sm text-testingColorBlack disabled:opacity-50 bg-testingColorSubtitle border rounded"
                       onClick={() => table.previousPage()}
                       disabled={!table.getCanPreviousPage()}
                     >
-                      {'<'}
+                      <span><HiArrowSmLeft size={16} className="flex items-center" /></span>
                     </button>
                     <span className="text-sm text-testingColorSubtitle font-medium">
                       Page {table.getState().pagination.pageIndex + 1} of{' '}
                       {table.getPageCount()}
                     </span>
                     <button
-                      className="px-3 py-1 text-sm text-testingColorSubtitle disabled:opacity-50 hover:bg-testingColorHover rounded"
+                      className="px-3 py-1 text-sm text-testingColorBlack disabled:opacity-50 bg-testingColorSubtitle border  rounded"
                       onClick={() => table.nextPage()}
                       disabled={!table.getCanNextPage()}
                     >
-                      {'>'}
+                      <span><HiArrowSmRight size={16} className="flex items-center" /></span>
                     </button>
                     <button
-                      className="px-3 py-1 text-sm text-testingColorSubtitle disabled:opacity-50 hover:bg-testingColorHover rounded"
+                      className="px-3 py-1 text-sm text-testingColorBlack disabled:opacity-50 bg-testingColorSubtitle border rounded"
                       onClick={() => table.setPageIndex(table.getPageCount() - 1)}
                       disabled={!table.getCanNextPage()}
                     >
-                      {'>>'}
+                      <span><TbArrowsRight size={16} className="flex items-center" /></span>
                     </button>
                   </div>
                   <select
@@ -305,22 +325,25 @@ export default function UsersPage() {
                   <h3 className="text-lg font-semibold mb-4 text-testingColorWhite">Add New User</h3>
                   <form onSubmit={handleAddUser}>
                     <div className="mb-4">
-                      <label className="block text-testingColorSubtitle mb-2">Name</label>
+                      <label className="block text-testingColorSubtitle mb-2 ">Name</label>
                       <input
                         type="text"
                         value={formData.name}
                         onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                        className="w-full p-2 rounded bg-testingColorBlack text-white border border-gray-700 box-border"
+                        className="w-full p-2 rounded bg-testingColorBlack text-white border border-gray-700 box-border focus:border-transparent focus:outline-cirtRed focus:ring-0"
+                        placeholder="Name"
+                        
                         required
                       />
                     </div>
                     <div className="mb-4">
-                      <label className="block text-testingColorSubtitle mb-2">Email</label>
+                      <label className="block text-testingColorSubtitle b-2">Email</label>
                       <input
                         type="email"
                         value={formData.email}
                         onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                        className="w-full p-2 rounded bg-testingColorBlack text-white border border-gray-700 box-border"
+                        className="w-full p-2 rounded bg-testingColorBlack text-white border border-gray-700 box-border focus:border-transparent focus:outline-cirtRed focus:ring-0"
+                        placeholder="Email"
                         required
                       />
                     </div>
@@ -330,7 +353,7 @@ export default function UsersPage() {
                         type="password"
                         value={formData.password}
                         onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                        className="w-full p-2 rounded bg-testingColorBlack text-white border border-gray-700 box-border"
+                        className="w-full p-2 rounded bg-testingColorBlack text-white border border-gray-700 box-border focus:border-transparent focus:outline-cirtRed focus:ring-0"
                         required
                         placeholder="Enter password"
                       />
@@ -380,7 +403,7 @@ export default function UsersPage() {
                         type="text"
                         value={formData.name}
                         onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                        className="w-full p-2 rounded bg-testingColorBlack text-white border border-gray-700"
+                        className="w-full p-2 rounded bg-testingColorBlack text-white border border-gray-700 box-border"
                         required
                       />
                     </div>
@@ -390,7 +413,7 @@ export default function UsersPage() {
                         type="email"
                         value={formData.email}
                         onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                        className="w-full p-2 rounded bg-testingColorBlack text-white border border-gray-700"
+                        className="w-full p-2 rounded bg-testingColorBlack text-white border border-gray-700 box-border"
                         required
                       />
                     </div>
@@ -473,6 +496,5 @@ export default function UsersPage() {
             )}
           </main>
         </div>
-    </div>
   );
 }

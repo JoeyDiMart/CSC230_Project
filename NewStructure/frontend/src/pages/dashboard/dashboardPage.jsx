@@ -29,9 +29,12 @@ export default function DashboardPage() {
   // if (!isAuthenticated) return <div>Not authenticated</div>;
 
   return (
-    <div className="bg-testingColorBlack">
+    <div className="bg-transparent w-full h-full rounded-xl">
       <SectionCards />
-      <DataTable />
+      <div className="mt-4 mb-4">
+        <DataTable />
+      </div>
+      
     </div>
   )
 }
