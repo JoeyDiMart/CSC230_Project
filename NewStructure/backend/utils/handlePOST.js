@@ -37,6 +37,7 @@ export const handlePostRequest = async (req, res) => {
         '/api/publications': handlePublication,
         '/publications/update': handleUpdateStatus,
         '/api/views/increment': handleIncrementViews,
+        '/api/photos/upload': uploadPhotos,
 
     };
     /*
@@ -313,4 +314,57 @@ const handleIncrementViews = async (req, res) => {
         console.error("Error incrementing views:", err);
         res.status(500).json({ error: "Internal server error" });
     }
+};
+const uploadPhotos = async (req, res) => {
+    console.log("📸 uploadPhotos triggered...");
+
+    // Run multer to handle multipart/form-data
+    upload.single('file')(req, res, async function (err) {
+        if (err) {
+            console.error("❌ Multer error:", err);
+            return res.status(400).json({ error: err.message });
+        }
+
+        const { title } = req.body;
+        const file = req.file;
+
+        if (!file || !title) {
+            return res.status(400).json({ error: "File and title are required." });
+        }
+
+        try {
+            const db = client.db("CIRT");
+            const photosCollection = db.collection("PHOTOS");
+
+            // Convert the file buffer to a Base64 string
+            const base64Data = fs.readFileSync(file.path).toString("base64");
+
+            const photoDocument = {
+                title,
+                file: {
+                    data: base64Data,
+                    contentType: file.mimetype,
+                    name: file.originalname,
+                },
+                uploadDate: new Date(),
+            };
+
+            const result = await photosCollection.insertOne(photoDocument);
+
+            // Delete the uploaded file from disk
+            fs.unlink(file.path, (unlinkErr) => {
+                if (unlinkErr) console.error("❌ Error deleting file:", unlinkErr);
+                else console.log("🗑️ File deleted from server.");
+            });
+
+            if (result.insertedId) {
+                return res.status(201).json({ message: "Photo uploaded successfully", photoId: result.insertedId });
+            } else {
+                return res.status(500).json({ error: "Failed to save photo" });
+            }
+        } catch (error) {
+            console.error("💥 Server error:", error);
+            return res.status(500).json({ error: "Internal server error" });
+        }
+    });
 };
