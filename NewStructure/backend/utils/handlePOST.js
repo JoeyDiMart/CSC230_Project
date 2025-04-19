@@ -256,6 +256,16 @@ export const handlePublication = async (req, res) => {
 
             if (result.insertedId) {
                 console.log("✅ Publication inserted:", result.insertedId);
+
+                // Delete the file from the server
+                fs.unlink(req.file.path, (unlinkErr) => {
+                    if (unlinkErr) {
+                        console.error("❌ Error deleting file:", unlinkErr);
+                    } else {
+                        console.log("🗑️ File deleted successfully from server.");
+                    }
+                });
+
                 return res.status(201).json({message: "Upload successful", publicationId: result.insertedId});
             } else {
                 console.error("❌ Insertion failed");
