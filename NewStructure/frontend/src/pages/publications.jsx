@@ -13,7 +13,7 @@ function base64ToByteArray(base64Str) {
     return byteArray;
 }
 
-function Pubs({ pubs }) {
+function Pubs({ pubs, onPublicationClick }) {
     return (
         <div className="pubs-scroll-wrapper">
             {pubs.length > 0 ? (
@@ -24,7 +24,9 @@ function Pubs({ pubs }) {
                     const downloadLink = window.URL.createObjectURL(theBlob);
 
                     return (
-                        <div key={idx} className="publication-container">
+                        <div key={idx}
+                             className="publication-container"
+                             onClick={() => onPublicationClick?.(publication)} >
                             <div className="publication-title">
                                 <p><strong>{publication.title}</strong></p>
                             </div>
@@ -35,6 +37,7 @@ function Pubs({ pubs }) {
                                 <a
                                     href={downloadLink}
                                     download={fileName}
+                                    onClick={(e) => e.stopPropagation()}
                                     style={{
                                         color: "blue",
                                         textDecoration: "underline",
@@ -51,7 +54,9 @@ function Pubs({ pubs }) {
             ) : (
                 <div>
                     <p>No Publications</p>
-                {/*
+
+
+                    {/*
                 <div key="empty" className="publication-container">
                     <div className="publication-title">
                         <p><strong>{'The Title'}</strong></p>
@@ -73,6 +78,7 @@ function Pubs({ pubs }) {
                     </a>
                 </div>
             */}
+
                 </div>
             )}
         </div>

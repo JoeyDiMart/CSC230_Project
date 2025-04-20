@@ -9,7 +9,8 @@ function Publications({ role, email, name }) {
     const [errorMessage, setErrorMessage] = useState("");
     const [publications, setPublications] = useState([]);
     const [myPublications, setMyPublications] = useState([]);
-    //const [searchPubName, setSearchPubName] = useState([]); // should drop everything form first list when search
+    const [reviewPublications, setReviewPublications] = useState([]);
+    const [popupPub, setPopupPub] = useState(null);
     const [loading, setLoading] = useState(true);
     // search for text in that specific filter
     const [searchText, setSearchText] = useState("");
@@ -27,13 +28,27 @@ function Publications({ role, email, name }) {
             comments: ''
         });
 
-    // get publications from database
+    // get publications from database (only accepted ones)
     useEffect(() => {
         fetch("http://localhost:8081/api/publications1")
             .then(response => response.json())  // Expecting an array of publications
             .then((data) => {
                 const acceptedPublications = data.filter(pub => pub.status === "accepted");
                 setPublications(acceptedPublications);
+            })
+            .catch((error) => {
+                console.error("Error fetching publications:", error);
+                setErrorMessage("Failed to load publications. Please try again later.");
+            });
+    }, []);
+
+    // get publications from database (all under review)
+    useEffect(() => {
+        fetch("http://localhost:8081/api/publications3")
+            .then(response => response.json())  // Expecting an array of publications
+            .then((data) => {
+                const acceptedPublications = data.filter(pub => pub.status === "under review");
+                setReviewPublications(reviewPublications);
             })
             .catch((error) => {
                 console.error("Error fetching publications:", error);
@@ -143,9 +158,20 @@ function Publications({ role, email, name }) {
         }
     };
 
+
+    const handlePublicationPopup = (publication) => {
+        setPopupPub(publication);
+    };
+
+    const handleClosePopup = () => {
+        setPopupPub(null);
+    };
+
+
+    role = "reviewer"
     return (
         <div className="publisher-stuff">
-            {role === "publisher" && (
+            {(role === "publisher" || role === "reviewer") && (
                 <div>
                     <h2>My Publications</h2>
                     <button onClick={() => setShowUpload(true)} className="upload"> Upload </button>
@@ -171,8 +197,21 @@ function Publications({ role, email, name }) {
                         </form>
                     )}
                     <div className="pubs-scroll-wrapper">
-                        <Pubs pubs={myPublications} />
+                        <Pubs pubs={myPublications}
+                              onPublicationClick={handlePublicationPopup}/>
+
                     </div>
+                </div>
+            )}
+
+            {role === 'reviewer' && (
+                <div className="reviewer-section">
+                    <h2>Reviewers</h2>
+                    <div className="pubs-scroll-wrapper">
+                        <Pubs pubs={reviewPublications}
+                              onPublicationClick={handlePublicationPopup}/>
+                    </div>
+
                 </div>
             )}
 
@@ -212,7 +251,8 @@ function Publications({ role, email, name }) {
             </div>
 
             <div className="pubs-scroll-wrapper">
-                <Pubs pubs={publications} />
+                <Pubs pubs={publications}
+                      onPublicationClick={handlePublicationPopup}/>
             </div>
         </div>
     );
