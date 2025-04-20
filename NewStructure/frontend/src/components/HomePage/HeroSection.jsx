@@ -2,8 +2,8 @@ import { FaUniversity } from "react-icons/fa";
 
 const HeroSection = () => {
   return (
-    <section className="bg-transparent w-full px-6 py-20 md:py-32 flex items-center justify-center ">
-      <div className="max-w-5xl text-center space-y-6">
+    <section className="bg-transparent w-full px-6  md:py-32 flex items-center justify-center ">
+      <div className="max-w-5xl text-center ">
         <div className="flex justify-center items-center gap-3 text-cirtRed">
           <FaUniversity size={28} />
           <span className="uppercase font-semibold tracking-wide text-sm">

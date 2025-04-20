@@ -57,7 +57,7 @@ const PhotoGalleryUpload = () => {
                     <h2 className="text-white mb-2">Add Image</h2>
                     <p className="text-white text-sm mb-0">Fill out the information below to upload a new image to the photo gallery</p>
                 </div>
-
+                <form onSubmit={handleUpload}>
                 {/* Image Title and Input */}
                 <div className="mb-4">
                     <p className="text-white block mt-0">Image Title</p>
@@ -71,19 +71,19 @@ const PhotoGalleryUpload = () => {
                 </div>
 
                 {/* File Uploading */}
-                <form onSubmit={handleUpload}>
-                    <div className="space-y-4 hover:bg-testingColorHover rounded-xl">
-                        <div {...getRootProps()} className="border-2 border-dashed border-testingColorOutline bg-transparent rounded-xl p-6 cursor-pointer transition-all duration-300 hover:border-red-600">
-                            <input {...getInputProps()} />
-                            <p className="text-testingColorSubtitle flex items-center justify-center cursor-pointer">Drop files here, or click to select</p>
-                            {uploadPhoto && <p className="text-white">{uploadPhoto.name}</p>}
-                        </div>
+                
+                <div className="space-y-4 hover:bg-testingColorHover rounded-xl">
+                    <div {...getRootProps()} className="border-2 border-dashed border-testingColorOutline bg-transparent rounded-xl p-6 cursor-pointer transition-all duration-300 hover:border-red-600">
+                        <input {...getInputProps()} />
+                        <p className="text-testingColorSubtitle flex items-center justify-center cursor-pointer">Drop files here, or click to select</p>
+                        {uploadPhoto && <p className="text-cirtRed flex items-center justify-center">{uploadPhoto.name}</p>}
                     </div>
+                </div>
 
-                    {/* Submit Button */}
-                    <div className="pt-4 pb-2">
-                        <button type="submit" className="w-full border border-solid border-testingColorOutline hover:bg-testingColorHover hover:border-cirtRed bg-transparent">Upload</button>
-                    </div>
+                {/* Submit Button */}
+                <div className="pt-4 pb-2">
+                    <button type="submit" className="w-full border border-solid border-testingColorOutline hover:bg-testingColorHover hover:border-cirtRed bg-transparent">Upload</button>
+                </div>
                 </form>
             </div>
         </div>
