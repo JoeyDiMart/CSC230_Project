@@ -7,14 +7,20 @@ export const handleDeleteRequest = async (req, res) => {
 
     const requestHandlers = {
         '/posters/:id': posterService.handleDelete,
-        '/journals/:id': journalService.handleDelete,
-        '/events/:id': eventService.handleDelete
     };
 
     const handler = requestHandlers[req.path];
+
+
     if (handler) {
         await handler(req, res);
     } else {
+        const eventsMatch = req.path.match(/^\/events\/([^\/]+)$/);
+        if (eventsMatch) {
+            req.params = { id: eventsMatch[1] };
+            return eventService.handleDelete(req, res);
+        }
+
         res.status(404).json({ error: 'Not found' });
     }
 };
