@@ -7,9 +7,11 @@ function Gallery () {
 
     useEffect(() => {
         fetch("http://localhost:8081/api/photos")
-            .then(response => response.json()) // Expecting an array of Base64 strings
-            .then((data) => {
-                console.log("Received images:", data); // Debugging
+            .then(response => {
+                console.log("Raw response:", response);
+                return response.json();
+            })            .then((data) => {
+                console.log("Data received from server:",data); // Debugging
                 setPhotos(data);
             })
             .catch(error => console.error("Error fetching photos:", error));
