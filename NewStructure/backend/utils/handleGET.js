@@ -28,6 +28,7 @@ export const handleGetRequest = async (req, res) => {
             '/api/photos': handleGetPhotos,
             '/api/publications1': handleGetPublications1,
             '/api/publications2': handleGetPublications2,
+            '/api/publications3': handleGetPublications3,
             '/api/publications/byEmail': handleGetMyPublications,
             '/check-session': handleCheckSession,
             '/events': eventService.handleGetAll,
@@ -162,6 +163,26 @@ let handleGetPublications2 = async (req, res) => {
             return res.status(404).json({ message: "No accepted publications found" });
         }
 
+        res.json(publications);
+    } catch (err) {
+        console.error(err);
+        res.sendStatus(500);
+    }
+};
+
+let handleGetPublications3 = async (req, res) => {
+    try {
+        const db = client.db('CIRT');
+        const collection = db.collection('PUBLICATIONS');
+
+        const publications = await collection.aggregate([
+            { $match: { status: "under review" } },
+            { $sample: { size: 10 } }
+        ]).toArray();
+
+        if (publications.length === 0) {
+            return res.status(404).json({ message: "No under review publications found" });
+        }
         res.json(publications);
     } catch (err) {
         console.error(err);
