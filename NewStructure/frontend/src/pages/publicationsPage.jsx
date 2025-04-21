@@ -64,10 +64,11 @@ function Publications({ role, email, name }) {
 
     // for my publications only
     useEffect( () => {
+        console.log("email and role for my publications: ", email, role);
         if (role !== "guest") {
             fetchMyPublications();
         }
-    }, [email]);
+    }, [email, role]);
     const fetchMyPublications = () => {
         if (!email) return;
         fetch(`http://localhost:8081/api/publications/byEmail/${email}`)
@@ -85,7 +86,7 @@ function Publications({ role, email, name }) {
     const handleChange = (e) => {
         const { name, value } = e.target;
         if (name === "keywords") {
-            setUploadFile(prev => ({ ...prev, keywords: value.split(",").map(s => s.trim()) }));
+            setUploadFile(prev => ({ ...prev, keywords: value.split(",")}));
         } else if (name === "author") {
             setUploadFile(prev => ({ ...prev, author: value.split(",") }));
         } else {

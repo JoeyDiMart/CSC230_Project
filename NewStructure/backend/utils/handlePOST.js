@@ -229,7 +229,7 @@ export const handlePublication = async (req, res) => {
             const contentType = req.file.mimetype;
             const originalName = req.file.originalname;
             // Validate fields
-            if (!title || !email || !author.length || !keywords.length) {
+            if (!title || !email || !author.length) {
                 console.warn("⚠️ Missing required fields");
                 return res.status(400).json({error: 'All fields are required'});
             }

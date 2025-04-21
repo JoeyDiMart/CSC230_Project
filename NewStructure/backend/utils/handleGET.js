@@ -102,7 +102,7 @@ export const handleGetRequest = async (req, res) => {
     }
 };
 
-
+// photo
 let handleGetPhotos = async (req, res) => {
     try {
         const db = client.db('CIRT');  // connect to database
@@ -130,6 +130,7 @@ let handleGetPhotos = async (req, res) => {
     }
 };
 
+// only accepted
 let handleGetPublications1 = async (req, res) => {
     try {
         const db = client.db('CIRT'); 
@@ -150,6 +151,7 @@ let handleGetPublications1 = async (req, res) => {
     }
 };
 
+// all ?
 let handleGetPublications2 = async (req, res) => {
     try {
         const db = client.db('CIRT');  
@@ -170,6 +172,7 @@ let handleGetPublications2 = async (req, res) => {
     }
 };
 
+// only under review publications
 let handleGetPublications3 = async (req, res) => {
     try {
         const db = client.db('CIRT');
@@ -196,7 +199,6 @@ const handleGetMyPublications = async (req, res) => {
         const db = client.db('CIRT');
         const collection = db.collection('PUBLICATIONS');
         const email = req.params.email;
-        console.log("The myPub body: ", req.body);
 
         if (!email) {
             return res.status(400).json({ message: "Email is required" });
