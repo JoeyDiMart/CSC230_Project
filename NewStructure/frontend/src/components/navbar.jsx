@@ -61,9 +61,11 @@ function Navbar({ role, setRole, name, setName }) {
 
                 {isDropdownOpen && (
                     <ul className={`dropdown-content ${isDropdownOpen ? "show" : ""}`}>
-                        <li>
-                            <Link to="/Dashboard" onClick={() => setDropdownOpen(false)}>Dashboard</Link>
-                        </li>
+                        {role === 'admin' && (
+                            <li>
+                                <Link to="/Dashboard" onClick={() => setDropdownOpen(false)}>Dashboard</Link>
+                            </li>
+                        )}
                     </ul>
                 )}
                 </div>
