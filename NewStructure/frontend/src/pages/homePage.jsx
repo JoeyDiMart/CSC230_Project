@@ -22,12 +22,14 @@ function Home() {
             <section>
                 <div>
                     <Cards />
-                    <Link to={"/publications"}>
                         <div className="flex text-center justify-center">
-                            <span><p>View All Publications</p></span>
-                            <span className="flex items-center ml-2 text-cirtRed"><FaArrowRight /></span>
-                        </div>
-                    </Link>
+                        <Link to={"/publications"}>
+                            <div className="flex text-center justify-center">
+                                <span><p>View All Publications</p></span>
+                                <span className="flex items-center ml-2 text-cirtRed"><FaArrowRight /></span>
+                            </div>
+                        </Link>
+                        </div> 
                 </div>
             </section>
 
