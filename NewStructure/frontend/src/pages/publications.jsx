@@ -55,7 +55,6 @@ function Pubs({ pubs, onPublicationClick }) {
                 <div>
                     <p>No Publications</p>
 
-
                     {/*
                 <div key="empty" className="publication-container">
                     <div className="publication-title">
@@ -77,7 +76,7 @@ function Pubs({ pubs, onPublicationClick }) {
                         Download File
                     </a>
                 </div>
-            */}
+                */}
 
                 </div>
             )}

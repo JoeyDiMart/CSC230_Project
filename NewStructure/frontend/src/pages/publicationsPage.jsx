@@ -85,7 +85,7 @@ function Publications({ role, email, name }) {
     const handleChange = (e) => {
         const { name, value } = e.target;
         if (name === "keywords") {
-            setUploadFile(prev => ({ ...prev, keywords: value.split(",") }));
+            setUploadFile(prev => ({ ...prev, keywords: value.split(",").map(s => s.trim()) }));
         } else if (name === "author") {
             setUploadFile(prev => ({ ...prev, author: value.split(",") }));
         } else {
@@ -138,9 +138,6 @@ function Publications({ role, email, name }) {
         }
     };
 
-    const handleReviewSubmit = async (e) => {
-        e.preventDefault();
-    }
 
 
     // Handle drop event
@@ -174,11 +171,12 @@ function Publications({ role, email, name }) {
         }
     };
 
-
+    // handle the popup for all general publications ( see preview and such )
     const handlePublicationPopup = (publication) => {
+        const isReviewerPub = reviewPublications.some(p => p._id === publication._id);
+        if (isReviewerPub) return;
         setPopupPub(publication);
     };
-
     const handleClosePopup = () => {
         setPopupPub(null);
     };
@@ -186,7 +184,7 @@ function Publications({ role, email, name }) {
 
     return (
         <div className="publisher-stuff">
-        {(role === "guest") && (
+        {(role !== "guest") && (
                 <div>
                     <h2>My Publications</h2>
                     <button onClick={() => setShowUpload(true)} className="upload"> Upload </button>
@@ -199,7 +197,7 @@ function Publications({ role, email, name }) {
                                 <input type="text" name="title" placeholder="Title" value={uploadFile.title} onChange={handleChange} required />
                                 <div className="input-list">
                                     <input type="text" name="author" placeholder="Author(s)" value={uploadFile.author} onChange={handleChange} required />
-                                    <input type="text" name="keywords" placeholder="Keywords" value={uploadFile.keywords} onChange={handleChange} required />
+                                    <input type="text" name="keywords" placeholder="Keywords" value={uploadFile.keywords} onChange={handleChange} />
                                 </div>
                                 <div {...getRootProps()} className="drop-container">
                                     <input {...getInputProps()} />
@@ -218,7 +216,6 @@ function Publications({ role, email, name }) {
                     </div>
                 </div>
             )}
-
             {role === 'reviewer' && (
                 <div className="reviewer-section">
                     <h2>Under Review</h2>
@@ -268,6 +265,27 @@ function Publications({ role, email, name }) {
                       onPublicationClick={handlePublicationPopup}/>
             </div>
 
+            {popupPub && (
+                <div className="popup-overlay" onClick={(e) => e.stopPropagation()}>
+                    <div className="pub-popup">
+                        <div className="popup-pdf">
+                            <embed
+                                src={`data:application/pdf;base64,${popupPub?.file?.data}`}
+                                type="application/pdf"
+                                width="100%"
+                                height="100%"
+                            />
+                        </div>
+
+                        {/* Right: Info/Review UI */}
+                        <div className="popup-details">
+                            <button onClick={handleClosePopup} className="exit-upload">X</button>
+                            <h2>{popupPub.title}</h2>
+                            <p>Author(s): {popupPub.author?.join(", ")}</p>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }

@@ -9,7 +9,7 @@
   width: 100vw;
   min-height: 100vh;
   margin: 0 auto;
-  padding: 0; /* Use Tailwind padding (e.g. px-8, py-4) in components */
+  padding: 0;
   text-align: center;
   line-height: 1.5;
   background-color: #ffffff;
@@ -22,7 +22,6 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Remove display: flex; and place-items: center from body */
 body {
   margin: 0;
   min-width: 320px;
@@ -62,7 +61,7 @@ ol {
 }
 
 
-/* Optional: Use if you enable dark mode later 
+/* Optional: Use if you enable dark mode later
 @media (prefers-color-scheme: dark) {
   #root {
     background-color: #121212;

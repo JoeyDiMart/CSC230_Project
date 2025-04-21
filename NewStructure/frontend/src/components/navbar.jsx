@@ -67,7 +67,7 @@ function Navbar({ role, setRole, name, setName }) {
                     </ul>
                 )}
                 </div>
-                <button className="signout" onClick={() => setRole("guest")}>
+                <button className="signout" onClick={() => { setRole("guest"); setName(""); setEmail(""); }}>
                 Sign Out
                 </button>
             </div>
