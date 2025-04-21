@@ -136,8 +136,12 @@ export default function UsersPage() {
       const response = await fetch('http://localhost:8081/users', {
         credentials: 'include'
       });
-      if (!response.ok) throw new Error('Failed to fetch users');
       const data = await response.json();
+      
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to fetch users');
+      }
+      
       setUsers(data);
       setLoading(false);
     } catch (err) {
@@ -182,6 +186,17 @@ export default function UsersPage() {
         })
       });
       if (!response.ok) throw new Error('Failed to update user');
+      
+      // Update the local state immediately
+      setUsers(prevUsers => 
+        prevUsers.map(user => 
+          user._id === selectedUser._id 
+            ? { ...user, name: formData.name, email: formData.email, role: formData.role }
+            : user
+        )
+      );
+      
+      // Then fetch fresh data from server
       await fetchUsers();
       setShowEditModal(false);
       setSelectedUser(null);
@@ -217,8 +232,43 @@ export default function UsersPage() {
 
 
 
-  if (loading) return <div className="bg-testingColorBlack text-white p-4">Loading...</div>;
-  if (error) return <div className="bg-testingColorBlack text-white p-4">Error: {error}</div>;
+  if (error?.includes('Access denied')) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-screen bg-testingColorBlack text-white p-4">
+        <h2 className="text-2xl font-bold mb-4">Access Restricted</h2>
+        <p className="text-lg">Please log in as an administrator to view this page.</p>
+      </div>
+    );
+  }
+
+  if (loading) return (
+    <div className="flex items-center justify-center min-h-screen bg-testingColorBlack text-white p-4">
+      <div className="text-xl">Loading...</div>
+    </div>
+  );
+
+  if (error) {
+    let errorMessage = "";
+    let errorTitle = "";
+    
+    if (error.includes('Please log in')) {
+      errorTitle = "Authentication Required";
+      errorMessage = "Please log in with appropriate credentials.";
+    } else if (error.includes('Access denied')) {
+      errorTitle = "Access Restricted";
+      errorMessage = "This page is only accessible to administrators.";
+    } else {
+      errorTitle = "Error";
+      errorMessage = error;
+    }
+
+    return (
+      <div className="flex flex-col items-center justify-center min-h-screen bg-testingColorBlack text-white p-4">
+        <h2 className="text-2xl font-bold mb-4">{errorTitle}</h2>
+        <p className="text-lg text-center">{errorMessage}</p>
+      </div>
+    );
+  };
 
   return (
         <div className="flex overflow-hidden bg-transparent">

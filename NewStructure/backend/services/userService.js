@@ -57,11 +57,18 @@ export const handleUpdateRole = async (req, res) => {
 
 export const handleGetAll = async (req, res) => {
     try {
-        // if (!req.session.user) {
-        //     return res.status(403).json({ error: 'Forbidden' });
-        // }
+        if (!req.session.user) {
+            return res.status(401).json({ error: 'Please log in' });
+        }
+
+        // Check if user is admin
         const db = client.db('CIRT');
         const collection = db.collection('USERS');
+        const currentUser = await collection.findOne({ _id: new ObjectId(req.session.user.id) });
+        
+        if (!currentUser || currentUser.role !== 'admin') {
+            return res.status(403).json({ error: 'Access denied. Admin only.' });
+        }
         const users = await collection.find().toArray();
         res.json(users);
     } catch (err) {
@@ -106,10 +113,11 @@ export const handleUpdatePassword = async (req, res) => {
         const collection = db.collection('USERS');
         
        
-
+        const enc_password = crypto.createHash('md5').update(password).digest('hex')
+        
         const result = await collection.updateOne(
             { _id: new ObjectId(req.params.id) },
-            { $set: { password: password } }
+            { $set: { password: enc_password } }
         );
 
         if (result.modifiedCount > 0) {
