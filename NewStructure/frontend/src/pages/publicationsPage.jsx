@@ -10,7 +10,7 @@ function Publications({ role, email, name }) {
     const [publications, setPublications] = useState([]);
     const [myPublications, setMyPublications] = useState([]);
     const [reviewPublications, setReviewPublications] = useState([]);
-    const [popupPub, setPopupPub] = useState(null);
+    const [popupPub, setPopupPub] = useState(false);
     const [loading, setLoading] = useState(true);
     // search for text in that specific filter
     const [searchText, setSearchText] = useState("");
@@ -168,7 +168,6 @@ function Publications({ role, email, name }) {
     };
 
 
-    role = "reviewer"
     return (
         <div className="publisher-stuff">
             {(role === "publisher" || role === "reviewer") && (
@@ -208,8 +207,7 @@ function Publications({ role, email, name }) {
                 <div className="reviewer-section">
                     <h2>Reviewers</h2>
                     <div className="pubs-scroll-wrapper">
-                        <Pubs pubs={reviewPublications}
-                              onPublicationClick={handlePublicationPopup}/>
+                        <Pubs pubs={reviewPublications} onPublicationClick={handlePublicationPopup}/>
                     </div>
 
                 </div>
