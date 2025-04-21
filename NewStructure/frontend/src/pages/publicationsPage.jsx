@@ -10,7 +10,7 @@ function Publications({ role, email, name }) {
     const [publications, setPublications] = useState([]);
     const [myPublications, setMyPublications] = useState([]);
     const [reviewPublications, setReviewPublications] = useState([]);
-    const [popupPub, setPopupPub] = useState(false);
+    const [popupPub, setPopupPub] = useState(null);
     const [loading, setLoading] = useState(true);
     // search for text in that specific filter
     const [searchText, setSearchText] = useState("");
@@ -44,24 +44,32 @@ function Publications({ role, email, name }) {
 
     // get publications from database (all under review)
     useEffect(() => {
+        if (role === "admin" || role === "reviewer") {
+            fetchReviewPublications();
+        }
+    }, []);
+    const fetchReviewPublications = () => {
         fetch("http://localhost:8081/api/publications3")
             .then(response => response.json())  // Expecting an array of publications
             .then((data) => {
-                const acceptedPublications = data.filter(pub => pub.status === "under review");
-                setReviewPublications(reviewPublications);
+                const underReview = data.filter(pub => pub.status === "under review");
+                setReviewPublications(underReview);
             })
             .catch((error) => {
                 console.error("Error fetching publications:", error);
                 setErrorMessage("Failed to load publications. Please try again later.");
             });
-    }, []);
+    };
 
 
     // for my publications only
-    useEffect(() => {
+    useEffect( () => {
+        if (role !== "guest") {
+            fetchMyPublications();
+        }
+    }, [email]);
+    const fetchMyPublications = () => {
         if (!email) return;
-        console.log("Fetching publications for:", email);
-
         fetch(`http://localhost:8081/api/publications/byEmail/${email}`)
             .then(response => response.json())
             .then((data) => {
@@ -70,7 +78,7 @@ function Publications({ role, email, name }) {
             .catch((error) => {
                 console.error("Error fetching user publications:", error);
             });
-    }, [email]);
+    };
 
 
     // Handles typing in for uploading a new publication
@@ -85,7 +93,7 @@ function Publications({ role, email, name }) {
         }
     };
 
-    // submition handler for uploading new publications
+    // submission handler for uploading new publications
     const handleSubmit = async (e) => {
         e.preventDefault();
         setErrorMessage("");  // remove previous errors before sending new message
@@ -116,6 +124,10 @@ function Publications({ role, email, name }) {
             if (res.ok) {
                 //setShowUpload(false); move it here after we get it from backend
                 alert("Upload successful!");
+                fetchMyPublications();
+                if (role === "reviewer" || role === "admin") {
+                    fetchReviewPublications();
+                }
 
             } else {
                 setErrorMessage(data.error || "Upload failed");
@@ -125,6 +137,10 @@ function Publications({ role, email, name }) {
             setErrorMessage("Something went wrong while uploading.");
         }
     };
+
+    const handleReviewSubmit = async (e) => {
+        e.preventDefault();
+    }
 
 
     // Handle drop event
@@ -170,7 +186,7 @@ function Publications({ role, email, name }) {
 
     return (
         <div className="publisher-stuff">
-            {(role === "publisher" || role === "reviewer") && (
+        {(role === "guest") && (
                 <div>
                     <h2>My Publications</h2>
                     <button onClick={() => setShowUpload(true)} className="upload"> Upload </button>
@@ -205,11 +221,10 @@ function Publications({ role, email, name }) {
 
             {role === 'reviewer' && (
                 <div className="reviewer-section">
-                    <h2>Reviewers</h2>
+                    <h2>Under Review</h2>
                     <div className="pubs-scroll-wrapper">
                         <Pubs pubs={reviewPublications} onPublicationClick={handlePublicationPopup}/>
                     </div>
-
                 </div>
             )}
 
@@ -252,6 +267,7 @@ function Publications({ role, email, name }) {
                 <Pubs pubs={publications}
                       onPublicationClick={handlePublicationPopup}/>
             </div>
+
         </div>
     );
 }
