@@ -2,11 +2,8 @@ import React from 'react';
 
 
 function base64ToByteArray(base64Str) {
-    console.log(base64Str);
     const binaryStr = atob(base64Str); // Decode base64 to binary string
-    console.log(binaryStr);
     const byteArray = new Uint8Array(binaryStr.length);
-    console.log(byteArray);
     for (let i = 0; i < binaryStr.length; i++) {
         byteArray[i] = binaryStr.charCodeAt(i);
     }

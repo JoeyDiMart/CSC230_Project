@@ -50,8 +50,6 @@ export const handlePutRequest = async (req, res) => {
         return;
     }
     console.log("Incoming PUT request to:", req.path);
-    console.log("Request body:", req.body);
-    console.log("Request params:", req.params);
 
     return res.status(404).json({ error: 'Route not found' });
 };

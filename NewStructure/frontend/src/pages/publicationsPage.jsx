@@ -159,7 +159,6 @@ function Publications({ role, email, name }) {
 
     // Handle drop event
     const onDrop = (acceptedFiles) => {
-        console.log('Accepted files:', acceptedFiles);
         const file = acceptedFiles[0];
         setUploadFile(prev => ({ ...prev, file }));
     };
