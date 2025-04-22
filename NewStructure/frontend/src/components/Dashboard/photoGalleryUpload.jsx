@@ -82,7 +82,11 @@ const PhotoGalleryUpload = () => {
 
                 {/* Submit Button */}
                 <div className="pt-4 pb-2">
-                    <button type="submit" className="w-full border border-solid border-testingColorOutline hover:bg-testingColorHover hover:border-cirtRed bg-transparent">Upload</button>
+                    <button
+                        type="submit"
+                        className="w-full border border-solid border-testingColorOutline hover:bg-testingColorHover hover:border-cirtRed bg-transparent text-white">
+                        Upload
+                    </button>
                 </div>
                 </form>
             </div>
