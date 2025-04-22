@@ -10,23 +10,25 @@ export default function DashboardPage() {
   const [isAuthenticated, setIsAuthenticated] =useState(false)
 
 
-  // useEffect (() => {
-  //   fetch("check-session", {credentials : "include"})
-  //   .then(res => {
-  //     if(!res.ok) throw new Error("Not authenticated");
-  //     return res.json();
-  //   })
-  //   .then(data => {
-  //     setIsAuthenticated(true);
-  //     setLoading(false);
-  //     })
-  //     .catch(err => {
-  //       navigate("/login");
-  //       });
-  // }, []);
+// UNCOMMENT FOR PRESENTATION
 
-  // if (loading) return <div>Loading...</div>;
-  // if (!isAuthenticated) return <div>Not authenticated</div>;
+  useEffect (() => {
+    fetch("check-session", {credentials : "include"})
+    .then(res => {
+      if(!res.ok) throw new Error("Not authenticated");
+      return res.json();
+    })
+    .then(data => {
+      setIsAuthenticated(true);
+      setLoading(false);
+      })
+      .catch(err => {
+        navigate("/login");
+        });
+  }, []);
+
+  if (loading) return <div>Loading...</div>;
+  if (!isAuthenticated) return <div>Not authenticated</div>;
 
   return (
     <div className="bg-transparent w-full h-full rounded-xl">

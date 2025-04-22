@@ -18,7 +18,7 @@ const HeroSection = () => {
         </p>
         <div className="flex justify-center gap-4 pt-4">
           <a
-            href="/Associates"
+            href="/Research-Associates"
             className="bg-cirtRed text-white px-6 py-3 rounded-full font-semibold hover:bg-opacity-90 transition duration-300"
           >
             Learn More
