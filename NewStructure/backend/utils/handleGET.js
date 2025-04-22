@@ -110,7 +110,7 @@ let handleGetPhotos = async (req, res) => {
 
 
         // Fetch three random photos instead of fixed names
-        const photos = await collection.aggregate([{ $sample: { size: 3 } }]).toArray();
+        const photos = await collection.aggregate([{ $sample: { size: 8 } }]).toArray();
         console.log("Fetched photos:", photos); // Debug log
         if (photos.length === 0) {
             return res.status(404).json({ message: "No photos found" });
