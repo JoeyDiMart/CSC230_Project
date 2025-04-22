@@ -26,14 +26,14 @@ const statsTemplate = [
     footer: 'Strong user retention',
     description: 'Engagement exceed targets'
   },
-  {
-    title: 'Growth Rate',
-    value: '4.5%',
-    trend: '+4.5%',
-    trendDirection: 'up',
-    footer: 'Steady performance',
-    description: 'Meets growth projections'
-  }
+    {
+        title: 'Active Reviewers',
+        value: '0',
+        trend: '+5%',
+        trendDirection: 'up',
+        footer: 'Reviewer activity increasing',
+        description: 'Total active reviewers in the system'
+    }
 ];
 
 const StatCard = ({ title, value, trend, trendDirection, footer, description }) => {
@@ -117,10 +117,28 @@ const SectionCards = () => {
             }
         };
 
+        // Fetch active reviewers
+        const fetchActiveReviewers = async () => {
+            try {
+                const response = await fetch('http://localhost:8081/api/reviewers/active'); // Replace with your API endpoint
+                if (!response.ok) {
+                    throw new Error('Failed to fetch active reviewers');
+                }
+                const { total } = await response.json();
+
+                setStats((prevStats) =>
+                    prevStats.map((stat) =>
+                        stat.title === 'Active Reviewers' ? { ...stat, value: total } : stat
+                    )
+                );
+            } catch (error) {
+                console.error('Error fetching active reviewers:', error);
+            }
+        };
         fetchTotalUsers();
         fetchTotalViews();
         fetchTotalPublications();
-
+        fetchActiveReviewers();
 
     }, []);
 

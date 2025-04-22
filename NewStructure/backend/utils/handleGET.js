@@ -38,6 +38,7 @@ export const handleGetRequest = async (req, res) => {
             '/api/users/count': handleGetTotalUsers,
             '/api/publications/count': handleGetTotalPublications,
             '/api/views/count': handleGetTotalViews,
+            '/api/reviewers/active': handleGetActiveReviewers,
 
 
         };
@@ -304,6 +305,22 @@ const handleGetTotalUsers = async (req, res) => {
         res.status(200).json({ total: totalUsers });
     } catch (err) {
         console.error("Error fetching total users:", err);
+        res.status(500).json({ error: "Internal server error" });
+    }
+};
+
+const handleGetActiveReviewers = async (req, res) => {
+    console.log("Fetching active reviewers...");
+    try {
+        const db = client.db('CIRT');
+        const collection = db.collection('USERS');
+
+        // Count the total number of users with the role "reviewer"
+        const total = await collection.countDocuments({ role: "reviewer" });
+        console.log(total)
+        res.status(200).json({ total });
+    } catch (err) {
+        console.error("Error fetching active reviewers:", err);
         res.status(500).json({ error: "Internal server error" });
     }
 };
