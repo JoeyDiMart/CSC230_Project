@@ -316,7 +316,7 @@
     width: 100%;
 }
 
-
+{/*
 .reviewer-popup {
     display: flex;
     flex-direction: row;
@@ -350,4 +350,32 @@
     padding: 1rem;
     box-sizing: border-box;
     overflow-y: auto;
+}
+
+*/}
+
+
+
+.review-popup .popup-pdf {
+    width: 100%;
+    height: 100%;
+    margin-top: 1.5rem; /* space below the title */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.review-popup .popup-pdf embed {
+    width: 85%;
+    height: 100%;
+    border-radius: 12px;
+}
+
+.review-popup .popup-details {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 100%;
 }
