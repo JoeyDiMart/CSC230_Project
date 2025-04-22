@@ -5,7 +5,7 @@ import { IoPeopleSharp, IoInformationCircle } from "react-icons/io5";
 
 function Cards (){
     return (
-        <div className="flex justify-center items-center py-10 bg-testingColorBackground">
+        <div className="flex justify-center items-center py-10 bg-testingColorCardsBackground">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-7xl w-full px-6">
                 
                 {/* Card 1 - About CIRT */}

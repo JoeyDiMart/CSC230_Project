@@ -6,7 +6,6 @@
 .box{
     position: relative;
     width: 100%;
-    margin: 20px ;
     overflow: hidden;
     border-radius: 10px;
     box-shadow: 1px 2px 5px #ccc;
@@ -48,13 +47,10 @@
     margin-top: 1px;
 }
 
-.emailButton:hover {
-    background-color: #C8102E;
-}
 
 .grid-researchAssociates{
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     gap: 2rem;
     padding: 2rem 0;
 }

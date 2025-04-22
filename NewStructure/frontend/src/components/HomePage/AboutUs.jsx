@@ -2,7 +2,7 @@ import React from "react";
 
 const AboutUs = () => {
     return (
-        <section className="flex">
+        <section className="flex bg-testingColorCardsBackground">
             <div className="max-w-5xl mx-auto text-center">
                 <h2 className="flex justify-center text-3xl font-bold mb-4 text-testingColorBlack">About CIRT</h2>
                 <p className="flex justify-center text-center text-lg leading-relaxed text-testingColorGrey">
