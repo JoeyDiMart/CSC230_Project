@@ -290,18 +290,6 @@ function Publications({ role, email, name }) {
                                 <h2>{popupPub.title}</h2>
                                 <p>Author(s): {popupPub.author?.join(", ")}</p>
                             </div>
-                            {popupType === "review" && (
-                                <>
-                                    <textarea
-                                        placeholder="Enter your review comments..."
-                                        className="review-textarea"
-                                    />
-                                    <div className="review-buttons">
-                                        <button className="accept">Accept</button>
-                                        <button className="reject">Reject</button>
-                                    </div>
-                                </>
-                            )}
                         </div>
 
                         <div className="popup-pdf">

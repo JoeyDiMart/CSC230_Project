@@ -316,14 +316,30 @@
     width: 100%;
 }
 
-reviewer-popup {
+
+.reviewer-popup {
     display: flex;
     flex-direction: row;
     width: 100%;
     height: 100%;
 }
 
-/* Right side content (still comes first in JSX but appears on the right) */
+.reviewer-popup .popup-pdf {
+    width: 70%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.reviewer-popup .popup-pdf embed {
+    width: 100%;
+    height: 100%;
+    border-radius: 12px;
+    display: block;
+}
+
 .reviewer-popup .popup-details {
     width: 30%;
     height: 100%;
@@ -334,63 +350,4 @@ reviewer-popup {
     padding: 1rem;
     box-sizing: border-box;
     overflow-y: auto;
-}
-
-/* Left side: PDF */
-.reviewer-popup .popup-pdf {
-    width: 70%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 1rem;
-    box-sizing: border-box;
-}
-
-.reviewer-popup .popup-pdf embed {
-    width: 100%;
-    height: 100%;
-    border-radius: 12px;
-    object-fit: contain;
-}
-
-/* Optional: cleanup inside details */
-.review-header {
-    text-align: center;
-}
-
-.review-textarea {
-    width: 100%;
-    min-height: 120px;
-    resize: vertical;
-    border-radius: 8px;
-    border: 1px solid #ccc;
-    padding: 0.75rem;
-    font-size: 1rem;
-    margin-top: 1rem;
-}
-
-.review-buttons {
-    display: flex;
-    justify-content: center;
-    gap: 1rem;
-    margin-top: auto;
-    padding-top: 1rem;
-}
-
-.review-buttons button {
-    padding: 0.5rem 1.5rem;
-    border: none;
-    border-radius: 8px;
-    color: white;
-    font-weight: bold;
-    cursor: pointer;
-}
-
-.review-buttons .accept {
-    background-color: #28a745;
-}
-
-.review-buttons .reject {
-    background-color: #dc3545;
 }
