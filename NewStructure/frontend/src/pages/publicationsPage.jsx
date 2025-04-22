@@ -12,6 +12,7 @@ function Publications({ role, email, name }) {
     const [reviewPublications, setReviewPublications] = useState([]);
     const [popupPub, setPopupPub] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [popupType, setPopupType] = useState("");
     // search for text in that specific filter
     const [searchText, setSearchText] = useState("");
     const [searchFilter, setSearchFilter] = useState("title");
@@ -188,10 +189,9 @@ function Publications({ role, email, name }) {
     };
 
     // handle the popup for all general publications ( see preview and such )
-    const handlePublicationPopup = (publication) => {
-        const isReviewerPub = reviewPublications.some(p => p._id === publication._id);
-        if (isReviewerPub) return;
+    const handlePublicationPopup = (publication, type = "general") => {
         setPopupPub(publication);
+        setPopupType(type); // "general" or "review"
     };
     const handleClosePopup = () => {
         setPopupPub(null);
@@ -227,7 +227,7 @@ function Publications({ role, email, name }) {
                     )}
                     <div className="pubs-scroll-wrapper">
                         <Pubs pubs={myPublications}
-                              onPublicationClick={handlePublicationPopup}/>
+                              onPublicationClick={(pub) => handlePublicationPopup(pub, "general")}/>
 
                     </div>
                 </div>
@@ -236,7 +236,7 @@ function Publications({ role, email, name }) {
                 <div className="reviewer-section">
                     <h2>Under Review</h2>
                     <div className="pubs-scroll-wrapper">
-                        <Pubs pubs={reviewPublications} onPublicationClick={handlePublicationPopup}/>
+                        <Pubs pubs={reviewPublications} onPublicationClick={(pub) => handlePublicationPopup(pub, "reviewer")}/>
                     </div>
                 </div>
             )}
@@ -278,12 +278,28 @@ function Publications({ role, email, name }) {
 
             <div className="pubs-scroll-wrapper">
                 <Pubs pubs={publications}
-                      onPublicationClick={handlePublicationPopup}/>
+                      onPublicationClick={(pub) => handlePublicationPopup(pub, "general")}/>
             </div>
 
             {popupPub && (
                 <div className="popup-overlay" onClick={(e) => e.stopPropagation()}>
-                    <div className="pub-popup">
+                    <div className={`pub-popup ${popupType === "review" ? "review-popup" : "general-popup"}`}>
+                        <div className="popup-details">
+                            <button onClick={handleClosePopup} className="exit-upload">X</button>
+                            <div className="review-header">
+                                <h2>{popupPub.title}</h2>
+                                <p>Author(s): {popupPub.author?.join(", ")}</p>
+                            </div>
+                            <textarea
+                                placeholder="Enter your review comments..."
+                                className="review-textarea"
+                            />
+                            <div className="review-buttons">
+                                <button className="accept">Accept</button>
+                                <button className="reject">Reject</button>
+                            </div>
+                        </div>
+
                         <div className="popup-pdf">
                             <embed
                                 src={`data:application/pdf;base64,${popupPub?.file?.data}`}
@@ -292,17 +308,12 @@ function Publications({ role, email, name }) {
                                 height="100%"
                             />
                         </div>
-
-                        {/* Right: Info/Review UI */}
-                        <div className="popup-details">
-                            <button onClick={handleClosePopup} className="exit-upload">X</button>
-                            <h2>{popupPub.title}</h2>
-                            <p>Author(s): {popupPub.author?.join(", ")}</p>
-                        </div>
                     </div>
                 </div>
             )}
+
         </div>
     );
 }
+
 export default Publications;
