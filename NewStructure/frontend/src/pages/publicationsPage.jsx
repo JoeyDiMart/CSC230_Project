@@ -3,6 +3,8 @@ import { useDropzone } from 'react-dropzone';
 import Navbar from "../components/navbar.jsx";
 import "./publicationsPage.css"
 import Pubs from './publications.jsx';
+import { ImCross } from "react-icons/im";
+
 
 function Publications({ role, email, name }) {
     const [showUpload, setShowUpload] = useState(false);
@@ -201,12 +203,13 @@ function Publications({ role, email, name }) {
         <div className="publisher-stuff">
         {(role !== "guest") && (
                 <div>
-                    <h2>My Publications</h2>
+                    <h2 className="">My Publications</h2>
                     <button onClick={() => setShowUpload(true)} className="upload"> Upload </button>
                     {showUpload && (
                         <form onSubmit={handleSubmit}>
                         <div className="upload-popup">
-                            <button onClick={() => setShowUpload(false)} className="exit-upload">X</button>
+                            <button onClick={() => setShowUpload(false)} className="exit-upload"><ImCross size={12} />
+                            </button>
                             <h2>Upload a Publication</h2>
                             <div className="input-container">
                                 <input type="text" name="title" placeholder="Title" value={uploadFile.title} onChange={handleChange} required />
@@ -240,7 +243,7 @@ function Publications({ role, email, name }) {
                 </div>
             )}
 
-            <h2>Publications</h2>
+            <h1 className="flex items-center justify-center p-4">Publications</h1>
             <div className="search-bar-container">
                 <form className="animated-search-form" onSubmit={(e) => { e.preventDefault(); handleSearch(); }}>
                     <button type="submit" className="search-icon">
@@ -284,7 +287,7 @@ function Publications({ role, email, name }) {
                 <div className="popup-overlay" onClick={(e) => e.stopPropagation()}>
                     <div className={`pub-popup ${popupType === "review" ? "review-popup" : "general-popup"}`}>
                         <div className="popup-details">
-                            <button onClick={handleClosePopup} className="exit-upload">X</button>
+                            <button onClick={handleClosePopup} className="exit-upload"><ImCross size={12}/></button>
                             <div className="review-header">
                                 <h2>{popupPub.title}</h2>
                                 <p>Author(s): {popupPub.author?.join(", ")}</p>

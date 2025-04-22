@@ -52,8 +52,10 @@ function Pubs({ pubs, onPublicationClick }) {
                 <div>
                     <p>No Publications</p>
 
-                    {/*
-                <div key="empty" className="publication-container">
+
+{/* COMMENT THIS BEFORE REAL TESTING */}
+                    
+                {/* <div key="empty" className="publication-container">
                     <div className="publication-title">
                         <p><strong>{'The Title'}</strong></p>
                     </div>
