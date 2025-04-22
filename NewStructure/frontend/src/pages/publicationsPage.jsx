@@ -295,7 +295,7 @@ function Publications({ role, email, name }) {
                                     <textarea
                                         placeholder="Enter your review comments..."
                                         className="review-textarea"
-                                    />p
+                                    />
                                     <div className="review-buttons">
                                         <button className="accept">Accept</button>
                                         <button className="reject">Reject</button>
