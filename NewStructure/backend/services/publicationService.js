@@ -35,7 +35,7 @@ export const handleHome = (req, res) => {
 export const handleGetReviews = async (req, res) => {
     if (!req.session.user) {
         return res.status(401).json({ error: 'Please log in' });
-    }cd
+    }
     if (!['reviewer', 'editor'].includes(req.session.user.role)) {
         return res.status(403).json({ error: 'Forbidden' });
     }
