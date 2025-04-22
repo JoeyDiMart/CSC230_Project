@@ -9,6 +9,9 @@ import 'react-big-calendar/lib/css/react-big-calendar.css';
 import './eventsPage.css';
 import EventsList from '../components/EventsList';
 import '../components/EventsList.css';
+import { IoIosArrowForward } from "react-icons/io";
+import { IoIosArrowBack } from "react-icons/io";
+
 
 const locales = {
     'en-US': enUS
@@ -287,9 +290,10 @@ function Events({ role, email, name }) {
                                 </button>
                             </div>
                             <div className="navigation-controls">
-                                <button onClick={() => handleNavigate('PREV')}>&lt;</button>
+                                <button onClick={() => handleNavigate('PREV')}><IoIosArrowBack />
+                                </button>
                                 <span className="date-label">{formatDateLabel()}</span>
-                                <button onClick={() => handleNavigate('NEXT')}>&gt;</button>
+                                <button onClick={() => handleNavigate('NEXT')}><IoIosArrowForward /></button>
                                 <button onClick={() => handleNavigate('TODAY')} className="today-btn">Today</button>
                             </div>
                         </div>
