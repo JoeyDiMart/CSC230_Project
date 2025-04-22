@@ -260,22 +260,96 @@
 
 .popup-overlay {
     position: fixed;
-    top: 0;
-    left: 0;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80%;
+    height: 80%;
+    z-index: 1000;
     background-color: var(--bg-main);
+    visibility: visible;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    transition: opacity 0.3s ease;
+    border-radius: 20px;
+    overflow: hidden;
+{/*backdrop-filter: blur(6px); FOR BACKGROUND BLUR  doesn't work rn
+    -webkit-backdrop-filter: blur(6px); */}
+}
+
+.pub-popup {
+    width: 100%;
+    height: 100%;
+
+}
+
+.popup-overlay .exit-upload {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+
+.general-popup .popup-pdf {
+    width: 100%;
+    height: 100%;
+    margin-top: 1.5rem; /* space below the title */
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 1000;
+    text-align: center;
 }
 
-.popup-box {
-    width: 90%;
-    height: 90%;
-    background-color: white;
-    border-radius: 20px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+.general-popup .popup-pdf embed {
+    width: 85%;
+    height: 100%;
+    border-radius: 12px;
+}
+
+.general-popup .popup-details {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 100%;
+}
+
+
+.reviewer-popup {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: 100%;
+}
+
+/* PDF container on the left, 70% width */
+.reviewer-popup .popup-pdf {
+    width: 70%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+.reviewer-popup .popup-pdf embed {
+    width: 100%;
+    height: 100%;
+    border-radius: 12px;
+    object-fit: cover;
+}
+
+/* Details section on the right */
+.reviewer-popup .popup-details {
+    width: 30%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     padding: 1rem;
-    overflow: auto;
-    position: relative;
+    overflow-y: auto;
+    box-sizing: border-box;
 }

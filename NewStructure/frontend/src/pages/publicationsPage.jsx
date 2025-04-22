@@ -236,7 +236,7 @@ function Publications({ role, email, name }) {
                 <div className="reviewer-section">
                     <h2>Under Review</h2>
                     <div className="pubs-scroll-wrapper">
-                        <Pubs pubs={reviewPublications} onPublicationClick={(pub) => handlePublicationPopup(pub, "reviewer")}/>
+                        <Pubs pubs={reviewPublications} onPublicationClick={(pub) => handlePublicationPopup(pub, "review")}/>
                     </div>
                 </div>
             )}
@@ -290,14 +290,18 @@ function Publications({ role, email, name }) {
                                 <h2>{popupPub.title}</h2>
                                 <p>Author(s): {popupPub.author?.join(", ")}</p>
                             </div>
-                            <textarea
-                                placeholder="Enter your review comments..."
-                                className="review-textarea"
-                            />
-                            <div className="review-buttons">
-                                <button className="accept">Accept</button>
-                                <button className="reject">Reject</button>
-                            </div>
+                            {popupType === "review" && (
+                                <>
+                                    <textarea
+                                        placeholder="Enter your review comments..."
+                                        className="review-textarea"
+                                    />p
+                                    <div className="review-buttons">
+                                        <button className="accept">Accept</button>
+                                        <button className="reject">Reject</button>
+                                    </div>
+                                </>
+                            )}
                         </div>
 
                         <div className="popup-pdf">
