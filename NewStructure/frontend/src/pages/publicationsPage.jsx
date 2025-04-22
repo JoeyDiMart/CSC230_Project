@@ -42,6 +42,40 @@ function Publications({ role, email, name }) {
             });
     }, []);
 
+    const [emaiil, setEmail] = useState(localStorage.getItem("email"));
+    const [rolle, setRole] = useState(localStorage.getItem("role"));
+    
+    useEffect(() => {
+        if (email && role) {
+            localStorage.setItem("email", email);
+            localStorage.setItem("role", role);
+        }
+    }, [email, role]);
+    
+    useEffect(() => {
+        if (true) {
+            fetchMyPublications();
+        }
+    }, [email, role]);
+    
+    const fetchMyPublications = () => {
+        if (!email) {
+            
+            email = localStorage.getItem("email")
+            
+        }
+    
+        fetch(`http://localhost:8081/api/publications/byEmail/${email}`)
+            .then((response) => response.json())
+            .then((data) => {
+                setMyPublications(data);
+            })
+            .catch((error) => {
+                console.error("Error fetching user publications:", error);
+            });
+    };
+
+    
     // get publications from database (all under review)
     useEffect(() => {
         if (role === "admin" || role === "reviewer") {
@@ -61,24 +95,6 @@ function Publications({ role, email, name }) {
             });
     };
 
-
-    // for my publications only
-    useEffect( () => {
-        if (role !== "guest") {
-            fetchMyPublications();
-        }
-    }, [email, role]);
-    const fetchMyPublications = () => {
-        if (!email) return;
-        fetch(`http://localhost:8081/api/publications/byEmail/${email}`)
-            .then(response => response.json())
-            .then((data) => {
-                setMyPublications(data);
-            })
-            .catch((error) => {
-                console.error("Error fetching user publications:", error);
-            });
-    };
 
 
     // Handles typing in for uploading a new publication

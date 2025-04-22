@@ -111,17 +111,18 @@ let handleGetPhotos = async (req, res) => {
 
         // Fetch three random photos instead of fixed names
         const photos = await collection.aggregate([{ $sample: { size: 3 } }]).toArray();
-
+        console.log("Fetched photos:", photos); // Debug log
         if (photos.length === 0) {
             return res.status(404).json({ message: "No photos found" });
         }
 
         // Convert binary data to Base64
         const imageData = photos
-            .filter(photo => photo?.img?.data) // Ensure valid data exists
+            .filter(photo => photo?.file?.data) // Ensure valid data exists
             .map(photo => {
-                return `data:image/png;base64,${photo.img.data.toString('base64')}`;
+                return `data:image/png;base64,${photo.file.data.toString('base64')}`;
             });
+        console.log("Image data:", imageData); // Debug log
 
         res.json(imageData); // Send Base64-encoded images as JSON
     } catch (err) {
