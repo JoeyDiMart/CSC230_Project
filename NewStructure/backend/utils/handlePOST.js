@@ -18,7 +18,6 @@ const __dirname = path.dirname(__filename);
 
 export const handlePostRequest = async (req, res) => {
     console.log("Incoming POST request to:", req.path);
-    console.log("Request body:", req.body);
 
     // Handle event updates first since they have dynamic routes
     const eventUpdateMatch = req.path.match(/^\/events\/([^\/]+)$/);
@@ -208,8 +207,6 @@ export const handlePublication = async (req, res) => {
         }
 
         console.log("✅ Multer finished parsing request");
-        console.log("📝 Fields:", req.body);
-        console.log("📎 File info:", req.file);
 
         try {
             // Extract fields and parse arrays
@@ -252,11 +249,9 @@ export const handlePublication = async (req, res) => {
                 uploadedAt: new Date()
             };
 
-            console.log("💾 Inserting publication:", publication);
             const result = await collection.insertOne(publication);
 
             if (result.insertedId) {
-                console.log("✅ Publication inserted:", result.insertedId);
 
                 // Delete the file from the server
                 fs.unlink(req.file.path, (unlinkErr) => {

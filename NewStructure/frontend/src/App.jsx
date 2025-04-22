@@ -87,7 +87,6 @@ function App() {
     };
     const incrementViews = async () => {
       try {
-        console.log()
         await fetch("http://localhost:8081/api/views/increment", { method: "POST" });
       } catch (error) {
         console.error("Error incrementing views:", error);
