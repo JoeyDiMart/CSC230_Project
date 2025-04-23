@@ -15,6 +15,7 @@ import Users from './pages/dashboard/usersPage.jsx'
 import ResearchAssociates from './pages/researchAssociates.jsx';
 import PhotoGallery from './pages/dashboard/photoGalleryPage.jsx'
 import DashboardLayout from './components/Dashboard/DashboardLayout.jsx'
+import PostersPage from './pages/postersPage.jsx';
 
 
 // ✅ Wrapper to use useLocation and hide header/footer on certain routes
@@ -54,6 +55,7 @@ function AppWrapper({ role, setRole, name, setName, email, setEmail }) {
         />
          <Route path="/Events" element={<Events role={role} setRole={setRole} name={name} setName={setName} email={email} 		setEmail={setEmail} />} />
         <Route path="/Research-Associates" element={<ResearchAssociates />} />
+        <Route path="/posters" element={<PostersPage role={role} name={name} email={email} />} />
 
       </Routes>
 
