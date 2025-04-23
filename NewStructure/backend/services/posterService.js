@@ -3,13 +3,18 @@ import { ObjectId } from 'mongodb';
 import multer from 'multer';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import fs from 'fs';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // Configure multer for poster uploads
 const storage = multer.diskStorage({
-    destination: './uploads/posters',
+    destination: (req, file, cb) => {
+        const uploadDir = './uploads/posters';
+        if (!fs.existsSync(uploadDir)) fs.mkdirSync(uploadDir, { recursive: true });
+        cb(null, uploadDir);
+    },
     filename: (req, file, cb) => {
         cb(null, `${Date.now()}-${file.originalname}`);
     }
@@ -25,7 +30,7 @@ export const upload = multer({
             cb(new Error('Only JPEG, PNG, GIF images and PDF files are allowed'), false);
         }
     },
-    limits: { fileSize: 10 * 1024 * 1024 } // 10MB limit for PDFs
+    limits: { fileSize: 10 * 1024 * 1024 } // 10MB limit
 });
 
 export const handleUpload = async (req, res) => {
@@ -34,15 +39,33 @@ export const handleUpload = async (req, res) => {
     }
 
     try {
-        const posterCollection = client.db('CIRT').collection('posters');
+        const posterCollection = client.db('CIRT').collection('POSTERS');
+        const fileData = fs.readFileSync(req.file.path);
+        const base64Data = fileData.toString('base64');
+
         const poster = {
             title: req.body.title,
+            author: req.body.author,
             description: req.body.description,
-            filePath: req.file.path,
+            keywords: JSON.parse(req.body.keywords || '[]'),
+            file: {
+                data: base64Data,
+                name: req.file.originalname,
+                type: req.file.mimetype,
+                size: req.file.size
+            },
             userId: new ObjectId(req.session.user.id),
+            email: req.session.user.email,
             uploadDate: new Date(),
-            status: 'pending'
+            status: 'pending',
+            views: 0
         };
+
+        // Delete the temporary file
+        fs.unlink(req.file.path, (err) => {
+            if (err) console.error('Error deleting temporary file:', err);
+        });
+
         const result = await posterCollection.insertOne(poster);
         res.status(201).json({ 
             message: 'Poster uploaded successfully', 
@@ -55,23 +78,20 @@ export const handleUpload = async (req, res) => {
 };
 
 export const handleGetAll = async (req, res) => {
-    console.log('Starting handleGetAll...'); // Debug log
     try {
-        const posterCollection = client.db('CIRT').collection('posters');
-        console.log('Got poster collection'); // Debug log
-        
-        // Just get all posters for now
-        const posters = await posterCollection.find({}).toArray();
-        console.log('Found posters:', JSON.stringify(posters)); // Debug log
+        const posterCollection = client.db('CIRT').collection('POSTERS');
+        const posters = await posterCollection
+            .find({ status: 'approved' })
+            .sort({ uploadDate: -1 })
+            .toArray();
             
         // Convert ObjectIds to strings for response
         const formattedPosters = posters.map(poster => ({
             ...poster,
             _id: poster._id.toString(),
-            userId: poster.userId ? poster.userId.toString() : null // Handle case where userId might be missing
+            userId: poster.userId ? poster.userId.toString() : null
         }));
         
-        console.log('Sending response:', JSON.stringify(formattedPosters)); // Debug log
         res.json(formattedPosters);
     } catch (err) {
         console.error('Error in handleGetAll:', err);
@@ -85,31 +105,26 @@ export const handleGetPending = async (req, res) => {
     }
 
     try {
-        console.log('Starting handleGetPending...'); // Debug log
-        const posterCollection = client.db('CIRT').collection('posters');
+        const posterCollection = client.db('CIRT').collection('POSTERS');
         let query = { status: 'pending' };
 
         // If not admin, only show user's own pending posters
         if (req.session.user.role !== 'admin') {
-            query.userId = req.session.user.id;
+            query.userId = new ObjectId(req.session.user.id);
         }
 
-        console.log('Query:', query); // Debug log
         const posters = await posterCollection
             .find(query)
             .sort({ uploadDate: -1 })
             .toArray();
             
-        console.log('Found posters:', posters); // Debug log
-            
         // Convert ObjectIds to strings for response
         const formattedPosters = posters.map(poster => ({
             ...poster,
             _id: poster._id.toString(),
-            userId: poster.userId ? poster.userId.toString() : null // Handle case where userId might be missing
+            userId: poster.userId ? poster.userId.toString() : null
         }));
         
-        console.log('Sending response:', JSON.stringify(formattedPosters)); // Debug log
         res.json(formattedPosters);
     } catch (err) {
         console.error('Error in handleGetPending:', err);
@@ -119,15 +134,10 @@ export const handleGetPending = async (req, res) => {
 
 export const handleGetById = async (req, res) => {
     try {
-        console.log('Starting handleGetById...'); // Debug log
-        console.log('Session user:', req.session.user); // Debug log
-        
-        const posterCollection = client.db('CIRT').collection('posters');
+        const posterCollection = client.db('CIRT').collection('POSTERS');
         const poster = await posterCollection.findOne({ 
             _id: new ObjectId(req.params.id)
         });
-        
-        console.log('Found poster:', poster); // Debug log
         
         if (!poster) {
             return res.status(404).json({ error: 'Poster not found' });
@@ -141,10 +151,16 @@ export const handleGetById = async (req, res) => {
         const isAdmin = req.session.user && req.session.user.role === 'admin';
         const isOwner = req.session.user && poster.userId.toString() === req.session.user.id;
 
-        console.log('Access checks:', { isApproved, isAdmin, isOwner }); // Debug log
-
         if (!isApproved && !isAdmin && !isOwner) {
             return res.status(403).json({ error: 'Forbidden' });
+        }
+
+        // Increment views if the poster is approved
+        if (isApproved) {
+            await posterCollection.updateOne(
+                { _id: new ObjectId(req.params.id) },
+                { $inc: { views: 1 } }
+            );
         }
 
         // Convert ObjectIds to strings for response
@@ -152,12 +168,142 @@ export const handleGetById = async (req, res) => {
             ...poster,
             _id: poster._id.toString(),
             userId: poster.userId.toString(),
-            isOwner: isOwner
+            isOwner: isOwner,
+            file: {
+                ...poster.file,
+                data: undefined // Don't send file data in the metadata
+            }
         };
         
         res.json(formattedPoster);
     } catch (err) {
         console.error('Error in handleGetById:', err);
+        res.status(500).json({ error: err.message });
+    }
+};
+
+export const handleGetByUser = async (req, res) => {
+    try {
+        if (!req.session.user) {
+            return res.status(401).json({ error: 'Please log in' });
+        }
+
+        const posterCollection = client.db('CIRT').collection('POSTERS');
+        const posters = await posterCollection.find({
+            userId: new ObjectId(req.session.user.id)
+        }).toArray();
+
+        // Remove file data to reduce response size
+        const postersWithoutFiles = posters.map(poster => {
+            const { file, ...posterWithoutFile } = poster;
+            return {
+                ...posterWithoutFile,
+                file: file ? {
+                    name: file.name,
+                    type: file.type,
+                    size: file.size
+                } : null
+            };
+        });
+
+        res.json(postersWithoutFiles);
+    } catch (err) {
+        console.error('Error in handleGetByUser:', err);
+        res.status(500).json({ error: err.message });
+    }
+};
+
+export const handleSearch = async (req, res) => {
+    try {
+        const { keyword } = req.query;
+        if (!keyword) {
+            return res.status(400).json({ error: 'Keyword is required' });
+        }
+
+        const posterCollection = client.db('CIRT').collection('POSTERS');
+        const posters = await posterCollection.find({
+            $or: [
+                { title: { $regex: keyword, $options: 'i' } },
+                { description: { $regex: keyword, $options: 'i' } },
+                { author: { $regex: keyword, $options: 'i' } },
+                { keywords: { $regex: keyword, $options: 'i' } }
+            ],
+            status: 'approved'
+        }).toArray();
+
+        // Remove file data to reduce response size
+        const postersWithoutFiles = posters.map(poster => {
+            const { file, ...posterWithoutFile } = poster;
+            return {
+                ...posterWithoutFile,
+                file: file ? {
+                    name: file.name,
+                    type: file.type,
+                    size: file.size
+                } : null
+            };
+        });
+
+        res.json(postersWithoutFiles);
+    } catch (err) {
+        console.error('Error in handleSearch:', err);
+        res.status(500).json({ error: err.message });
+    }
+};
+
+export const handleGetFile = async (req, res) => {
+    try {
+        const posterCollection = client.db('CIRT').collection('POSTERS');
+        const poster = await posterCollection.findOne({ 
+            _id: new ObjectId(req.params.id)
+        });
+        
+        if (!poster) {
+            return res.status(404).json({ error: 'Poster not found' });
+        }
+
+        // Check permissions
+        const isApproved = poster.status === 'approved';
+        const isAdmin = req.session.user && req.session.user.role === 'admin';
+        const isOwner = req.session.user && poster.userId.toString() === req.session.user.id;
+
+        if (!isApproved && !isAdmin && !isOwner) {
+            return res.status(403).json({ error: 'Forbidden' });
+        }
+
+        if (!poster.file || !poster.file.data) {
+            return res.status(404).json({ error: 'File not found' });
+        }
+
+        try {
+            let fileData;
+            // Check if the data is already a Buffer
+            if (Buffer.isBuffer(poster.file.data)) {
+                fileData = poster.file.data;
+            } else if (typeof poster.file.data === 'string') {
+                // Convert base64 to buffer
+                fileData = Buffer.from(poster.file.data, 'base64');
+            } else {
+                throw new Error('Invalid file data format');
+            }
+
+            // Set CORS headers
+            res.setHeader('Access-Control-Allow-Origin', 'http://localhost:5173');
+            res.setHeader('Access-Control-Allow-Credentials', 'true');
+            
+            // Set the appropriate content type and disposition
+            res.setHeader('Content-Type', poster.file.type);
+            res.setHeader('Content-Disposition', `inline; filename="${poster.file.name}"`);
+            res.setHeader('Cache-Control', 'public, max-age=31536000');
+
+            // Send the file data
+            res.end(fileData);
+        } catch (conversionError) {
+            console.error('Error converting file data:', conversionError);
+            return res.status(500).json({ error: 'Error processing file data' });
+        }
+    } catch (err) {
+        console.error('Error in handleGetFile:', err);
         res.status(500).json({ error: err.message });
     }
 };
@@ -168,7 +314,7 @@ export const handleApprove = async (req, res) => {
     }
     
     try {
-        const posterCollection = client.db('CIRT').collection('posters');
+        const posterCollection = client.db('CIRT').collection('POSTERS');
         const result = await posterCollection.updateOne(
             { _id: new ObjectId(req.params.id) },
             { $set: { 
@@ -195,25 +341,28 @@ export const handleDelete = async (req, res) => {
     }
 
     try {
-        const posterCollection = client.db('CIRT').collection('posters');
+        const posterCollection = client.db('CIRT').collection('POSTERS');
         const poster = await posterCollection.findOne({ 
             _id: new ObjectId(req.params.id)
         });
-        
+
         if (!poster) {
             return res.status(404).json({ error: 'Poster not found' });
         }
-        
-        // Only allow deletion by admin or the poster's owner
-        if (req.session.user.role !== 'admin' && 
-            poster.userId.toString() !== req.session.user.id) {
+
+        // Only allow admin or owner to delete
+        const isAdmin = req.session.user.role === 'admin';
+        const isOwner = poster.userId.toString() === req.session.user.id;
+
+        if (!isAdmin && !isOwner) {
             return res.status(403).json({ error: 'Forbidden' });
         }
-        
+
+        // Delete from database
         const result = await posterCollection.deleteOne({ 
             _id: new ObjectId(req.params.id)
         });
-        
+
         if (result.deletedCount > 0) {
             res.json({ message: 'Poster deleted successfully' });
         } else {
@@ -221,6 +370,6 @@ export const handleDelete = async (req, res) => {
         }
     } catch (err) {
         console.error('Error in handleDelete:', err);
-        res.status(500).json({ error: err.message });
+        res.status(400).json({ error: err.message });
     }
 };
