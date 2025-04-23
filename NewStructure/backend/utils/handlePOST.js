@@ -310,11 +310,24 @@ const handleIncrementViews = async (req, res) => {
         res.status(500).json({ error: "Internal server error" });
     }
 };
+const storagePhotos = multer.diskStorage({
+    destination: (req, file, cb) => {
+        const uploadDir = './photos';
+        if (!fs.existsSync(uploadDir)) fs.mkdirSync(uploadDir);
+        cb(null, uploadDir);
+    },
+    filename: (req, file, cb) => {
+        const cleanFileName = file.originalname.replace(/\s+/g, '_');
+        cb(null, cleanFileName);
+    }
+});
+const uploadP = multer({ storage: storagePhotos });
+
 const uploadPhotos = async (req, res) => {
     console.log("📸 uploadPhotos triggered...");
 
     // Run multer to handle multipart/form-data
-    upload.single('file')(req, res, async function (err) {
+    uploadP.single('file')(req, res, async function (err) {
         if (err) {
             console.error("❌ Multer error:", err);
             return res.status(400).json({ error: err.message });
@@ -328,35 +341,23 @@ const uploadPhotos = async (req, res) => {
         }
 
         try {
-            const db = client.db("CIRT");
-            const photosCollection = db.collection("PHOTOS");
-
-            // Convert the file buffer to a Base64 string
-            const base64Data = fs.readFileSync(file.path).toString("base64");
-
-            const photoDocument = {
+            // Return file metadata without saving to the database
+            const fileMetadata = {
                 title,
                 file: {
-                    data: base64Data,
+                    path: file.path,
                     contentType: file.mimetype,
                     name: file.originalname,
                 },
                 uploadDate: new Date(),
             };
 
-            const result = await photosCollection.insertOne(photoDocument);
+            console.log("✅ Photo uploaded successfully:", fileMetadata);
 
-            // Delete the uploaded file from disk
-            fs.unlink(file.path, (unlinkErr) => {
-                if (unlinkErr) console.error("❌ Error deleting file:", unlinkErr);
-                else console.log("🗑️ File deleted from server.");
+            return res.status(201).json({
+                message: "Photo uploaded successfully",
+                file: fileMetadata,
             });
-
-            if (result.insertedId) {
-                return res.status(201).json({ message: "Photo uploaded successfully", photoId: result.insertedId });
-            } else {
-                return res.status(500).json({ error: "Failed to save photo" });
-            }
         } catch (error) {
             console.error("💥 Server error:", error);
             return res.status(500).json({ error: "Internal server error" });

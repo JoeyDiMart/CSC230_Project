@@ -106,27 +106,26 @@ export const handleGetRequest = async (req, res) => {
 // photo
 let handleGetPhotos = async (req, res) => {
     try {
-        const db = client.db('CIRT');  // connect to database
-        const collection = db.collection('PHOTOS');  // link to PHOTOS section of database
+        const photosDir = path.join(__dirname, '../photos');
 
+        // Read the photos directory
+        fs.readdir(photosDir, (err, files) => {
+            if (err) {
+                console.error("Error reading photos directory:", err);
+                return res.status(500).json({ error: "Failed to fetch photos" });
+            }
 
-        // Fetch three random photos instead of fixed names
-        const photos = await collection.aggregate([{ $sample: { size: 8 } }]).toArray();
-        if (photos.length === 0) {
-            return res.status(404).json({ message: "No photos found" });
-        }
+            // Map file names to URLs
+            const photos = files.map((file) => ({
+                name: file,
+                url: `/photos/${file}` // Assuming static files are served from this path
+            }));
 
-        // Convert binary data to Base64
-        const imageData = photos
-            .filter(photo => photo?.file?.data) // Ensure valid data exists
-            .map(photo => {
-                return `data:image/png;base64,${photo.file.data.toString('base64')}`;
-            });
-
-        res.json(imageData); // Send Base64-encoded images as JSON
-    } catch (err) {
-        console.error(err);
-        res.sendStatus(500);
+            res.status(200).json(photos);
+        });
+    } catch (error) {
+        console.error("Error in handleGetPhotos:", error);
+        res.status(500).json({ error: "Internal server error" });
     }
 };
 
