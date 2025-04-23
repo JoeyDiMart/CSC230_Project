@@ -13,7 +13,7 @@ export default function DashboardPage() {
 // UNCOMMENT FOR PRESENTATION
 
   useEffect (() => {
-    fetch("check-session", {credentials : "include"})
+    fetch("http://localhost:8081/check-session", {credentials : "include"})
     .then(res => {
       if(!res.ok) throw new Error("Not authenticated");
       return res.json();

@@ -41,6 +41,7 @@ function Navbar({ role, setRole, name, setName }) {
                 {/* Conditional to activate the nav menu*/}
                 <ul className={click? 'nav-menu active' : 'nav-menu'}>
                     <li className="font-bold"><Link to="/Publications" onClick={closeMobileMenu}>Publications</Link></li>
+                    <li><Link to="/posters" onClick={closeMobileMenu}>Posters</Link></li>
                     <li><Link to="/Events" onClick={closeMobileMenu}>Events</Link></li>
                     <li><Link to="/Research-Associates" onClick={closeMobileMenu}>Research Associates</Link></li>
                 </ul>

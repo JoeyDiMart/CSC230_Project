@@ -1,6 +1,6 @@
 //imports
-
 import * as eventService from '../services/eventService.js';
+import * as posterService from '../services/posterService.js';
 import {client} from "../Database/Mongodb.js";
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -37,7 +37,7 @@ export const handlePostRequest = async (req, res) => {
         '/publications/update': handleUpdateStatus,
         '/api/views/increment': handleIncrementViews,
         '/api/photos/upload': uploadPhotos,
-
+        '/posters/upload': handlePosterUpload
     };
     /*
      '/posters/upload': handleUpload,
@@ -167,15 +167,18 @@ const handleSubmit = async (req, res) => {
         return publicationService.handleSubmit(req, res);
     });
 };
-/*
 // Poster upload handler
-const handleUpload = async (req, res) => {
-    return posterService.upload.single('poster')(req, res, (err) => {
-        if (err) return res.status(400).json({ error: err.message });
-        return posterService.handleUpload(req, res);
-    });
+const handlePosterUpload = async (req, res) => {
+    try {
+        return posterService.upload.single('file')(req, res, (err) => {
+            if (err) return res.status(400).json({ error: err.message });
+            return posterService.handleUpload(req, res);
+        });
+    } catch (err) {
+        console.error('Error in handlePosterUpload:', err);
+        return res.status(500).json({ error: err.message });
+    }
 };
-*/
 
 
 // Set up Multer storage

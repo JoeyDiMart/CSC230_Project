@@ -21,6 +21,8 @@ export const handleGetRequest = async (req, res) => {
 
         const requestHandlers = {
             '/posters/pending': posterService.handleGetPending,
+            '/posters/user': posterService.handleGetByUser,
+            '/posters/search': posterService.handleSearch,
             '/posters': posterService.handleGetAll,
             '/profile': userService.handleProfile,
             '/issues': publicationService.handleGetIssues,
@@ -53,7 +55,15 @@ export const handleGetRequest = async (req, res) => {
         } else {
             console.log('No direct handler, checking patterns'); // Debug log
 
-            const posterMatch = req.path.match(/^\/posters\/([^\/]+)$/);
+            const posterFileMatch = req.path.match(/^\/posters\/([^/]+)\/file$/);            
+            if (posterFileMatch) {
+                console.log('Found file handler for poster:', posterFileMatch[1]);
+                req.params = { id: posterFileMatch[1] };
+                await posterService.handleGetFile(req, res);
+                return;
+            }
+
+            const posterMatch = req.path.match(/^\/posters\/([^/]+)$/);
             if (posterMatch) {
                 console.log('Found handler for route:', req.path); // Debug log
                 req.params = { id: posterMatch[1] };
