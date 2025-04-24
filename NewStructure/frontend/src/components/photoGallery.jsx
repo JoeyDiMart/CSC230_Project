@@ -10,8 +10,11 @@ function Gallery () {
             .then(response => {
                 return response.json();
             })            .then((data) => {
-                setPhotos(data);
-            })
+                console.log("Fetched photos:", data);
+                const photoUrls = data.map(photo => `${photo.url}`);
+                console.log("Photo URLs:", photoUrls);
+                setPhotos(photoUrls);
+                console.log("Updated photos state:", photoUrls);            })
             .catch(error => console.error("Error fetching photos:", error));
     }, []);
 
@@ -31,6 +34,7 @@ function Gallery () {
     const leftIndex = (index + photos.length - 1) % photos.length;
     const centerIndex = index;
     const rightIndex = (index + 1) % photos.length;
+    console.log("Photos"+photos);
 
     return (
         <div className="gallery">

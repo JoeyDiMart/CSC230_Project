@@ -156,9 +156,9 @@ const PhotoGalleryUpload = () => {
             {/* Gallery */}
             <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 w-full max-w-5xl p-4">
                 {photos.map((photo) => (
-                    <div key={photo.id} className="relative border border-testingColorOutline rounded-xl overflow-hidden">
+                    <div key={photo.name} className="relative border border-testingColorOutline rounded-xl overflow-hidden">
                         <button
-                            onClick={() => deletePhoto(photo.id)}
+                            onClick={() => deletePhoto(photo.name)}
                             className="absolute top-2 right-2 text-white bg-cirtRed hover:bg-red-700 rounded-full w-6 h-6 flex items-center justify-center z-10">
                             ✕
                         </button>

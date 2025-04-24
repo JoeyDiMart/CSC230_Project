@@ -315,7 +315,7 @@ const handleIncrementViews = async (req, res) => {
 };
 const storagePhotos = multer.diskStorage({
     destination: (req, file, cb) => {
-        const uploadDir = './photos';
+        const uploadDir = '../photos'; // Move two levels up
         if (!fs.existsSync(uploadDir)) fs.mkdirSync(uploadDir);
         cb(null, uploadDir);
     },

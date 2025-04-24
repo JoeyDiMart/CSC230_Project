@@ -116,8 +116,8 @@ export const handleGetRequest = async (req, res) => {
 // photo
 let handleGetPhotos = async (req, res) => {
     try {
-        const photosDir = path.join(__dirname, '../photos');
-
+        const photosDir = path.join(__dirname, '../../photos');
+        console.log("Photos directory:", photosDir);
         // Read the photos directory
         fs.readdir(photosDir, (err, files) => {
             if (err) {
@@ -128,7 +128,7 @@ let handleGetPhotos = async (req, res) => {
             // Map file names to URLs
             const photos = files.map((file) => ({
                 name: file,
-                url: `/photos/${file}` // Assuming static files are served from this path
+                url: `NewStructure/photos/${file}` // Assuming static files are served from this path
             }));
 
             res.status(200).json(photos);
