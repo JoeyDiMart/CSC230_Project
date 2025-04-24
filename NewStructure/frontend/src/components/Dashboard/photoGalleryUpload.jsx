@@ -65,23 +65,28 @@ const PhotoGalleryUpload = () => {
             console.log("Fetching photos from server...");
             const response = await fetch("http://localhost:8081/api/photos");
             const data = await response.json();
+            console.log(data)
             setPhotos(data);
         } catch (error) {
             console.error("Error fetching photos:", error);
         }
     };
 
-    // Delete a photo
-    const deletePhoto = async (photoId) => {
+// Delete a photo (sends POST with file name to backend)
+    const deletePhoto = async (photoName) => {
         try {
-            console.log("Deleting photo with ID:", photoId);
-            const response = await fetch(`http://localhost:8081/api/photos/${photoId}`, {
-                method: "DELETE",
+            console.log("Deleting photo with name:", photoName);
+            const response = await fetch("http://localhost:8081/api/photos/delete", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ filename: photoName }),
             });
 
             if (response.ok) {
                 console.log("Photo deleted successfully.");
-                setPhotos(photos.filter((photo) => photo.id !== photoId));
+                setPhotos(photos.filter((photo) => photo.name !== photoName));
             } else {
                 const errText = await response.text();
                 console.error("Delete failed:", errText);
@@ -89,8 +94,7 @@ const PhotoGalleryUpload = () => {
             }
         } catch (error) {
             console.error("Error deleting photo:", error);
-        }
-    };
+        }}
 
     // Initial fetch
     useEffect(() => {

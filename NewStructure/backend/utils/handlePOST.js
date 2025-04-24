@@ -37,7 +37,9 @@ export const handlePostRequest = async (req, res) => {
         '/publications/update': handleUpdateStatus,
         '/api/views/increment': handleIncrementViews,
         '/api/photos/upload': uploadPhotos,
-        '/posters/upload': handlePosterUpload
+        '/posters/upload': handlePosterUpload,
+        '/api/photos/delete': handleDeletePhotos
+
     };
     /*
      '/posters/upload': handleUpload,
@@ -367,3 +369,28 @@ const uploadPhotos = async (req, res) => {
         }
     });
 };
+
+const handleDeletePhotos = async (req, res) => {
+    console.log("🗑️ handleDeletePhotos triggered...");
+    try {
+        const { filename } = req.body; // Assuming the filename is sent in the request body
+        console.log("filename"+filename);
+        if (!filename) {
+            return res.status(400).json({ error: "Filename is required" });
+        }
+
+        const filePath = path.join(__dirname, '../../photos', filename);
+
+        fs.unlink(filePath, (err) => {
+            if (err) {
+                console.error("Error deleting file:", err);
+                return res.status(500).json({ error: "Failed to delete photo" });
+            }
+
+            res.status(200).json({ message: "Photo deleted successfully" });
+        });
+    } catch (error) {
+        console.error("Error in handleDeletePhotos:", error);
+        res.status(500).json({ error: "Internal server error" });
+    }
+}

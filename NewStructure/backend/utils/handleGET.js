@@ -42,7 +42,6 @@ export const handleGetRequest = async (req, res) => {
             '/api/views/count': handleGetTotalViews,
             '/api/reviewers/active': handleGetActiveReviewers,
 
-
         };
         //  '/users': userService.handleGetAll, this caused an error
 
