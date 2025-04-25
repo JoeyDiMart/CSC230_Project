@@ -11,8 +11,6 @@ import { ObjectId } from 'mongodb';
 import * as crypto from 'crypto';
 
 
-
-
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -199,7 +197,13 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
-// chatgpt helped with debugging
+
+// get the preview (which is just a picture of the pdf
+const generatePreview = async (pdfPath) => {
+
+};
+
+// chatgpt helped with debugging ********************************************** PUBLICATION UPLOAD IS RIGHT HERE
 // Wrap in middleware to use in the main handler
 export const handlePublication = async (req, res) => {
     console.log("📥 handlePublication triggered...");
@@ -238,6 +242,7 @@ export const handlePublication = async (req, res) => {
 
             const db = client.db('CIRT');
             const collection = db.collection('PUBLICATIONS');
+            const preview = await generatePreview(req.file.path);
 
             const publication = {
                 title,
@@ -251,6 +256,7 @@ export const handlePublication = async (req, res) => {
                     data: fileData,
                     contentType: contentType,
                 },
+                preview,
                 uploadedAt: new Date()
             };
 

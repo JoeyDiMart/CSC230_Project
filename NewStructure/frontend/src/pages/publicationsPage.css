@@ -25,19 +25,27 @@
 .publisher-stuff {
     justify-content: center;
     position: relative;
-    margin-top: 80px;
+    margin-top: 0;
+    padding-top: 80px;
     width: 100%;
 }
 
-.upload {
-    position: absolute;
-    top: 0;
-    right: 2%;
+.pub-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 1rem;
+}
+
+.pub-header .upload {
+    position: relative;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    transition: transform 0.3s ease;
 }
 
 .upload:hover {
     transform: scale(1.05);
-    transition: transform 0.3s ease;
 }
 .upload-popup .exit-upload {
     position: absolute; /* Position relative to the nearest positioned ancestor (if any) */
@@ -165,6 +173,7 @@
     border-radius: 30px;
     padding: 15px;
     width: 400px;
+    height: 400px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     text-align: left;
     position: relative;
@@ -228,8 +237,7 @@
 }
 
 .publication-container {
-    min-width: 250px;
-    max-width: 500px;
+    width: 500px;
     scroll-snap-align: start;
     border: 1px solid var(--border-color);
     border-radius: 12px;
@@ -247,16 +255,7 @@
     transform: translateY(-5px) scale(1.03);
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 }
-.publication-title {
-    width: 100%;
-    font-weight: bold;
-    display: flex;
-    align-items: start;
-    font-size: 1.2em;
-    margin-bottom: 10px;
-    padding-top: 0;
-    margin-top: 0;
-}
+
 
 .popup-overlay {
     position: fixed;

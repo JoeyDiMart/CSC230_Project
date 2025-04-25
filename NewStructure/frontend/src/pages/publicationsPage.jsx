@@ -203,8 +203,10 @@ function Publications({ role, email, name }) {
         <div className="publisher-stuff">
         {(role !== "guest") && (
                 <div>
-                    <h2 className="">My Publications</h2>
-                    <button onClick={() => setShowUpload(true)} className="upload"> Upload </button>
+                    <div className="pub-header">
+                        <h2>My Publications</h2>
+                        <button onClick={() => setShowUpload(true)} className="upload"> Upload </button>
+                    </div>
                     {showUpload && (
                         <form onSubmit={handleSubmit}>
                         <div className="upload-popup">
@@ -243,7 +245,7 @@ function Publications({ role, email, name }) {
                 </div>
             )}
 
-            <h1 className="flex items-center justify-center p-4">Publications</h1>
+            <h1>Publications</h1>
             <div className="search-bar-container">
                 <form className="animated-search-form" onSubmit={(e) => { e.preventDefault(); handleSearch(); }}>
                     <button type="submit" className="search-icon">
