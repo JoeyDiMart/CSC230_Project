@@ -6,6 +6,7 @@ const PhotoGalleryUpload = () => {
     const [photos, setPhotos] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
+    const [uploadLimitReached, setUploadLimitReached] = useState(false); // New state to track the upload limit
 
     // Handle drop event
     const onDrop = (acceptedFiles) => {
@@ -50,6 +51,9 @@ const PhotoGalleryUpload = () => {
                 const errText = await response.text();
                 console.error("Upload failed:", errText);
                 setError("Failed to upload photo.");
+                if (errText.includes("Can't upload more files")) {
+                    setUploadLimitReached(true); // Set the upload limit flag to true if limit is reached
+                }
             }
         } catch (err) {
             console.error("Upload error:", err);
@@ -146,10 +150,17 @@ const PhotoGalleryUpload = () => {
                     {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
                     {loading && <p className="text-white text-sm mt-2">Uploading...</p>}
 
+                    {/* Display limit reached message */}
+                    {uploadLimitReached && (
+                        <p className="text-yellow-500 text-sm mt-2">
+                            You cannot upload more than 10 photos.
+                        </p>
+                    )}
+
                     <div className="pt-4 pb-2">
                         <button
                             type="submit"
-                            disabled={loading}
+                            disabled={loading|| uploadLimitReached}
                             className="w-full border border-testingColorOutline hover:bg-testingColorHover hover:border-cirtRed bg-transparent text-white">
                             {loading ? "Uploading..." : "Upload"}
                         </button>

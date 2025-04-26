@@ -337,6 +337,15 @@ const uploadP = multer({ storage: storagePhotos });
 const uploadPhotos = async (req, res) => {
     console.log("📸 uploadPhotos triggered...");
 
+    const uploadDir = path.join(__dirname, '../../photos'); // Resolve the photos directory
+    if (!fs.existsSync(uploadDir)) fs.mkdirSync(uploadDir);
+
+    // Check if the directory already contains 10 or more files
+    const files = fs.readdirSync(uploadDir);
+    if (files.length >= 10) {
+        console.log("❌ Can't upload more files, 10 is the max");
+        return res.status(400).json({ error: "Can't upload more files, 10 is the max" });
+    }
     // Run multer to handle multipart/form-data
     uploadP.single('file')(req, res, async function (err) {
         if (err) {
@@ -350,6 +359,7 @@ const uploadPhotos = async (req, res) => {
         if (!file || !title) {
             return res.status(400).json({ error: "File and title are required." });
         }
+
 
         try {
             // Return file metadata without saving to the database
