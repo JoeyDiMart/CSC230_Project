@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 const statsTemplate = [
   {
     title: 'Total Website Views',
-    value: '1,250.00',
+    value: '',
     trend: '+12.5%',
     trendDirection: 'up',
     footer: 'Trending up this month',
@@ -12,7 +12,7 @@ const statsTemplate = [
   },
   {
     title: 'New Users',
-    value: '1,234',
+    value: '',
     trend: '+20%',
     trendDirection: 'up',
     footer: 'Down 20% this period',
@@ -20,7 +20,7 @@ const statsTemplate = [
   },
   {
     title: 'Total Publications',
-    value: '45,678',
+    value: '',
     trend: '+12.5%',
     trendDirection: 'up',
     footer: 'Strong user retention',
@@ -28,7 +28,7 @@ const statsTemplate = [
   },
     {
         title: 'Active Reviewers',
-        value: '0',
+        value: '',
         trend: '+5%',
         trendDirection: 'up',
         footer: 'Reviewer activity increasing',
