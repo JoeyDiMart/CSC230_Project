@@ -6,9 +6,10 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import multer from "multer";
 import fs from "fs";
-import {ReviewStatus} from "../Database/schemas.js";
 import { ObjectId } from 'mongodb';
 import * as crypto from 'crypto';
+import { fromPath } from "pdf2pic";
+
 
 
 const __filename = fileURLToPath(import.meta.url);
@@ -198,10 +199,33 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 
-// get the preview (which is just a picture of the pdf
-const generatePreview = async (pdfPath) => {
 
-};
+export const generateThumbnail = async (pdfPath) => {
+    try {
+        const converter= fromPath(pdfPath, {
+            density: 100,        // Higher density = higher quality
+            saveFilename: "temp-thumbnail", // Just temporary
+            savePath: "./uploads",          // Save folder (temporary)
+            format: "png",       // We want a PNG image
+            width: 300,
+            height: 300,
+            page: 1
+        });
+        const conversionResult = await converter(1);
+        const thumbnailBuffer = fs.readFileSync(conversionResult.path);
+        const thumbnailBase64 = `data:image/png;base64,${thumbnailBuffer.toString('base64')}`;
+        fs.unlinkSync(conversionResult.path);
+
+        return thumbnailBase64;
+    }
+ catch (error) {
+    console.error("❌ Error generating thumbnail:", error);  // ************** REMOVE SOON
+    throw new Error("Thumbnail generation failed");
+    }
+}
+
+
+
 
 // chatgpt helped with debugging ********************************************** PUBLICATION UPLOAD IS RIGHT HERE
 // Wrap in middleware to use in the main handler
@@ -224,7 +248,7 @@ export const handlePublication = async (req, res) => {
             const keywords = JSON.parse(req.body.keywords || '[]');
             const email = req.body.email;
             const status = req.body.status;
-            const comments = JSON.parse(req.body.comments || '[]');
+
 
             // Ensure file exists
             if (!req.file) {
@@ -234,6 +258,11 @@ export const handlePublication = async (req, res) => {
             const fileData = fs.readFileSync(req.file.path);
             const contentType = req.file.mimetype;
             const originalName = req.file.originalname;
+
+            // thumbnail generation
+            const thumbnailBase64 = await generateThumbnail(req.file.path);
+
+
             // Validate fields
             if (!title || !email || !author.length) {
                 console.warn("⚠️ Missing required fields");
@@ -242,7 +271,6 @@ export const handlePublication = async (req, res) => {
 
             const db = client.db('CIRT');
             const collection = db.collection('PUBLICATIONS');
-            const preview = await generatePreview(req.file.path);
 
             const publication = {
                 title,
@@ -250,13 +278,13 @@ export const handlePublication = async (req, res) => {
                 keywords,
                 email,
                 status,
-                comments,
+                comments: '',
                 file: {
                     name: originalName,
                     data: fileData,
                     contentType: contentType,
                 },
-                preview,
+                thumbnail: thumbnailBase64,
                 uploadedAt: new Date()
             };
 

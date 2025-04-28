@@ -1,10 +1,8 @@
-import React, {useState, useEffect} from "react";
+import { useState, useEffect } from 'react';
 import { useDropzone } from 'react-dropzone';
-import Navbar from "../components/navbar.jsx";
 import "./publicationsPage.css"
 import Pubs from './publications.jsx';
 import { ImCross } from "react-icons/im";
-
 
 function Publications({ role, email, name }) {
     const [showUpload, setShowUpload] = useState(false);
@@ -13,22 +11,20 @@ function Publications({ role, email, name }) {
     const [myPublications, setMyPublications] = useState([]);
     const [reviewPublications, setReviewPublications] = useState([]);
     const [popupPub, setPopupPub] = useState(null);
-    const [loading, setLoading] = useState(true);
-    const [popupType, setPopupType] = useState("");
     // search for text in that specific filter
     const [searchText, setSearchText] = useState("");
     const [searchFilter, setSearchFilter] = useState("title");
+
 
     // list for uploading a publication
     const [uploadFile, setUploadFile] =
         useState({
             title: '',
-            author: [name],
+            author: name,
             email: email,
-            keywords: [],
+            keywords: '',
             file: '',
             status: 'under review',
-            comments: ''
         });
 
     // get publications from database (only accepted ones)
@@ -45,23 +41,31 @@ function Publications({ role, email, name }) {
             });
     }, []);
 
-    const [emaiil, setEmail] = useState(localStorage.getItem("email"));
-    const [rolle, setRole] = useState(localStorage.getItem("role"));
-    
+    //const [emaiil, setEmail] = useState(localStorage.getItem("email"));
+    //const [rolle, setRole] = useState(localStorage.getItem("role"));
+
     useEffect(() => {
         if (email && role) {
             localStorage.setItem("email", email);
             localStorage.setItem("role", role);
         }
     }, [email, role]);
-    
+
     useEffect(() => {
-        if (true) {
-            fetchMyPublications();
+        let currentEmail = email;
+
+        if (!currentEmail) {
+            currentEmail = localStorage.getItem("email");
+        }
+
+        if (currentEmail) {
+            fetchMyPublications(currentEmail);
+        } else {
+            console.warn("⚠️ No email found to fetch publications.");
         }
     }, [email, role]);
     
-    const fetchMyPublications = () => {
+    const fetchMyPublications = (email) => {
         if (!email) {
             
             email = localStorage.getItem("email")
@@ -72,6 +76,7 @@ function Publications({ role, email, name }) {
             .then((response) => response.json())
             .then((data) => {
                 setMyPublications(data);
+                console.log(data);
             })
             .catch((error) => {
                 console.error("Error fetching user publications:", error);
@@ -84,7 +89,7 @@ function Publications({ role, email, name }) {
         if (role === "admin" || role === "reviewer") {
             fetchReviewPublications();
         }
-    }, []);
+    }, [role]);
     const fetchReviewPublications = () => {
         fetch("http://localhost:8081/api/publications3")
             .then(response => response.json())  // Expecting an array of publications
@@ -103,13 +108,10 @@ function Publications({ role, email, name }) {
     // Handles typing in for uploading a new publication
     const handleChange = (e) => {
         const { name, value } = e.target;
-        if (name === "keywords") {
-            setUploadFile(prev => ({ ...prev, keywords: value.split(",").map(s => s.trim())}));
-        } else if (name === "author") {
-            setUploadFile(prev => ({ ...prev, author: value.split(",") }));
-        } else {
-            setUploadFile(prev => ({ ...prev, [name]: value }));
-        }
+        setUploadFile(prev => ({
+            ...prev,
+            [name]: value
+        }));
     };
 
     // submission handler for uploading new publications
@@ -123,12 +125,11 @@ function Publications({ role, email, name }) {
         }
         const formData = new FormData();
         formData.append("title", uploadFile.title);
-        formData.append("author", JSON.stringify(uploadFile.author));
+        formData.append("author", JSON.stringify(uploadFile.author.split(",").map(s => s.trim())));
         formData.append("email", uploadFile.email);
-        formData.append("keywords", JSON.stringify(uploadFile.keywords));
+        formData.append("keywords", JSON.stringify(uploadFile.keywords.split(",").map(s => s.trim())));
         formData.append("file", uploadFile.file);
         formData.append("status", uploadFile.status);
-        formData.append("comments", JSON.stringify(uploadFile.comments));
 
         try {
             setShowUpload(false);  // delete this soon
@@ -158,12 +159,27 @@ function Publications({ role, email, name }) {
     };
 
 
-
-    // Handle drop event
+    // handle drag and drop
     const onDrop = (acceptedFiles) => {
+        if (!acceptedFiles.length) {
+            alert("No file selected.");
+            return;
+        }
+
         const file = acceptedFiles[0];
-        setUploadFile(prev => ({ ...prev, file }));
+
+        if (file && file.type === 'application/pdf') {
+            setUploadFile(prev => ({
+                ...prev,
+                file: file
+            }));
+
+            console.log("📄 File selected:", file.name);
+        } else {
+            alert("Please upload a valid PDF file.");
+        }
     };
+
 
     // Setup react-dropzone
     const { getRootProps, getInputProps } = useDropzone({
@@ -192,7 +208,7 @@ function Publications({ role, email, name }) {
     // handle the popup for all general publications ( see preview and such )
     const handlePublicationPopup = (publication, type = "general") => {
         setPopupPub(publication);
-        setPopupType(type); // "general" or "review"
+        setPopupType(type);
     };
     const handleClosePopup = () => {
         setPopupPub(null);
@@ -222,7 +238,7 @@ function Publications({ role, email, name }) {
                                 <div {...getRootProps()} className="drop-container">
                                     <input {...getInputProps()} />
                                     <p>Drop files here, or click to select</p>
-                                    {uploadFile && <p>File uploaded is {uploadFile.name} {uploadFile.title}</p>}
+                                    {uploadFile && <p>File uploaded is {uploadFile.file.name} </p>}
                                 </div>
                                 <button type="submit" className="submit-upload">Submit</button>
                             </div>

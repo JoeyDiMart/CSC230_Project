@@ -18,7 +18,7 @@ const storage = multer.diskStorage({
 export const upload = multer({
     storage,
     fileFilter: (req, file, cb) => {
-        const allowedTypes = ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
+        const allowedTypes = ['application/pdf'];
         if (allowedTypes.includes(file.mimetype)) {
             cb(null, true);
         } else {
@@ -28,9 +28,6 @@ export const upload = multer({
     limits: { fileSize: 20 * 1024 * 1024 }
 });
 
-export const handleHome = (req, res) => {
-    res.sendFile(path.resolve(__dirname, '../../frontend/dist/index.html'));
-};
 
 export const handleGetReviews = async (req, res) => {
     if (!req.session.user) {
@@ -56,110 +53,6 @@ export const handleGetIssues = async (req, res) => {
         res.json(issues);
     } catch (err) {
         res.status(500).json({ error: err.message });
-    }
-};
-
-export const handleGetManuscript = async (req, res) => {
-    if (!req.session.user) {
-        return res.status(401).json({ error: 'Please log in' });
-    }
-
-    try {
-        const manuscriptCollection = client.db().collection('manuscripts');
-        const manuscript = await manuscriptCollection.findOne({ 
-            _id: new ObjectId(req.params.id) 
-        });
-        
-        if (!manuscript) {
-            return res.status(404).json({ error: 'Manuscript not found' });
-        }
-        res.json(manuscript);
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
-};
-
-export const handleSubmit = async (req, res) => {
-    if (!req.session.user) {
-        return res.status(401).json({ error: 'Please log in' });
-    }
-
-    try {
-        const manuscriptCollection = client.db().collection('manuscripts');
-        const manuscript = {
-            ...req.body,
-            filePath: req.file.path,
-            userId: req.session.user.id,
-            status: 'submitted',
-            submissionDate: new Date()
-        };
-        const result = await manuscriptCollection.insertOne(manuscript);
-        res.status(201).json({ 
-            message: 'Manuscript submitted successfully', 
-            id: result.insertedId 
-        });
-    } catch (err) {
-        res.status(400).json({ error: err.message });
-    }
-};
-
-export const handleReview = async (req, res) => {
-    if (!req.session.user) {
-        return res.status(401).json({ error: 'Please log in' });
-    }
-    
-    // Allow both reviewers and editors to submit reviews
-    if (!['reviewer', 'editor'].includes(req.session.user.role)) {
-        return res.status(403).json({ error: 'Forbidden' });
-    }
-
-    try {
-        console.log('Submitting review for manuscript:', req.params.id); // Debug log
-        console.log('Review data:', req.body); // Debug log
-        
-        const reviewCollection = client.db('CIRT').collection('reviews');
-        const review = {
-            manuscriptId: new ObjectId(req.params.id),
-            ...req.body,
-            annotatedFilePath: req.file?.path,
-            reviewerId: req.session.user.id,
-            reviewDate: new Date()
-        };
-        
-        console.log('Saving review:', review); // Debug log
-        const result = await reviewCollection.insertOne(review);
-        res.json({ 
-            message: 'Review submitted successfully',
-            id: result.insertedId 
-        });
-    } catch (err) {
-        console.error('Error in handleReview:', err); // Debug log
-        res.status(400).json({ error: err.message });
-    }
-};
-
-export const handleCreateIssue = async (req, res) => {
-    if (!req.session.user) {
-        return res.status(401).json({ error: 'Please log in' });
-    }
-    if (req.session.user.role !== 'editor') {
-        return res.status(403).json({ error: 'Forbidden' });
-    }
-
-    try {
-        const issueCollection = client.db().collection('issues');
-        const issue = {
-            ...req.body,
-            creationDate: new Date(),
-            status: 'draft'
-        };
-        const result = await issueCollection.insertOne(issue);
-        res.status(201).json({ 
-            message: 'Issue created successfully', 
-            id: result.insertedId 
-        });
-    } catch (err) {
-        res.status(400).json({ error: err.message });
     }
 };
 

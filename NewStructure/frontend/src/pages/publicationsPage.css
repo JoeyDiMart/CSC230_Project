@@ -22,6 +22,7 @@
     transition: opacity 0.3s ease;
     border-radius: 20px;
 }
+
 .publisher-stuff {
     justify-content: center;
     position: relative;
@@ -237,17 +238,18 @@
 }
 
 .publication-container {
-    width: 500px;
+    width: 300px;
+    height: 300px;
+    flex: 0 0 auto;
     scroll-snap-align: start;
-    border: 1px solid var(--border-color);
     border-radius: 12px;
     display: flex;
     flex-direction: column;
     align-items: center;
+    overflow: hidden;
     justify-content: flex-start;
     background-color: var(--bg-main);
     box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-    padding: 0 1rem 1rem;
     margin-top: 0;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
@@ -255,126 +257,13 @@
     transform: translateY(-5px) scale(1.03);
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 }
-
-
-.popup-overlay {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 80%;
-    height: 80%;
-    z-index: 1000;
-    background-color: var(--bg-main);
-    visibility: visible;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    transition: opacity 0.3s ease;
-    border-radius: 20px;
-    overflow: hidden;
-{/*backdrop-filter: blur(6px); FOR BACKGROUND BLUR  doesn't work rn
-    -webkit-backdrop-filter: blur(6px); */}
-}
-
-.pub-popup {
-    width: 100%;
-    height: 100%;
-
-}
-
-.popup-overlay .exit-upload {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-}
-
-.general-popup .popup-pdf {
-    width: 100%;
-    height: 100%;
-    margin-top: 1.5rem; /* space below the title */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-}
-
-.general-popup .popup-pdf embed {
-    width: 85%;
-    height: 100%;
-    border-radius: 12px;
-}
-
-.general-popup .popup-details {
-    align-items: center;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+.top-bar {
+    height: 5px;
+    background-color: #C8102E;
     width: 100%;
 }
-
-{/*
-.reviewer-popup {
-    display: flex;
-    flex-direction: row;
-    width: 100%;
-    height: 100%;
-}
-
-.reviewer-popup .popup-pdf {
-    width: 70%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-}
-
-.reviewer-popup .popup-pdf embed {
-    width: 100%;
-    height: 100%;
-    border-radius: 12px;
-    display: block;
-}
-
-.reviewer-popup .popup-details {
-    width: 30%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
-    padding: 1rem;
-    box-sizing: border-box;
-    overflow-y: auto;
-}
-
-*/}
-
-
-
-.review-popup .popup-pdf {
-    width: 100%;
-    height: 100%;
-    margin-top: 1.5rem; /* space below the title */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-}
-
-.review-popup .popup-pdf embed {
-    width: 85%;
-    height: 100%;
-    border-radius: 12px;
-}
-
-.review-popup .popup-details {
-    align-items: center;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    width: 100%;
+.publication-thumbnail {
+    width: 300px;
+    height: 295px;
+    object-fit: cover;
 }

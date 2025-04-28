@@ -23,15 +23,15 @@ function Pubs({ pubs, onPublicationClick }) {
 
                     return (
                         <div key={idx} className="publication-container" onClick={() => onPublicationClick?.(publication)} >
-
-                            {/* take the base64 from the pdf that was uploaded for hte preview */}
-                            <div className="publication-image-wrapper">
+                            <div className="top-bar"></div>
+                            {/* take base64 and make it the thumbnail */}
                                 <img
-                                    src={`data:image/png;base64,${publication.preview}`}
-                                    alt="Preview"
+                                    src={publication.thumbnail}
+                                    alt="Thumbnail"
                                     className="publication-thumbnail"
+                                    loading="lazy"
                                 />
-                            </div>
+                            {/*
                             <p className="publication-title-text">{publication.title}</p>
 
                             {downloadLink && (
@@ -49,6 +49,7 @@ function Pubs({ pubs, onPublicationClick }) {
                                     Download File
                                 </a>
                             )}
+                            */}
                         </div>
                     );
                 })
