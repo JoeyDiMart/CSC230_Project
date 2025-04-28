@@ -8,7 +8,6 @@ import multer from "multer";
 import fs from "fs";
 import { ObjectId } from 'mongodb';
 import * as crypto from 'crypto';
-import { fromPath } from "pdf2pic";
 
 
 
