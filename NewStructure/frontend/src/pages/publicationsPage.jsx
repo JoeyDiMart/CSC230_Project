@@ -205,16 +205,6 @@ function Publications({ role, email, name }) {
         }
     };
 
-    // handle the popup for all general publications ( see preview and such )
-    const handlePublicationPopup = (publication, type = "general") => {
-        setPopupPub(publication);
-        setPopupType(type);
-    };
-    const handleClosePopup = () => {
-        setPopupPub(null);
-    };
-
-
     return (
         <div className="publisher-stuff">
         {(role !== "guest") && (
@@ -246,7 +236,7 @@ function Publications({ role, email, name }) {
                         </form>
                     )}
                     <div className="pubs-scroll-wrapper">
-                        <Pubs pubs={myPublications}
+                        <Pubs pubs={myPublications} showStatus={true}
                               onPublicationClick={(pub) => handlePublicationPopup(pub, "general")}/>
 
                     </div>
@@ -256,7 +246,7 @@ function Publications({ role, email, name }) {
                 <div className="reviewer-section">
                     <h2>Under Review</h2>
                     <div className="pubs-scroll-wrapper">
-                        <Pubs pubs={reviewPublications} onPublicationClick={(pub) => handlePublicationPopup(pub, "review")}/>
+                        <Pubs pubs={reviewPublications} showStatus={true} onPublicationClick={(pub) => handlePublicationPopup(pub, "review")}/>
                     </div>
                 </div>
             )}
@@ -297,7 +287,7 @@ function Publications({ role, email, name }) {
             </div>
 
             <div className="pubs-scroll-wrapper">
-                <Pubs pubs={publications}
+                <Pubs pubs={publications} showStatus={false}
                       onPublicationClick={(pub) => handlePublicationPopup(pub, "general")}/>
             </div>
 

@@ -21,7 +21,9 @@
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     transition: opacity 0.3s ease;
     border-radius: 20px;
+    animation: fadeZoomIn 0.3s ease forwards;
 }
+
 
 .publisher-stuff {
     justify-content: center;
@@ -239,7 +241,6 @@
 
 .publication-container {
     width: 300px;
-    height: 300px;
     flex: 0 0 auto;
     scroll-snap-align: start;
     border-radius: 12px;
@@ -253,17 +254,25 @@
     margin-top: 0;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
-.publication-container:hover {
-    transform: translateY(-5px) scale(1.03);
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-}
 .top-bar {
     height: 5px;
     background-color: #C8102E;
     width: 100%;
 }
+.publication-container:hover {
+    transform: translateY(-5px) scale(1.03);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
 .publication-thumbnail {
     width: 300px;
     height: 295px;
     object-fit: cover;
+}
+.publication-status {
+        margin: 0;
+        padding: 0;
+        font-size: 0.9rem;
+        font-weight: bold;
+        text-align: center;
 }

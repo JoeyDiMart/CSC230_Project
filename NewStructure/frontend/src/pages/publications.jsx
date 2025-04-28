@@ -11,7 +11,7 @@ function base64ToByteArray(base64Str) {
     return byteArray;
 }
 
-function Pubs({ pubs, onPublicationClick }) {
+function Pubs({ pubs, showStatus, onPublicationClick }) {
     return (
         <div className="pubs-scroll-wrapper">
             {pubs.length > 0 ? (
@@ -22,7 +22,7 @@ function Pubs({ pubs, onPublicationClick }) {
                     const downloadLink = window.URL.createObjectURL(theBlob);
 
                     return (
-                        <div key={idx} className="publication-container" onClick={() => onPublicationClick?.(publication)} >
+                        <div key={idx} className="publication-container" style={{ height: showStatus ? "315px" : "300px" }} onClick={() => onPublicationClick?.(publication)} >
                             <div className="top-bar"></div>
                             {/* take base64 and make it the thumbnail */}
                                 <img
@@ -31,6 +31,11 @@ function Pubs({ pubs, onPublicationClick }) {
                                     className="publication-thumbnail"
                                     loading="lazy"
                                 />
+                            {showStatus && (
+                                <p className="publication-status">{publication.status}</p>
+                                )}
+
+
                             {/*
                             <p className="publication-title-text">{publication.title}</p>
 
