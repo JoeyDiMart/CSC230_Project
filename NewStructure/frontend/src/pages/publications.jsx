@@ -12,17 +12,29 @@ function base64ToByteArray(base64Str) {
 }
 
 function Pubs({ pubs, showStatus, onPublicationClick }) {
+
+    const handleDownload = (e, publication) => {
+        e.stopPropagation();
+        const binaryVersionOfData = base64ToByteArray(publication.file?.data);
+        const theBlob = new Blob([binaryVersionOfData], { type: publication.file?.type });
+        const downloadLink = window.URL.createObjectURL(theBlob);
+        const a = document.createElement('a');
+        a.href = downloadLink;
+        a.download = publication.file?.name || 'download.pdf';
+        a.click();
+    };
+
     return (
         <div className="pubs-scroll-wrapper">
             {pubs.length > 0 ? (
                 pubs.map((publication, idx) => {
-                    const fileName = publication.file?.name;
-                    const binaryVersionOfData = base64ToByteArray(publication.file?.data);
-                    const theBlob = new Blob([binaryVersionOfData], { type: publication.file?.type });
-                    const downloadLink = window.URL.createObjectURL(theBlob);
+                    //const fileName = publication.file?.name;
+                    //const binaryVersionOfData = base64ToByteArray(publication.file?.data);    make sure to remove later,
+                    //const theBlob = new Blob([binaryVersionOfData], { type: publication.file?.type });   made it so download link generates when pressed
+                    //const downloadLink = window.URL.createObjectURL(theBlob);
 
                     return (
-                        <div key={idx} className="publication-container" style={{ height: showStatus ? "315px" : "300px" }} onClick={() => onPublicationClick?.(publication)} >
+                        <div key={idx} className="publication-container" style={{ height: showStatus ? "315px" : "305px" }} onClick={() => onPublicationClick(publication)} >
                             <div className="top-bar"></div>
                             {/* take base64 and make it the thumbnail */}
                                 <img
@@ -31,30 +43,20 @@ function Pubs({ pubs, showStatus, onPublicationClick }) {
                                     className="publication-thumbnail"
                                     loading="lazy"
                                 />
-                            {showStatus && (
-                                <p className="publication-status">{publication.status}</p>
+                            <div className="publication-info-wrapper">
+                                {showStatus && (
+                                    <p className="publication-status">{publication.status}</p>
                                 )}
 
-
-                            {/*
-                            <p className="publication-title-text">{publication.title}</p>
-
-                            {downloadLink && (
-                                <a
-                                    href={downloadLink}
-                                    download={fileName}
-                                    onClick={(e) => e.stopPropagation()}
-                                    style={{
-                                        color: "blue",
-                                        textDecoration: "underline",
-                                        display: "inline-block",
-                                        marginTop: "8px"
-                                    }}
-                                >
-                                    Download File
-                                </a>
-                            )}
-                            */}
+                                {publication.file?.data && (
+                                    <button
+                                        onClick={(e) => handleDownload(e, publication)}
+                                        className="publication-download"
+                                    >
+                                        Download File
+                                    </button>
+                                )}
+                            </div>
                         </div>
                     );
                 })

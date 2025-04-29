@@ -13,6 +13,7 @@
   text-align: center;
   line-height: 1.5;
   --bg-main: #FFFFFE;
+  --text-main: #00000;
   color-scheme: light dark;
   overflow-x: hidden;
 
@@ -60,18 +61,34 @@ ol {
   width: 100%;
 }
 
+.popup-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(50, 50, 60, 0.6);
+  z-index: 900;
+  backdrop-filter: blur(2px);
+  animation: backdropFade 0.3s ease forwards;
+}
+@keyframes backdropFade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
 
-/* Optional: Use if you enable dark mode later
+
+/*
 @media (prefers-color-scheme: dark) {
   #root {
-    background-color: #121212;
-    color: #FFFFF0;
+    --bg-main: #1a1a1a;
+    --text-main: #FFFFFF;
   }
 }
 @media (prefers-color-scheme: light) {
   #root {
-    background-color: #FFFFF0;
-    color: #121212;
+    --bg-main: #FFFFFF;
+    --text-main: #000000;
   }
 }
 */

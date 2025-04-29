@@ -10,10 +10,11 @@ function Publications({ role, email, name }) {
     const [publications, setPublications] = useState([]);
     const [myPublications, setMyPublications] = useState([]);
     const [reviewPublications, setReviewPublications] = useState([]);
-    const [popupPub, setPopupPub] = useState(null);
     // search for text in that specific filter
     const [searchText, setSearchText] = useState("");
     const [searchFilter, setSearchFilter] = useState("title");
+    const [popupPub, setPopupPub] = useState(null); // which publication to show
+    const [showPopup, setShowPopup] = useState(false); // control if popup is open
 
 
     // list for uploading a publication
@@ -205,6 +206,17 @@ function Publications({ role, email, name }) {
         }
     };
 
+    // helper functions for the popup logic to open and close
+    const openPopup = (publication) => {
+        setPopupPub(publication);
+        setShowPopup(true);
+    };
+
+    const closePopup = () => {
+        setPopupPub(null);
+        setShowPopup(false);
+    };
+
     return (
         <div className="publisher-stuff">
         {(role !== "guest") && (
@@ -236,8 +248,7 @@ function Publications({ role, email, name }) {
                         </form>
                     )}
                     <div className="pubs-scroll-wrapper">
-                        <Pubs pubs={myPublications} showStatus={true}
-                              onPublicationClick={(pub) => handlePublicationPopup(pub, "general")}/>
+                        <Pubs pubs={myPublications} onPublicationClick={openPopup} showStatus={true} />
 
                     </div>
                 </div>
@@ -246,7 +257,7 @@ function Publications({ role, email, name }) {
                 <div className="reviewer-section">
                     <h2>Under Review</h2>
                     <div className="pubs-scroll-wrapper">
-                        <Pubs pubs={reviewPublications} showStatus={true} onPublicationClick={(pub) => handlePublicationPopup(pub, "review")}/>
+                        <Pubs pubs={reviewPublications} onPublicationClick={openPopup} showStatus={true} />
                     </div>
                 </div>
             )}
@@ -287,35 +298,46 @@ function Publications({ role, email, name }) {
             </div>
 
             <div className="pubs-scroll-wrapper">
-                <Pubs pubs={publications} showStatus={false}
-                      onPublicationClick={(pub) => handlePublicationPopup(pub, "general")}/>
+                <Pubs pubs={publications} onPublicationClick={openPopup} showStatus={false}/>
             </div>
 
-            {popupPub && (
-                <div className="popup-overlay" onClick={(e) => e.stopPropagation()}>
-                    <div className={`pub-popup ${popupType === "review" ? "review-popup" : "general-popup"}`}>
-                        <div className="popup-details">
-                            <button onClick={handleClosePopup} className="exit-upload"><ImCross size={12}/></button>
-                            <div className="review-header">
-                                <h2>{popupPub.title}</h2>
-                                <p>Author(s): {popupPub.author?.join(", ")}</p>
+            {/*   The logic for popups    */}
+            {showPopup && popupPub && (
+                <>
+                    <div className="popup-backdrop" onClick={closePopup}></div>
+                    <div className="popup-overlay">
+                        <div className="popup-content" onClick={(e) => e.stopPropagation()}>
+                            <button className="popup-close" onClick={closePopup}>
+                                <ImCross size={20} />
+                            </button>
+
+                            <div className="popup-layout">
+                                <div className="popup-pdf">
+                                    <embed
+                                        src={`data:application/pdf;base64,${popupPub?.file?.data}`}
+                                        type="application/pdf"
+                                        width="100%"
+                                        height="100%"
+                                    />
+                                </div>
+                                <div className="popup-info">
+                                    <h2>{popupPub.title}</h2>
+                                    <p><strong>Authors:</strong> {popupPub.author?.join(", ")}</p>
+                                    <p><strong>Keywords:</strong> {popupPub.keywords?.join(", ")}</p>
+
+                                    {(role === "reviewer" || role === "admin") && (
+                                        <div className="popup-comments">
+                                            <textarea placeholder="Write your comments here..." />
+                                        </div>
+                                    )}
+                                </div>
                             </div>
                         </div>
-
-                        <div className="popup-pdf">
-                            <embed
-                                src={`data:application/pdf;base64,${popupPub?.file?.data}`}
-                                type="application/pdf"
-                                width="100%"
-                                height="100%"
-                            />
-                        </div>
                     </div>
-                </div>
+                </>
             )}
-
         </div>
-    );
-}
+            );
+        }
 
 export default Publications;

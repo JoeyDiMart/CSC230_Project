@@ -142,12 +142,12 @@ let handleGetPhotos = async (req, res) => {
 let handleGetPublications1 = async (req, res) => {
     try {
         const db = client.db('CIRT'); 
-        const collection = db.collection('PUBLICATIONS'); 
+        const collection = db.collection('PUBLICATIONS');
 
-        const publications = await collection.aggregate([
-            { $match: { status: "accepted" } },      
-            { $sample: { size: 10 } }                  
-        ]).toArray();
+        const publications = await collection.find({ status: "accepted" })
+            .sort({ _id: -1 }) // Sort newest first
+            .limit(10)         // Only 10
+            .toArray();
 
         if (publications.length === 0) {
             return res.status(404).json({ message: "No accepted publications found" });

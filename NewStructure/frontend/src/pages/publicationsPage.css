@@ -269,10 +269,131 @@
     height: 295px;
     object-fit: cover;
 }
+.publication-info-wrapper {
+    position: relative;
+    width: 100%;
+    height: 50px; /* or adjust if you need bigger */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 .publication-status {
         margin: 0;
         padding: 0;
-        font-size: 0.9rem;
         font-weight: bold;
         text-align: center;
+}
+.publication-download {
+    position: absolute;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    transform: translateY(10px);
+    font-weight: bold;
+    background: none;
+    color: blue;
+    text-decoration: underline;
+    cursor: pointer;
+    pointer-events: none;
+}
+
+.publication-container:hover .publication-download {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+}
+
+.publication-container:hover .publication-status {
+    opacity: 0;
+}
+
+.popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000; /* Above popup-backdrop (which is at 900) */
+    animation: popupFade 0.3s ease forwards; /* Smooth fade-in animation */
+}
+/* Optional fade-in animation for popup */
+@keyframes popupFade {
+    from { opacity: 0; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+.popup-content {
+    background: var(--bg-main);
+    width: 80vw; /* Always 80% of screen width */
+    height: 80vh; /* Always 80% of screen height */
+    overflow-y: auto; /* Scroll if content is too tall */
+    border-radius: 12px; /* Rounded corners */
+    position: relative;
+    padding: 10px 20px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+}
+
+.popup-close {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #333;
+}
+
+.popup-layout {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    height: 100%;
+    align-items: center;
+}
+
+.popup-pdf {
+    flex: 2;
+    height: 90%;
+    justify-content: center; /* center horizontally if needed */
+    align-items: center; /* center PDF vertically */
+}
+.popup-pdf embed {
+    width: 100%;
+    height: 100%;
+    object-fit: contain; /* keeps PDF proportional */
+}
+
+.popup-info {
+    flex: 1;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.popup-comments textarea {
+    background: var(--bg-main);
+    color: var(--text-main);
+    width: 90%;
+    height: 250px;
+    padding: 10px;
+    font-size: 1rem;
+    border: 2px solid #C8102E;
+    border-radius: 12px;
+    resize: none;
+}
+
+@media (max-width: 768px) {
+    .popup-layout {
+        flex-direction: column;
+        height: 90%;
+        gap: 5px;
+    }
+
+    .popup-info {
+        display: none;
+    }
 }
