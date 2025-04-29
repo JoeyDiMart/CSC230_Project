@@ -10,7 +10,6 @@ function Publications({ role, email, name }) {
     const [publications, setPublications] = useState([]);
     const [myPublications, setMyPublications] = useState([]);
     const [reviewPublications, setReviewPublications] = useState([]);
-    // search for text in that specific filter
     const [searchText, setSearchText] = useState("");
     const [searchFilter, setSearchFilter] = useState("title");
     const [popupPub, setPopupPub] = useState(null); // which publication to show
