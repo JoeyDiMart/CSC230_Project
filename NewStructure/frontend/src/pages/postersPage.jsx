@@ -1,6 +1,5 @@
 import React, {useState, useEffect} from "react";
 import { useDropzone } from 'react-dropzone';
-import Navbar from "../components/navbar.jsx";
 import "./postersPage.css"
 import Posters from './posters.jsx';
 import { ImCross } from "react-icons/im";
@@ -51,22 +50,59 @@ function PostersPage({ role, email, name }) {
 
     // Get user's posters
     useEffect(() => {
+        console.log("Current user email:", email);
+        console.log("Current user role:", role);
+        console.log("Current user name:", name);
+        
         if (email) {
-            fetchMyPosters();
+            // Clear any old stored email if we have a current user email
+            localStorage.removeItem("email");
+            console.log("Using current user email to fetch posters:", email);
+            fetchMyPosters(email);
+        } else {
+            console.log("No email available to fetch posters");
+            setErrorMessage("Please log in to view your posters");
         }
-    }, [email]);
+    }, [email, role, name]);
 
-    const fetchMyPosters = () => {
-        fetch(`http://localhost:8081/posters/user/${email}`, {
-            credentials: 'include'
+    const fetchMyPosters = (emailParam) => {
+        // Only use the provided email parameter, no fallbacks
+        if (!emailParam) {
+            console.log("No email provided for fetching posters");
+            setErrorMessage("Please log in to view your posters");
+            return;
+        }
+        
+        console.log("Making request to fetch posters for email:", emailToUse);
+        
+        fetch(`http://localhost:8081/posters/user/${emailToUse}`, {
+            credentials: 'include',
+            headers: {
+                'Accept': 'application/json'
+            }
         })
-            .then((response) => response.json())
+            .then((response) => {
+                console.log("Response status:", response.status);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
             .then((data) => {
-                setMyPosters(data);
+                console.log("Successfully fetched user posters:", data);
+                if (Array.isArray(data)) {
+                    setMyPosters(data);
+                    setErrorMessage("");
+                } else {
+                    console.error("Received non-array data:", data);
+                    setErrorMessage("Invalid data received from server");
+                }
                 setLoading(false);
             })
             .catch((error) => {
                 console.error("Error fetching user posters:", error);
+                setErrorMessage("Failed to fetch your posters. Please try again.");
+                setLoading(false);
             });
     };
 
@@ -218,7 +254,6 @@ function PostersPage({ role, email, name }) {
 
     return (
         <div>
-            <Navbar role={role} email={email} name={name} />
             <div className="posters-wrapper">
                 {/* Search Bar */}
                 <div className="search-bar-container">
@@ -344,18 +379,36 @@ function PostersPage({ role, email, name }) {
                                             try {
                                                 const response = await fetch(
                                                     `http://localhost:8081/posters/${popupPoster._id}/file`,
-                                                    { credentials: 'include' }
+                                                    { 
+                                                        credentials: 'include',
+                                                        headers: {
+                                                            'Accept': '*/*'
+                                                        }
+                                                    }
                                                 );
-                                                if (!response.ok) throw new Error('Failed to fetch file');
+                                                
+                                                if (!response.ok) {
+                                                    throw new Error('Failed to fetch file');
+                                                }
+                                                
+                                                const contentType = response.headers.get('content-type');
+                                                const contentDisposition = response.headers.get('content-disposition');
                                                 const blob = await response.blob();
+                                                
                                                 const url = window.URL.createObjectURL(blob);
                                                 const a = document.createElement('a');
+                                                a.style.display = 'none';
                                                 a.href = url;
                                                 a.download = popupPoster.file.name;
+                                                
                                                 document.body.appendChild(a);
                                                 a.click();
-                                                window.URL.revokeObjectURL(url);
-                                                document.body.removeChild(a);
+                                                
+                                                // Clean up
+                                                setTimeout(() => {
+                                                    document.body.removeChild(a);
+                                                    window.URL.revokeObjectURL(url);
+                                                }, 100);
                                             } catch (error) {
                                                 console.error('Error downloading file:', error);
                                                 alert('Error downloading file. Please try again.');
