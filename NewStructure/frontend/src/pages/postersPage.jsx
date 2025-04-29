@@ -1,6 +1,5 @@
 import React, {useState, useEffect} from "react";
 import { useDropzone } from 'react-dropzone';
-import Navbar from "../components/navbar.jsx";
 import "./postersPage.css"
 import Posters from './posters.jsx';
 import { ImCross } from "react-icons/im";
@@ -251,7 +250,6 @@ function PostersPage({ role, email, name }) {
 
     return (
         <div>
-            <Navbar role={role} email={email} name={name} />
             <div className="posters-wrapper">
                 {/* Search Bar */}
                 <div className="search-bar-container">
