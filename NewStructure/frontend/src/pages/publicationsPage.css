@@ -118,7 +118,7 @@
     outline: none;
     background-color: transparent;
     padding: 0.5em;
-}
+}search-filter
 
 /* Icon button */
 .search-icon {
@@ -152,7 +152,6 @@
     color: var(--border-color);
     font-size: 0.95rem;
     font-weight: 500;
-    padding: 0.5em 2.2em 0.5em 1em;
     border-radius: 6px;
     cursor: pointer;
     outline: none;

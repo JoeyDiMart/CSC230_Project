@@ -4,6 +4,10 @@ import Navbar from "../components/navbar.jsx";
 import "./postersPage.css"
 import Posters from './posters.jsx';
 import { ImCross } from "react-icons/im";
+import { FaSearch } from "react-icons/fa";
+import { IoIosArrowDropdownCircle } from "react-icons/io";
+
+
 
 function PostersPage({ role, email, name }) {
     const [showUpload, setShowUpload] = useState(false);
@@ -220,7 +224,7 @@ function PostersPage({ role, email, name }) {
                 <div className="search-bar-container">
                     <div className="animated-search-form">
                         <button className="search-icon" onClick={handleSearch}>
-                            🔍
+                            <FaSearch className=" text-testingColorBlack" size={14}/>
                         </button>
                         <input
                             type="text"
@@ -231,16 +235,17 @@ function PostersPage({ role, email, name }) {
                         />
                         <div className="select-wrapper">
                             <div className="select-inner">
-                                <select
-                                    className="search-filter"
-                                    value={searchFilter}
-                                    onChange={(e) => setSearchFilter(e.target.value)}
-                                >
-                                    <option value="title">Title</option>
-                                    <option value="keyword">Keyword</option>
-                                </select>
-                                <span className="dropdown-arrow">▼</span>
-                            </div>
+                                    <select
+                                        className="search-filter max-w-[200px] pr-8"
+                                        value={searchFilter}
+                                        onChange={(e) => setSearchFilter(e.target.value)}
+                                    >
+                                        <option value="title">Title</option>
+                                        <option value="keyword">Keyword</option>
+                                    </select>
+                                    <span className="dropdown-arrow flex items-center justify-center"><IoIosArrowDropdownCircle className="text-testingColorBlack" size={16}/>
+                                    </span>
+                                </div>
                         </div>
                     </div>
                 </div>
