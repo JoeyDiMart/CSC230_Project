@@ -203,6 +203,8 @@ let handleGetPublications3 = async (req, res) => {
 
 
 const handleGetMyPublications = async (req, res) => {
+    console.log("✅ handleGetMyPublications triggered");
+    console.log("Email param:", req.params.email)
     try {
         const db = client.db('CIRT');
         const collection = db.collection('PUBLICATIONS');
@@ -213,6 +215,7 @@ const handleGetMyPublications = async (req, res) => {
         }
 
         const publications = await collection.find({ email }).toArray();
+        console.log("All publications in DB:", publications);
 
         if (!publications.length) {
             return res.status(404).json({ message: "No publications found for this user" });

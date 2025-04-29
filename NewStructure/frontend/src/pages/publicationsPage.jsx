@@ -147,7 +147,7 @@ function Publications({ role, email, name }) {
             if (res.ok) {
                 //setShowUpload(false); move it here after we get it from backend
                 alert("Upload successful!");
-                fetchMyPublications();
+                fetchMyPublications(email || localStorage.getItem("email"));
                 if (role === "reviewer" || role === "admin") {
                     fetchReviewPublications();
                 }
@@ -187,7 +187,9 @@ function Publications({ role, email, name }) {
     // Setup react-dropzone
     const { getRootProps, getInputProps } = useDropzone({
         onDrop,
-        accept: '.pdf',
+        accept: {
+            'application/pdf': ['.pdf']
+        },
         multiple: false
     });
 
@@ -195,7 +197,9 @@ function Publications({ role, email, name }) {
         getRootProps: getReplaceRootProps,
         getInputProps: getReplaceInputProps,
     } = useDropzone({
-        accept: '.pdf',
+        accept: {
+            'application/pdf': ['.pdf']
+        },
         multiple: false,
         onDrop: (acceptedFiles) => {
             if (acceptedFiles.length) {
@@ -226,6 +230,7 @@ function Publications({ role, email, name }) {
     // helper functions for the popup logic to open and close
     const openPopup = (publication) => {
         setPopupPub(publication);
+        setCurrentComment(publication.comments || ""); // <== add this
         setShowPopup(true);
     };
 
@@ -244,6 +249,7 @@ function Publications({ role, email, name }) {
         setReplacedFile(file);
         const formData = new FormData();
         formData.append("file", file);
+        console.log(file);
         try {
             const res = await fetch(`http://localhost:8081/api/publications/${popupPub._id}/replace-file`, {
                 method: "PUT",
@@ -343,8 +349,9 @@ function Publications({ role, email, name }) {
                                 <div {...getRootProps()} className="drop-container">
                                     <input {...getInputProps()} />
                                     <p>Drop files here, or click to select</p>
-                                    {uploadFile && <p>File uploaded is {uploadFile.file.name} </p>}
-                                </div>
+                                    {uploadFile.file && uploadFile.file.name && (
+                                        <p>File uploaded is {uploadFile.file.name}</p>
+                                    )}                                </div>
                                 <button type="submit" className="submit-upload">Submit</button>
                             </div>
                         </div>
@@ -441,7 +448,7 @@ function Publications({ role, email, name }) {
                                         <div className="popup-comments">
                                             {savingComment && <p style={{ fontSize: "0.9rem", color: "#C8102E" }}>Saving...</p>}
                                             <textarea placeholder="Write your comments here..."
-                                                      value={popupPub.comments || ""}
+                                                      value={currentComment}
                                                       onChange={(e) => handleCommentChange(e.target.value)}
                                             />
 
