@@ -47,22 +47,59 @@ function PostersPage({ role, email, name }) {
 
     // Get user's posters
     useEffect(() => {
+        console.log("Current user email:", email);
+        console.log("Current user role:", role);
+        console.log("Current user name:", name);
+        
         if (email) {
-            fetchMyPosters();
+            // Clear any old stored email if we have a current user email
+            localStorage.removeItem("email");
+            console.log("Using current user email to fetch posters:", email);
+            fetchMyPosters(email);
+        } else {
+            console.log("No email available to fetch posters");
+            setErrorMessage("Please log in to view your posters");
         }
-    }, [email]);
+    }, [email, role, name]);
 
-    const fetchMyPosters = () => {
-        fetch(`http://localhost:8081/posters/user/${email}`, {
-            credentials: 'include'
+    const fetchMyPosters = (emailParam) => {
+        // Only use the provided email parameter, no fallbacks
+        if (!emailParam) {
+            console.log("No email provided for fetching posters");
+            setErrorMessage("Please log in to view your posters");
+            return;
+        }
+        
+        console.log("Making request to fetch posters for email:", emailToUse);
+        
+        fetch(`http://localhost:8081/posters/user/${emailToUse}`, {
+            credentials: 'include',
+            headers: {
+                'Accept': 'application/json'
+            }
         })
-            .then((response) => response.json())
+            .then((response) => {
+                console.log("Response status:", response.status);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
             .then((data) => {
-                setMyPosters(data);
+                console.log("Successfully fetched user posters:", data);
+                if (Array.isArray(data)) {
+                    setMyPosters(data);
+                    setErrorMessage("");
+                } else {
+                    console.error("Received non-array data:", data);
+                    setErrorMessage("Invalid data received from server");
+                }
                 setLoading(false);
             })
             .catch((error) => {
                 console.error("Error fetching user posters:", error);
+                setErrorMessage("Failed to fetch your posters. Please try again.");
+                setLoading(false);
             });
     };
 
