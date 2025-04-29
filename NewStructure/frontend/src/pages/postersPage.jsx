@@ -293,6 +293,8 @@ function PostersPage({ role, email, name }) {
 
                 {/* Upload Popup */}
                 {showUpload && (
+                    <>
+                        <div className="popup-backdrop" onClick={() => setShowUpload(false)}></div>
                     <div className="upload-popup">
                         <button className="exit-upload" onClick={() => setShowUpload(false)}>
                             <ImCross />
@@ -330,6 +332,7 @@ function PostersPage({ role, email, name }) {
                             <button type="submit">Upload</button>
                         </form>
                     </div>
+                    </>
                 )}
 
                 {/* Display Posters */}
