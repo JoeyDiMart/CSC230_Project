@@ -15,7 +15,10 @@ function Publications({ role, email, name }) {
     const [searchFilter, setSearchFilter] = useState("title");
     const [popupPub, setPopupPub] = useState(null); // which publication to show
     const [showPopup, setShowPopup] = useState(false); // control if popup is open
-
+    const [savingComment, setSavingComment] = useState(false);
+    const [currentComment, setCurrentComment] = useState(""); // to control the textarea
+    const [typingTimeout, setTypingTimeout] = useState(null);
+    const [replacedFile, setReplacedFile] = useState(null);
 
     // list for uploading a publication
     const [uploadFile, setUploadFile] =
@@ -188,6 +191,21 @@ function Publications({ role, email, name }) {
         accept: '.pdf',
         multiple: false
     });
+
+    const {
+        getRootProps: getReplaceRootProps,
+        getInputProps: getReplaceInputProps,
+    } = useDropzone({
+        accept: '.pdf',
+        multiple: false,
+        onDrop: (acceptedFiles) => {
+            if (acceptedFiles.length) {
+                handleFileReplace(acceptedFiles[0]);
+            }
+        }
+    });
+
+
     // hit search button sends text and filter to backend
     const handleSearch = async () => {
         try {
@@ -217,6 +235,90 @@ function Publications({ role, email, name }) {
         setShowPopup(false);
     };
 
+
+    // when reviewer/admin wants to upload a new file
+    const handleFileReplace = async (file) => {
+        if (!file || file.type !== 'application/pdf') {
+            alert("Please upload a valid PDF file.");
+            return;
+        }
+        setReplacedFile(file);
+        const formData = new FormData();
+        formData.append("file", file);
+        try {
+            const res = await fetch(`http://localhost:8081/api/publications/${popupPub._id}/replace-file`, {
+                method: "PUT",
+                body: formData,
+            });
+
+            if (res.ok) {
+                alert("PDF replaced successfully!");
+                closePopup();
+            } else {
+                alert("Failed to replace PDF.");
+            }
+        } catch (err) {
+            console.error("PDF replacement error:", err);
+            alert("Error replacing file.");
+        }
+    };
+
+    // change status when accepted/denied
+    const handleStatusUpdate = async (newStatus) => {
+        try {
+            const res = await fetch(`http://localhost:8081/api/publications/${popupPub._id}/status`, {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ status: newStatus }),
+            });
+
+            if (res.ok) {
+                alert(`Publication ${newStatus}`);
+                closePopup();
+            } else {
+                alert("Failed to update status.");
+            }
+        } catch (err) {
+            console.error("Status update error:", err);
+        }
+    };
+
+    // comment logic
+    const handleCommentChange = (newComment) => {
+        setCurrentComment(newComment);
+
+        // Clear the previous timer if still waiting
+        if (typingTimeout) {
+            clearTimeout(typingTimeout);
+        }
+
+        // Set a new timer
+        const timeoutId = setTimeout(async () => {
+            setSavingComment(true);
+
+            try {
+                const res = await fetch(`http://localhost:8081/api/publications/${popupPub._id}/comments`, {
+                    method: "PUT",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ comments: newComment }),
+                });
+
+                if (res.ok) {
+                    console.log("Comment saved.");
+                } else {
+                    console.warn("Failed to save comment.");
+                }
+            } catch (err) {
+                console.error("Error saving comment:", err);
+            } finally {
+                setSavingComment(false);
+            }
+        }, 500); // 👈 500ms delay for a pause in typing thank you chatGPT
+
+        setTypingTimeout(timeoutId); // Save the timeout ID
+    };
+
+
     return (
         <div className="publisher-stuff">
         {(role !== "guest") && (
@@ -226,6 +328,8 @@ function Publications({ role, email, name }) {
                         <button onClick={() => setShowUpload(true)} className="upload"> Upload </button>
                     </div>
                     {showUpload && (
+                        <>
+                        <div className="popup-backdrop" onClick={() => setShowUpload(false)}></div>
                         <form onSubmit={handleSubmit}>
                         <div className="upload-popup">
                             <button onClick={() => setShowUpload(false)} className="exit-upload"><ImCross size={12} />
@@ -246,6 +350,7 @@ function Publications({ role, email, name }) {
                             </div>
                         </div>
                         </form>
+                        </>
                     )}
                     <div className="pubs-scroll-wrapper">
                         <Pubs pubs={myPublications} onPublicationClick={openPopup} showStatus={true} />
@@ -326,10 +431,28 @@ function Publications({ role, email, name }) {
                                     <p><strong>Keywords:</strong> {popupPub.keywords?.join(", ")}</p>
 
                                     {(role === "reviewer" || role === "admin") && (
-                                        <div className="popup-comments">
-                                            <textarea placeholder="Write your comments here..." />
+                                        <>
+                                        <div className="drop-container">
+                                            <div {...getReplaceRootProps()} className="drop-container">
+                                                <input {...getReplaceInputProps()} />
+                                                <p>Drop new PDF here, or click to select</p>
+                                                {replacedFile && <p>File: {replacedFile.name}</p>}
+                                            </div>
                                         </div>
-                                    )}
+                                        <div className="popup-comments">
+                                            {savingComment && <p style={{ fontSize: "0.9rem", color: "#C8102E" }}>Saving...</p>}
+                                            <textarea placeholder="Write your comments here..."
+                                                      value={popupPub.comments || ""}
+                                                      onChange={(e) => handleCommentChange(e.target.value)}
+                                            />
+
+                                        </div>
+                                        <div style={{ marginTop: "20px", display: "flex", gap: "10px" }}>
+                                            <button onClick={() => handleStatusUpdate("accepted")} className="approve-btn">Approve</button>
+                                            <button onClick={() => handleStatusUpdate("denied")} className="deny-btn">Deny</button>
+                                        </div>
+                                        </>
+                                )}
                                 </div>
                             </div>
                         </div>

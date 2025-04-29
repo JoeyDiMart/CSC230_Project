@@ -266,8 +266,9 @@
 
 .publication-thumbnail {
     width: 300px;
-    height: 295px;
+    height: 276px;
     object-fit: cover;
+    margin-top: 5px;
 }
 .publication-info-wrapper {
     position: relative;

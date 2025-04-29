@@ -34,7 +34,7 @@ function Pubs({ pubs, showStatus, onPublicationClick }) {
                     //const downloadLink = window.URL.createObjectURL(theBlob);
 
                     return (
-                        <div key={idx} className="publication-container" style={{ height: showStatus ? "315px" : "305px" }} onClick={() => onPublicationClick(publication)} >
+                        <div key={idx} className="publication-container" style={ {height: "315px"} } onClick={() => onPublicationClick(publication)} >
                             <div className="top-bar"></div>
                             {/* take base64 and make it the thumbnail */}
                                 <img
