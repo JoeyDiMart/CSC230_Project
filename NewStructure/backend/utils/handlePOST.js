@@ -8,8 +8,8 @@ import multer from "multer";
 import fs from "fs";
 import { ObjectId } from 'mongodb';
 import * as crypto from 'crypto';
-
-
+import * as userService from '../services/userService.js';
+import * as publicationService from '../services/publicationService.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -36,7 +36,8 @@ export const handlePostRequest = async (req, res) => {
         '/api/views/increment': handleIncrementViews,
         '/api/photos/upload': uploadPhotos,
         '/posters/upload': handlePosterUpload,
-        '/api/photos/delete': handleDeletePhotos
+        '/api/photos/delete': handleDeletePhotos,
+        '/forgot-password': userService.handleForgotPassword
 
     };
     /*
@@ -437,3 +438,4 @@ const handleDeletePhotos = async (req, res) => {
         res.status(500).json({ error: "Internal server error" });
     }
 }
+

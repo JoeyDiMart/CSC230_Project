@@ -4,6 +4,7 @@ import multer from 'multer';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import fs from 'fs';
+import { sendEmail, getApprovalEmail } from './emailService.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -374,26 +375,38 @@ export const handleApprove = async (req, res) => {
     if (!req.session.user || req.session.user.role !== 'admin') {
         return res.status(403).json({ error: 'Forbidden' });
     }
-    
+
     try {
         const posterCollection = client.db('CIRT').collection('POSTERS');
+        const poster = await posterCollection.findOne({ 
+            _id: new ObjectId(req.params.id)
+        });
+
+        if (!poster) {
+            return res.status(404).json({ error: 'Poster not found' });
+        }
+
+        // Update poster status
         const result = await posterCollection.updateOne(
             { _id: new ObjectId(req.params.id) },
-            { $set: { 
-                status: 'approved',
-                approvedBy: new ObjectId(req.session.user.id),
-                approvalDate: new Date()
-            } }
+            { $set: { status: 'approved' } }
         );
 
         if (result.modifiedCount > 0) {
+            // Send email notification if user wants email notifications for new posters
+            const userCollection = client.db('CIRT').collection('USERS');
+            const user = await userCollection.findOne({ _id: new ObjectId(poster.userId) });
+            
+            const emailData = getApprovalEmail(poster.title, 'Poster');
+            await sendEmail(user.email, emailData.subject, emailData.text, emailData.html);
+
             res.json({ message: 'Poster approved successfully' });
         } else {
             res.status(404).json({ error: 'Poster not found' });
         }
     } catch (err) {
         console.error('Error in handleApprove:', err);
-        res.status(400).json({ error: err.message });
+        res.status(500).json({ error: err.message });
     }
 };
 
