@@ -84,21 +84,39 @@ export const handleDecision = async (req, res) => {
 
 export const handleUpdateStatus = async (req, res) => {
     try {
+        console.log("🔧 Received request to update status");
         const { id } = req.params;
         const { status } = req.body;
 
-        const publicationCollection = client.db().collection('PUBLICATIONS');
+        console.log("📋 Request parameters:", { id, status });
+
+        const cirtdb = client.db('CIRT'); // Connect to the 'cirt' database
+        console.log("📂 Connected to 'CIRT' database");
+
+        const publicationCollection = cirtdb.collection('PUBLICATIONS');
+        console.log("📂 Accessed 'PUBLICATIONS' collection");
+
+        if (!ObjectId.isValid(id)) {
+            console.error("❌ Invalid ObjectId format:", id);
+            return res.status(400).json({ error: 'Invalid ID format' });
+        }
+
         const result = await publicationCollection.updateOne(
             { _id: new ObjectId(id) },
             { $set: { status } }
         );
 
+        console.log("🔍 Update result:", result);
+
         if (result.modifiedCount > 0) {
+            console.log("✅ Status updated successfully for ID:", id);
             res.json({ message: 'Status updated successfully' });
         } else {
+            console.warn("⚠️ No publication found with ID:", id);
             res.status(404).json({ error: 'Publication not found' });
         }
     } catch (err) {
+        console.error("💥 Error in handleUpdateStatus:", err);
         res.status(500).json({ error: err.message });
     }
 };
@@ -159,7 +177,8 @@ export const handleUpdateComments = async (req, res) => {
         const { id } = req.params;
         const { comments } = req.body;
 
-        const publicationCollection = client.db().collection('PUBLICATIONS');
+        const cirtdb= client.db('CIRT'); // Connect to the 'cirt' database
+        const publicationCollection = cirtdb.collection('PUBLICATIONS');
         const result = await publicationCollection.updateOne(
             { _id: new ObjectId(id) },
             { $set: { comments } }
