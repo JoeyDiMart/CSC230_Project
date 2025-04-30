@@ -1,5 +1,7 @@
 import { client } from '../Database/Mongodb.js';
 import { ObjectId } from 'mongodb';
+import { sendEmail, getForgotPasswordEmail } from './emailService.js';
+import * as crypto from 'crypto';
 
 export const handleProfile = async (req, res) => {
     if (!req.session.user) {
@@ -19,7 +21,8 @@ export const handleProfile = async (req, res) => {
             id: user._id,
             name: user.name,
             email: user.email,
-            role: user.role || 'author' // default role if not set
+            role: user.role || 'author', // default role if not set
+            notificationPreferences: user.notificationPreferences
         });
     } catch (err) {
         console.error('Error in handleProfile:', err);
@@ -78,22 +81,37 @@ export const handleGetAll = async (req, res) => {
 
 
 export const handleUpdateUser = async (req, res) => {
+    if (!req.session.user) {
+        return res.status(401).json({ error: 'Please log in' });
+    }
+
     try {
-        // if (!req.session.user) {
-        //     return res.status(403).json({ error: 'Forbidden' });
-        // }
         const db = client.db('CIRT');
         const collection = db.collection('USERS');
+        
+        // Update user with notification preferences
         const result = await collection.updateOne(
-            { _id: new ObjectId(req.params.id) },
-            { $set: { name: req.body.name, email: req.body.email, role: req.body.role } }
+            { _id: new ObjectId(req.session.user.id) },
+            { $set: {
+                ...req.body,
+                notificationPreferences: {
+                    ...(req.body.notificationPreferences || {}),
+                    email: {
+                        ...req.body.notificationPreferences?.email,
+                        newPublications: req.body.notificationPreferences?.email?.newPublications || false,
+                        newPosters: req.body.notificationPreferences?.email?.newPosters || false
+                    }
+                }
+            } }
         );
+
         if (result.modifiedCount > 0) {
             res.json({ message: 'User updated successfully' });
         } else {
             res.status(404).json({ error: 'User not found' });
         }
     } catch (err) {
+        console.error('Error in handleUpdateUser:', err);
         res.status(500).json({ error: 'Internal server error' });
     }
 };
@@ -131,3 +149,40 @@ export const handleUpdatePassword = async (req, res) => {
     }
 };
 
+export const handleForgotPassword = async (req, res) => {
+    try {
+        const { email } = req.body;
+        
+        if (!email) {
+            return res.status(400).json({ error: 'Email is required' });
+        }
+
+        const db = client.db('CIRT');
+        const collection = db.collection('USERS');
+        const user = await collection.findOne({ email: email.toLowerCase() });
+
+        if (!user) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+
+        // Generate temporary password
+        const tempPassword = Math.random().toString(36).substring(2, 15);
+
+        // Update user with temporary password
+        const hashedTempPassword = crypto.createHash('md5').update(tempPassword).digest('hex')
+        
+        await collection.updateOne(
+            { _id: user._id },
+            { $set: { password: hashedTempPassword } }
+        );
+
+        // Send email with temporary password
+        const emailData = getForgotPasswordEmail(email, tempPassword);
+        await sendEmail(email, emailData.subject, emailData.text, emailData.html);
+
+        res.json({ message: 'Password reset email sent successfully' });
+    } catch (err) {
+        console.error('Error in handleForgotPassword:', err);
+        res.status(500).json({ error: 'Failed to send password reset email' });
+    }
+};

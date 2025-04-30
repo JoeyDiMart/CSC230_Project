@@ -76,9 +76,12 @@ function Login({ role, setRole, name, setName, email, setEmail }) {
                     </div>
 
                     <div className="input-field">
-                        <input type={showPassword ? "text" : "password"} name="password" placeholder="Password" value={formData.password} onChange={handleChange} required />
-                        <span className="eye-icon" onClick={togglePasswordVisibility}>{showPassword ? <FaEye /> : <FaEyeSlash />}</span>
+                        <div className="password-input-container">
+                            <input type={showPassword ? "text" : "password"} name="password" placeholder="Password" value={formData.password} onChange={handleChange} required />
+                            <span className="eye-icon" onClick={togglePasswordVisibility}>{showPassword ? <FaEye /> : <FaEyeSlash />}</span>
+                        </div>
                     </div>
+
 
                     <label>
                         <input type= "checkbox"/> Remember me
@@ -88,13 +91,9 @@ function Login({ role, setRole, name, setName, email, setEmail }) {
                         <button type="submit">Login</button>
                     </div>
 
-                    <div className='forgotPassword'>
-                        <a href="#">Forgot password?</a>
-                        {/*<Link to="/forgot-password">Forgot password?</Link>  ADD THIS WHEN FORGOTPASS PAGE IS MADE */}
-                    </div>
-
-                    <div className="CreateAccount">
-                        <p>Don't have an account? <Link to={"/Signup"}>Create account</Link></p>
+                    <div className="account-links">
+                        <p><Link to="/forgot-password">Forgot password?</Link></p>
+                        <p>Don't have an account? <Link to="/Signup">Create account</Link></p>
                     </div>
                 </form>
             </div>
