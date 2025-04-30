@@ -121,13 +121,10 @@ export const handleReplaceFile = async (req, res) => {
             console.error("❌ Invalid ObjectId format:", id);
             return res.status(400).json({ error: 'Invalid ID format' });
         }
+        const cirtDb = client.db('CIRT'); // Connect to the 'cirt' database
 
-        const publicationCollection = client.db().collection('PUBLICATIONS');
+        const publicationCollection = cirtDb.collection('PUBLICATIONS');
         console.log("📂 Connected to PUBLICATIONS collection.");
-
-        // debugging step
-        const documents = await publicationCollection.find({ _id: new ObjectId('680ec123dbc5cfc7ec08cdbd') }).toArray();
-        console.log("📄 Query result:", documents);
 
         const objectId = new ObjectId(id);
         const doc = await publicationCollection.findOne({ _id: objectId });
