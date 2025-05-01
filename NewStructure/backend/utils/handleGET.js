@@ -12,6 +12,8 @@ import { fileURLToPath } from 'url';
 import {client} from "../Database/Mongodb.js";
 import fs from "fs"
 
+export {handleGetMyPublications}
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -31,7 +33,6 @@ export const handleGetRequest = async (req, res) => {
             '/api/publications1': handleGetPublications1,
             '/api/publications2': handleGetPublications2,
             '/api/publications3': handleGetPublications3,
-            '/api/publications/byEmail': handleGetMyPublications,
             '/check-session': handleCheckSession,
             '/events': eventService.handleGetAll,
             '/events/range': eventService.handleGetByDateRange,
@@ -44,7 +45,6 @@ export const handleGetRequest = async (req, res) => {
 
         };
         //  '/users': userService.handleGetAll, this caused an error
-
         // Check if the handler exists for this route
         const handler = requestHandlers[req.path];  // Use req.path instead of req.originalUrl
     
@@ -206,26 +206,39 @@ const handleGetMyPublications = async (req, res) => {
     console.log("✅ handleGetMyPublications triggered");
     console.log("Email param:", req.params.email)
     try {
+      
         const db = client.db('CIRT');
-        const collection = db.collection('PUBLICATIONS');
-        const email = req.params.email;
+        const userCollection = db.collection("USERS");
+        const publicationCollection = db.collection('PUBLICATIONS');
 
-        if (!email) {
-            return res.status(400).json({ message: "Email is required" });
+        const cookie = req.params.chocolate;
+        
+        if (!cookie) {
+            return res.status(400).json({ message: "cookie is required" });
         }
 
-        const publications = await collection.find({ email }).toArray();
-        console.log("All publications in DB:", publications);
+        const users = await userCollection.find({ connectionChocolateCookie: req.params.chocolate }).limit(2).toArray();
+
+      
+        if (users.length === 0) {
+            return res.status(404).json({ message: "No user found with this cookie" });
+        }
+
+        const email = users[0].email;
+
+        const publications = await publicationCollection.find({ email }).toArray();
 
         if (!publications.length) {
             return res.status(404).json({ message: "No publications found for this user" });
         }
+
         res.json(publications);
     } catch (err) {
         console.error("Error in handleGetMyPublications:", err);
         res.sendStatus(500);
     }
 };
+
 
 const handleCheckSession = async (req, res) => {
     if (req.session && req.session.user ) {

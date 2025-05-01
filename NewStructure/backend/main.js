@@ -14,9 +14,10 @@ import favicon from 'serve-favicon';
 
 // Utils Imports
 import { handlePostRequest } from "./utils/handlePOST.js";
-import { handleGetRequest } from "./utils/handleGET.js";
+import { handleGetRequest, handleGetMyPublications } from "./utils/handleGET.js";
 import { handlePutRequest } from "./utils/handlePUT.js";
 import { handleDeleteRequest } from "./utils/handleDEL.js";
+
 
 // Convert import.meta.url to __dirname equivalent
 const __filename = fileURLToPath(import.meta.url);
@@ -59,7 +60,7 @@ app.use(express.static(path.join(__dirname, '../frontend/dist')));
 (async () => {
     await connectToDatabase();
 })();
-
+app.get('/api/publications/byCookie/:chocolate', handleGetMyPublications); // DO NOT TOUCH, IT MUST BE HERE, DON'T ASK QUESTIONS
 // Send all requests to respective functions
 app.post("*", handlePostRequest);
 app.get("*", handleGetRequest);

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import {useState, useEffect, useRef} from 'react';
 import { useDropzone } from 'react-dropzone';
 import "./publicationsPage.css"
 import Pubs from './publications.jsx';
@@ -19,7 +19,7 @@ function Publications({ role, email, name }) {
     const [showPopup, setShowPopup] = useState(false); // control if popup is open
     const [savingComment, setSavingComment] = useState(false);
     const [currentComment, setCurrentComment] = useState(""); // to control the textarea
-    const [typingTimeout, setTypingTimeout] = useState(null);
+    const typingTimeout = useRef(null);
     const [replacedFile, setReplacedFile] = useState(null);
 
     // list for uploading a publication
@@ -47,47 +47,31 @@ function Publications({ role, email, name }) {
             });
     }, []);
 
-    //const [emaiil, setEmail] = useState(localStorage.getItem("email"));
-    //const [rolle, setRole] = useState(localStorage.getItem("role"));
 
-    useEffect(() => {
-        if (email && role) {
-            localStorage.setItem("email", email);
-            localStorage.setItem("role", role);
-        }
-    }, [email, role]);
 
-    useEffect(() => {
-        let currentEmail = email;
+ // Only fetch my publications once on mount (not every render!)
+useEffect(() => {
+    fetchMyPublications();
+}, []); // Empty dependency array = only runs once on mount
 
-        if (!currentEmail) {
-            currentEmail = localStorage.getItem("email");
-        }
-
-        if (currentEmail) {
-            fetchMyPublications(currentEmail);
-        } else {
-            console.warn("⚠️ No email found to fetch publications.");
-        }
-    }, [email, role]);
+const fetchMyPublications = () => {
+    const chocolate = localStorage.getItem("CurrentAccount");
     
-    const fetchMyPublications = (email) => {
-        if (!email) {
-            
-            email = localStorage.getItem("email")
-            
-        }
-    
-        fetch(`http://localhost:8081/api/publications/byEmail/${email}`)
-            .then((response) => response.json())
-            .then((data) => {
-                setMyPublications(data);
-                console.log(data);
-            })
-            .catch((error) => {
-                console.error("Error fetching user publications:", error);
-            });
-    };
+    if (!chocolate) {
+        console.warn("No cookie found for current account. Skipping fetch.");
+        return; // Prevent fetch if no cookie is found
+    }
+
+    fetch(`http://localhost:8081/api/publications/byCookie/${chocolate}`)
+        .then((response) => response.json())
+        .then((data) => {
+            setMyPublications(data);
+        })
+        .catch((error) => {
+            console.error("Error fetching user publications:", error);
+        });
+};
+
 
     
     // get publications from database (all under review)
@@ -301,14 +285,13 @@ function Publications({ role, email, name }) {
         }
 
         // Set a new timer
-        const timeoutId = setTimeout(async () => {
+        typingTimeout.current = setTimeout(async () => {
             setSavingComment(true);
-
             try {
                 const res = await fetch(`http://localhost:8081/api/publications/${popupPub._id}/comments`, {
                     method: "PUT",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ comments: newComment }),
+                    headers: {"Content-Type": "application/json"},
+                    body: JSON.stringify({comments: newComment}),
                 });
 
                 if (res.ok) {
@@ -321,7 +304,7 @@ function Publications({ role, email, name }) {
             } finally {
                 setSavingComment(false);
             }
-        }, 500); // 👈 500ms delay for a pause in typing thank you chatGPT
+        }, 1500); // 👈 1500ms delay for a pause in typing thank you chatGPT
 
         setTypingTimeout(timeoutId); // Save the timeout ID
     };
@@ -447,13 +430,14 @@ function Publications({ role, email, name }) {
                                             </div>
                                         </div>
                                         <div className="popup-comments">
-                                            {savingComment && <p style={{ fontSize: "0.9rem", color: "#C8102E" }}>Saving...</p>}
                                             <textarea placeholder="Write your comments here..."
                                                       value={currentComment}
                                                       onChange={(e) => handleCommentChange(e.target.value)}
                                             />
-
                                         </div>
+                                            <div className="saving-text">
+                                                {savingComment && <p style={{ fontSize: "0.9rem", color: "#C8102E" }}>Saving...</p>}
+                                            </div>
                                         <div style={{ marginTop: "20px", display: "flex", gap: "10px" }}>
                                             <button onClick={() => handleStatusUpdate("accepted")} className="approve-btn">Approve</button>
                                             <button onClick={() => handleStatusUpdate("denied")} className="deny-btn">Deny</button>

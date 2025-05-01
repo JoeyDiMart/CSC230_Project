@@ -3,6 +3,8 @@ import { Link, useNavigate } from "react-router-dom";
 import './loginPage.css';
 import './signupPage.jsx'
 import {FaEye, FaEyeSlash} from "react-icons/fa";
+import { SHA256, MD5 } from 'crypto-js';
+
 
 function Login({ role, setRole, name, setName, email, setEmail }) {
 
@@ -51,6 +53,21 @@ function Login({ role, setRole, name, setName, email, setEmail }) {
                 setRole(data.user.role);
                 setName(data.user.name);
                 setEmail(data.user.email);
+
+                const secret = new Date().toLocaleString('sv-SE', {
+                    timeZone: 'Europe/Kyiv',
+                    hour12: false,
+                    year: 'numeric',
+                    month: '2-digit',
+                    day: '2-digit',
+                    hour: '2-digit',
+                });
+                
+                const connectionChoco = SHA256(data.user.email + MD5(formData.password).toString() + secret).toString();
+
+      
+                localStorage.setItem("CurrentAccount", connectionChoco);
+    
                 navigate("/");
             } else {
                 const errorData = await response.json();
@@ -76,12 +93,9 @@ function Login({ role, setRole, name, setName, email, setEmail }) {
                     </div>
 
                     <div className="input-field">
-                        <div className="password-input-container">
-                            <input type={showPassword ? "text" : "password"} name="password" placeholder="Password" value={formData.password} onChange={handleChange} required />
-                            <span className="eye-icon" onClick={togglePasswordVisibility}>{showPassword ? <FaEye /> : <FaEyeSlash />}</span>
-                        </div>
+                        <input type={showPassword ? "text" : "password"} name="password" placeholder="Password" value={formData.password} onChange={handleChange} required />
+                        <span className="eye-icon" onClick={togglePasswordVisibility}>{showPassword ? <FaEye /> : <FaEyeSlash />}</span>
                     </div>
-
 
                     <label>
                         <input type= "checkbox"/> Remember me
@@ -91,9 +105,13 @@ function Login({ role, setRole, name, setName, email, setEmail }) {
                         <button type="submit">Login</button>
                     </div>
 
-                    <div className="account-links">
-                        <p><Link to="/forgot-password">Forgot password?</Link></p>
-                        <p>Don't have an account? <Link to="/Signup">Create account</Link></p>
+                    <div className='forgotPassword'>
+                        <a href="#">Forgot password?</a>
+                        {/*<Link to="/forgot-password">Forgot password?</Link>  ADD THIS WHEN FORGOTPASS PAGE IS MADE */}
+                    </div>
+
+                    <div className="CreateAccount">
+                        <p>Don't have an account? <Link to={"/Signup"}>Create account</Link></p>
                     </div>
                 </form>
             </div>
