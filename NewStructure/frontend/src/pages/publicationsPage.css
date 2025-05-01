@@ -386,6 +386,11 @@
     resize: none;
 }
 
+.saving-text {
+
+}
+
+
 @media (max-width: 768px) {
     .popup-layout {
         flex-direction: column;
