@@ -26,7 +26,7 @@ function Navbar({ role, setRole, name, setName, setEmail }) {
     }, []);
 
     return (
-        <nav className="navbar">
+        <nav className="navbar ">
             <div className="nav-items">
                 <label htmlFor="menu-icon" className="menu-icon">
                     <input type="checkbox" id="menu-icon" checked={click} onChange={handleClick}/>

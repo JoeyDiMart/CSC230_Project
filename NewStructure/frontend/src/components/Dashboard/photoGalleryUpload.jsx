@@ -178,7 +178,8 @@ const PhotoGalleryUpload = () => {
     });
 
     return (
-        <div className="flex flex-col items-center min-h-screen">
+        <div className="flex flex-col md:flex-row items-start justify-center gap-6 w-full max-w-7xl px-4">
+            
             {/* Upload Form */}
             <div className="flex flex-col w-full max-w-lg p-4 bg-transparent border-solid rounded-xl border-testingColorOutline mt-6">
                 <div className="mb-6">
@@ -230,7 +231,7 @@ const PhotoGalleryUpload = () => {
             </div>
 
             {/* Gallery */}
-            <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 w-full max-w-5xl p-4">
+            <div className="w-full md:w-2/3 max-h-[80vh] overflow-y-auto grid grid-cols-2 sm:grid-cols-3 gap-4 mt-6">
                 {photos.map((photo) => (
                     <div key={photo.name} className="relative border border-testingColorOutline rounded-xl overflow-hidden">
                         <button

@@ -12,7 +12,7 @@ import { FaArrowRight } from "react-icons/fa";
 function Home() {
     return (
         <div className="homePage bg-white">
-            <div className="w-full h-screen">
+            <div className="w-full h-full">
                 <Hero />
             </div>
             <section>
