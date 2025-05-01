@@ -111,32 +111,32 @@ export const handleGetRequest = async (req, res) => {
         res.status(500).json({ error: 'Internal server error' });
     }
 };
-
-// photo
-let handleGetPhotos = async (req, res) => {
-    try {
-        const photosDir = path.join(__dirname, '../../photos');
-        console.log("Photos directory:", photosDir);
-        // Read the photos directory
-        fs.readdir(photosDir, (err, files) => {
-            if (err) {
-                console.error("Error reading photos directory:", err);
-                return res.status(500).json({ error: "Failed to fetch photos" });
-            }
-
-            // Map file names to URLs
-            const photos = files.map((file) => ({
-                name: file,
-                url: `NewStructure/photos/${file}` // Assuming static files are served from this path
-            }));
-
-            res.status(200).json(photos);
-        });
-    } catch (error) {
-        console.error("Error in handleGetPhotos:", error);
-        res.status(500).json({ error: "Internal server error" });
-    }
-};
+//
+// // photo
+// let handleGetPhotos = async (req, res) => {
+//     try {
+//         const photosDir = path.join(__dirname, '../../photos');
+//         console.log("Photos directory:", photosDir);
+//         // Read the photos directory
+//         fs.readdir(photosDir, (err, files) => {
+//             if (err) {
+//                 console.error("Error reading photos directory:", err);
+//                 return res.status(500).json({ error: "Failed to fetch photos" });
+//             }
+//
+//             // Map file names to URLs
+//             const photos = files.map((file) => ({
+//                 name: file,
+//                 url: `NewStructure/photos/${file}` // Assuming static files are served from this path
+//             }));
+//
+//             res.status(200).json(photos);
+//         });
+//     } catch (error) {
+//         console.error("Error in handleGetPhotos:", error);
+//         res.status(500).json({ error: "Internal server error" });
+//     }
+// };
 
 // only accepted
 let handleGetPublications1 = async (req, res) => {
