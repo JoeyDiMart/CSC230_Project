@@ -8,8 +8,14 @@ import multer from "multer";
 import fs from "fs";
 import { ObjectId } from 'mongodb';
 import * as crypto from 'crypto';
+<<<<<<< Updated upstream
 import * as userService from '../services/userService.js';
 import * as publicationService from '../services/publicationService.js';
+=======
+import { fromPath } from "pdf2pic";
+
+
+>>>>>>> Stashed changes
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
