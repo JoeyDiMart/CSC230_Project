@@ -91,12 +91,25 @@ const handleSignup = async (req, res) => {
             return res.status(400).json({ error: "User already exists" });  // tested by changing message, works
         }
         
-        password = crypto.createHash('md5').update(password).digest('hex')
-        const result = await collection.insertOne({name, email, password , role });  // collect all 4 variables from user inpus
+        const plainPassword = password;
+        const hashedPassword = crypto.createHash('md5').update(plainPassword).digest('hex');
+        
+        const secret = new Date().toLocaleString('sv-SE', {
+            timeZone: 'Europe/Kyiv',
+            hour12: false,
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit',
+            hour: '2-digit'
+        });
+        
+        const connectionChocoladeCookie = crypto.createHash('sha256').update(email + hashedPassword + secret).digest('hex');
+
+        const result = await collection.insertOne({name, email, password , role, connectionChocoladeCookie });  // collect all 4 variables from user inpus
         if (result.insertedId) {  // if successfully created put into database
             const insertedUser = await collection.findOne(  // if successful collect
                 { _id: result.insertedId },
-                { projection: { name: 1, email:1, role: 1, _id: 0 } }  // Include only name, email, and role to send to frontend again
+                { projection: { name: 1, email:1, role: 1, connectionChocoladeCookie: 1, _id: 0 } }  // Include only name, email, and role to send to frontend again
             );
             return res.status(201).json({   // return as json to frontend
                 message: "User registered successfully",
@@ -108,31 +121,46 @@ const handleSignup = async (req, res) => {
             return res.status(400).json({ error: "Failed to register user" });
         }
     } catch (err) {
-        return res.status(500).json({ error: 'Internal server error' });
+        return res.status(666).json({ error: 'Internal server error ' + err });
     }
 };
 
 // Login Handler
 const handleLogin = async (req, res) => {
-    const { email, password } = req.body;  // take in only email and password from frontend
+    const { email, password } = req.body;  
     if (!email || !password) {
-        return res.status(400).json({ error: 'Email and password are required' }); // if empty fields
+        return res.status(400).json({ error: 'Email and password are required' }); 
     }
     try {
-        const db = client.db('CIRT');  // connect to database
-        const collection = db.collection('USERS');  // link to USERS section of database
-        const user = await collection.findOne({ email });  // find user by searching for email
+        const db = client.db('CIRT');  
+        const collection = db.collection('USERS');  
+        const user = await collection.findOne({ email });  
         if (!user) {
             return res.status(460).json({ error: 'Invalid email or password' });
         }
 
-
-        
         var enc_password = crypto.createHash('md5').update(password).digest('hex')
-        const isMatch = enc_password === user.password;  // check if correct password NOT ENCRYPTED
+        const isMatch = enc_password === user.password;  
         if (!isMatch) {
             return res.status(401).json({ error: 'Invalid email or password' });
         }
+
+
+        const secret = new Date().toLocaleString('sv-SE', {
+            timeZone: 'Europe/Kyiv',
+            hour12: false,
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit',
+            hour: '2-digit',
+        });
+
+        const connectionChocoladeCookie = crypto.createHash('sha256').update(email + enc_password + secret).digest('hex');
+
+        await collection.updateOne(
+            { _id: user._id },
+            { $set: { connectionChocolateCookie: connectionChocoladeCookie } }
+        );
 
         // take in specific user data
         req.session.user = {
@@ -141,13 +169,17 @@ const handleLogin = async (req, res) => {
             email: user.email,
             role: user.role
         };
-        return res.json({ message: 'Logged in successfully',
-            user: { name: user.name, role: user.role, email: user.email }  // return only name, email and role
+
+        return res.json({
+            message: 'Logged in successfully',
+            user: { name: user.name, role: user.role, email: user.email }  
         });
-   } catch (err) {
-       return res.status(500).json({ error: 'Internal server error' });
+    } catch (err) {
+        console.log(err)
+        return res.status(500).json({ error: 'Internal server error' + err });
     }
 };
+
 
 // Logout Handler
 const handleLogout = (req, res) => {

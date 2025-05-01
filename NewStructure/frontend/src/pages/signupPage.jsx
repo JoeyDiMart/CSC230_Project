@@ -2,6 +2,7 @@ import {Fragment, useState} from "react";
 import { useNavigate } from "react-router-dom";
 import './signupPage.css'
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { SHA256, MD5 } from 'crypto-js';
 
 function Signup({ role, setRole, name, setName, email, setEmail }) {
 
@@ -77,6 +78,20 @@ function Signup({ role, setRole, name, setName, email, setEmail }) {
                 setRole(data.user.role);
                 setName(data.user.name);
                 setEmail(data.user.email);
+
+                 const secret = new Date().toLocaleString('sv-SE', {
+                     timeZone: 'Europe/Kyiv',
+                     hour12: false,
+                     year: 'numeric',
+                     month: '2-digit',
+                     day: '2-digit',
+                     hour: '2-digit',
+                 });
+                 
+                 const connectionChoco = SHA256(data.user.email + MD5(formData.password).toString() + secret).toString();
+ 
+                 localStorage.setItem("CurrentAccount", connectionChoco);
+    
                 navigate("/");
             } else {
                 setErrorMessage(data.error || "Signup failed");

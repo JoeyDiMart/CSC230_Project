@@ -45,47 +45,31 @@ function Publications({ role, email, name }) {
             });
     }, []);
 
-    //const [emaiil, setEmail] = useState(localStorage.getItem("email"));
-    //const [rolle, setRole] = useState(localStorage.getItem("role"));
 
-    useEffect(() => {
-        if (email && role) {
-            localStorage.setItem("email", email);
-            localStorage.setItem("role", role);
-        }
-    }, [email, role]);
 
-    useEffect(() => {
-        let currentEmail = email;
+ // Only fetch my publications once on mount (not every render!)
+useEffect(() => {
+    fetchMyPublications();
+}, []); // Empty dependency array = only runs once on mount
 
-        if (!currentEmail) {
-            currentEmail = localStorage.getItem("email");
-        }
-
-        if (currentEmail) {
-            fetchMyPublications(currentEmail);
-        } else {
-            console.warn("⚠️ No email found to fetch publications.");
-        }
-    }, [email, role]);
+const fetchMyPublications = () => {
+    const chocolate = localStorage.getItem("CurrentAccount");
     
-    const fetchMyPublications = (email) => {
-        if (!email) {
-            
-            email = localStorage.getItem("email")
-            
-        }
-    
-        fetch(`http://localhost:8081/api/publications/byEmail/${email}`)
-            .then((response) => response.json())
-            .then((data) => {
-                setMyPublications(data);
-                console.log(data);
-            })
-            .catch((error) => {
-                console.error("Error fetching user publications:", error);
-            });
-    };
+    if (!chocolate) {
+        console.warn("No cookie found for current account. Skipping fetch.");
+        return; // Prevent fetch if no cookie is found
+    }
+
+    fetch(`http://localhost:8081/api/publications/byCookie/${chocolate}`)
+        .then((response) => response.json())
+        .then((data) => {
+            setMyPublications(data);
+        })
+        .catch((error) => {
+            console.error("Error fetching user publications:", error);
+        });
+};
+
 
     
     // get publications from database (all under review)
