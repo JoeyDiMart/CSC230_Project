@@ -89,3 +89,65 @@ body, html {
     text-align: left;
 
 }
+
+.forgot-password-link {
+    text-align: right;
+    margin: 10px 0;
+}
+
+.forgot-password-link a {
+    color: #007bff;
+    text-decoration: none;
+    font-size: 0.9rem;
+}
+
+.forgot-password-link a:hover {
+    text-decoration: underline;
+}
+
+.password-input-container {
+    position: relative;
+    width: 100%;
+}
+
+.password-input-container input {
+    padding-right: 30px;
+    width: 100%;
+}
+
+.password-toggle {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #666;
+}
+
+.password-toggle:hover {
+    color: #007bff;
+}
+
+.account-links {
+    text-align: center;
+    margin-top: 15px;
+}
+
+.account-links p {
+    margin: 5px 0;
+    font-size: 14px;
+    color: #666;
+}
+
+.account-links a {
+    color: #007bff;
+    text-decoration: none;
+    font-weight: normal;
+}
+
+.account-links a:hover {
+    text-decoration: underline;
+    color: #0056b3;
+}

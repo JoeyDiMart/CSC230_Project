@@ -1,8 +1,11 @@
-import { useState, useEffect } from 'react';
+import {useState, useEffect, useRef} from 'react';
 import { useDropzone } from 'react-dropzone';
 import "./publicationsPage.css"
 import Pubs from './publications.jsx';
 import { ImCross } from "react-icons/im";
+import { IoIosArrowDropdownCircle } from "react-icons/io";
+import { FaSearch } from "react-icons/fa";
+
 
 function Publications({ role, email, name }) {
     const [showUpload, setShowUpload] = useState(false);
@@ -10,14 +13,13 @@ function Publications({ role, email, name }) {
     const [publications, setPublications] = useState([]);
     const [myPublications, setMyPublications] = useState([]);
     const [reviewPublications, setReviewPublications] = useState([]);
-    // search for text in that specific filter
     const [searchText, setSearchText] = useState("");
     const [searchFilter, setSearchFilter] = useState("title");
     const [popupPub, setPopupPub] = useState(null); // which publication to show
     const [showPopup, setShowPopup] = useState(false); // control if popup is open
     const [savingComment, setSavingComment] = useState(false);
     const [currentComment, setCurrentComment] = useState(""); // to control the textarea
-    const [typingTimeout, setTypingTimeout] = useState(null);
+    const typingTimeout = useRef(null);
     const [replacedFile, setReplacedFile] = useState(null);
 
     // list for uploading a publication
@@ -132,7 +134,7 @@ const fetchMyPublications = () => {
             if (res.ok) {
                 //setShowUpload(false); move it here after we get it from backend
                 alert("Upload successful!");
-                fetchMyPublications();
+                fetchMyPublications(email || localStorage.getItem("email"));
                 if (role === "reviewer" || role === "admin") {
                     fetchReviewPublications();
                 }
@@ -172,7 +174,9 @@ const fetchMyPublications = () => {
     // Setup react-dropzone
     const { getRootProps, getInputProps } = useDropzone({
         onDrop,
-        accept: '.pdf',
+        accept: {
+            'application/pdf': ['.pdf']
+        },
         multiple: false
     });
 
@@ -180,7 +184,9 @@ const fetchMyPublications = () => {
         getRootProps: getReplaceRootProps,
         getInputProps: getReplaceInputProps,
     } = useDropzone({
-        accept: '.pdf',
+        accept: {
+            'application/pdf': ['.pdf']
+        },
         multiple: false,
         onDrop: (acceptedFiles) => {
             if (acceptedFiles.length) {
@@ -211,6 +217,7 @@ const fetchMyPublications = () => {
     // helper functions for the popup logic to open and close
     const openPopup = (publication) => {
         setPopupPub(publication);
+        setCurrentComment(publication.comments || ""); // <== add this
         setShowPopup(true);
     };
 
@@ -229,6 +236,7 @@ const fetchMyPublications = () => {
         setReplacedFile(file);
         const formData = new FormData();
         formData.append("file", file);
+        console.log(file);
         try {
             const res = await fetch(`http://localhost:8081/api/publications/${popupPub._id}/replace-file`, {
                 method: "PUT",
@@ -277,14 +285,13 @@ const fetchMyPublications = () => {
         }
 
         // Set a new timer
-        const timeoutId = setTimeout(async () => {
+        typingTimeout.current = setTimeout(async () => {
             setSavingComment(true);
-
             try {
                 const res = await fetch(`http://localhost:8081/api/publications/${popupPub._id}/comments`, {
                     method: "PUT",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ comments: newComment }),
+                    headers: {"Content-Type": "application/json"},
+                    body: JSON.stringify({comments: newComment}),
                 });
 
                 if (res.ok) {
@@ -297,7 +304,7 @@ const fetchMyPublications = () => {
             } finally {
                 setSavingComment(false);
             }
-        }, 500); // 👈 500ms delay for a pause in typing thank you chatGPT
+        }, 1500); // 👈 1500ms delay for a pause in typing thank you chatGPT
 
         setTypingTimeout(timeoutId); // Save the timeout ID
     };
@@ -328,8 +335,9 @@ const fetchMyPublications = () => {
                                 <div {...getRootProps()} className="drop-container">
                                     <input {...getInputProps()} />
                                     <p>Drop files here, or click to select</p>
-                                    {uploadFile && <p>File uploaded is {uploadFile.file.name} </p>}
-                                </div>
+                                    {uploadFile.file && uploadFile.file.name && (
+                                        <p>File uploaded is {uploadFile.file.name}</p>
+                                    )}                                </div>
                                 <button type="submit" className="submit-upload">Submit</button>
                             </div>
                         </div>
@@ -352,39 +360,37 @@ const fetchMyPublications = () => {
             )}
 
             <h1>Publications</h1>
-            <div className="search-bar-container">
-                <form className="animated-search-form" onSubmit={(e) => { e.preventDefault(); handleSearch(); }}>
-                    <button type="submit" className="search-icon">
-                        <svg width="17" height="16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M7.667 12.667A5.333 5.333 0 107.667 2a5.333 5.333 0 000 10.667zM14.334 14l-2.9-2.9"
-                                  stroke="currentColor" strokeWidth="1.333" strokeLinecap="round" strokeLinejoin="round" />
-                        </svg>
-                    </button>
-                    <input
-                        type="text"
-                        className="animated-search-input"
-                        placeholder="Search..."
-                        value={searchText}
-                        onChange={(e) => setSearchText(e.target.value)}
-                    />
+                <div className="search-bar-container">
+                    <div className="animated-search-form">
+                        <button className="search-icon" onClick={handleSearch}>
+                            <FaSearch className=" text-testingColorBlack" size={14}/>
+                        </button>
+                        <input
+                            type="text"
+                            className="animated-search-input"
+                            placeholder="Search..."
+                            value={searchText}
+                            onChange={(e) => setSearchText(e.target.value)}
+                        />
+                        <div className="select-wrapper">
+                            <div className="select-inner">
+                                <select
+                                    className="search-filter max-w-[200px] pr-8"
+                                    value={searchFilter}
+                                    onChange={(e) => setSearchFilter(e.target.value)}
+                                >
+                                    <option value="title">Title</option>
+                                    <option value="keyword">Keyword</option>
+                                    <option value="author">Author</option>
+                                </select>
+                                <span className="dropdown-arrow flex items-center justify-center"><IoIosArrowDropdownCircle className="text-testingColorBlack" size={16}/>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-                    <div className="select-wrapper" style={{ position: "relative", display: "inline-block" }}>
-                        <select className="search-filter" value={searchFilter} onChange={(e) => setSearchFilter(e.target.value)}>
-                            <option value="title">by Title</option>
-                            <option value="author">by Author</option>
-                            <option value="keyword">by Keyword</option>
-                        </select>
-                        <svg
-                            className="dropdown-arrow"  width="16"  height="16"  viewBox="0 0 24 24"  fill="none"
-                            stroke="#aaa"  strokeWidth="2"  strokeLinecap="round"  strokeLinejoin="round"
-                        >
-                            <polyline points="6 9 12 15 18 9" />
-                        </svg>
-            </div>
 
-        </form>
-
-            </div>
 
             <div className="pubs-scroll-wrapper">
                 <Pubs pubs={publications} onPublicationClick={openPopup} showStatus={false}/>
@@ -424,13 +430,14 @@ const fetchMyPublications = () => {
                                             </div>
                                         </div>
                                         <div className="popup-comments">
-                                            {savingComment && <p style={{ fontSize: "0.9rem", color: "#C8102E" }}>Saving...</p>}
                                             <textarea placeholder="Write your comments here..."
-                                                      value={popupPub.comments || ""}
+                                                      value={currentComment}
                                                       onChange={(e) => handleCommentChange(e.target.value)}
                                             />
-
                                         </div>
+                                            <div className="saving-text">
+                                                {savingComment && <p style={{ fontSize: "0.9rem", color: "#C8102E" }}>Saving...</p>}
+                                            </div>
                                         <div style={{ marginTop: "20px", display: "flex", gap: "10px" }}>
                                             <button onClick={() => handleStatusUpdate("accepted")} className="approve-btn">Approve</button>
                                             <button onClick={() => handleStatusUpdate("denied")} className="deny-btn">Deny</button>

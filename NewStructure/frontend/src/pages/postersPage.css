@@ -147,18 +147,6 @@
     position: relative;
 }
 
-.search-filter {
-    appearance: none;
-    background: transparent;
-    border: none;
-    color: var(--border-color);
-    font-size: 0.95rem;
-    font-weight: 500;
-    padding: 0.5em 2.2em 0.5em 1em;
-    border-radius: 6px;
-    cursor: pointer;
-    outline: none;
-}
 
 .dropdown-arrow {
     position: absolute;

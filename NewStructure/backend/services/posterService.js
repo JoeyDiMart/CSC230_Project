@@ -4,6 +4,7 @@ import multer from 'multer';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import fs from 'fs';
+import { sendEmail, getApprovalEmail } from './emailService.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -213,6 +214,44 @@ export const handleGetByUser = async (req, res) => {
     }
 };
 
+// New function to get posters by email
+export const handleGetByEmail = async (req, res) => {
+    try {
+        const { email } = req.params;
+        
+        if (!email) {
+            return res.status(400).json({ error: 'Email parameter is required' });
+        }
+        
+        console.log('Fetching posters for email:', email);
+        
+        const posterCollection = client.db('CIRT').collection('POSTERS');
+        const posters = await posterCollection.find({
+            email: email
+        }).toArray();
+        
+        console.log(`Found ${posters.length} posters for email ${email}`);
+        
+        // Remove file data to reduce response size
+        const postersWithoutFiles = posters.map(poster => {
+            const { file, ...posterWithoutFile } = poster;
+            return {
+                ...posterWithoutFile,
+                file: file ? {
+                    name: file.name,
+                    type: file.type,
+                    size: file.size
+                } : null
+            };
+        });
+
+        res.json(postersWithoutFiles);
+    } catch (err) {
+        console.error('Error in handleGetByEmail:', err);
+        res.status(500).json({ error: err.message });
+    }
+};
+
 export const handleSearch = async (req, res) => {
     try {
         const { keyword } = req.query;
@@ -253,37 +292,55 @@ export const handleSearch = async (req, res) => {
 
 export const handleGetFile = async (req, res) => {
     try {
+        console.log('Fetching file for ID:', req.params.id);
         const posterCollection = client.db('CIRT').collection('POSTERS');
         const poster = await posterCollection.findOne({ 
             _id: new ObjectId(req.params.id)
         });
         
         if (!poster) {
+            console.log('Poster not found');
             return res.status(404).json({ error: 'Poster not found' });
         }
+        console.log('Poster found:', { 
+            title: poster.title,
+            hasFile: !!poster.file,
+            hasData: !!(poster.file && poster.file.data),
+            fileType: poster.file?.type,
+            dataType: poster.file?.data ? typeof poster.file.data : 'none'
+        });
 
         // Check permissions
         const isApproved = poster.status === 'approved';
         const isAdmin = req.session.user && req.session.user.role === 'admin';
         const isOwner = req.session.user && poster.userId.toString() === req.session.user.id;
 
+        console.log('Permission check:', { isApproved, isAdmin, isOwner });
+
         if (!isApproved && !isAdmin && !isOwner) {
+            console.log('Permission denied');
             return res.status(403).json({ error: 'Forbidden' });
         }
 
         if (!poster.file || !poster.file.data) {
+            console.log('File or file data missing');
             return res.status(404).json({ error: 'File not found' });
         }
 
         try {
             let fileData;
+            console.log('File data type:', typeof poster.file.data);
+            
             // Check if the data is already a Buffer
             if (Buffer.isBuffer(poster.file.data)) {
+                console.log('Data is already a Buffer');
                 fileData = poster.file.data;
             } else if (typeof poster.file.data === 'string') {
+                console.log('Converting base64 to Buffer');
                 // Convert base64 to buffer
                 fileData = Buffer.from(poster.file.data, 'base64');
             } else {
+                console.log('Invalid data format:', typeof poster.file.data);
                 throw new Error('Invalid file data format');
             }
 
@@ -293,8 +350,14 @@ export const handleGetFile = async (req, res) => {
             
             // Set the appropriate content type and disposition
             res.setHeader('Content-Type', poster.file.type);
-            res.setHeader('Content-Disposition', `inline; filename="${poster.file.name}"`);
-            res.setHeader('Cache-Control', 'public, max-age=31536000');
+            res.setHeader('Content-Disposition', `attachment; filename="${poster.file.name}"`);
+            res.setHeader('Cache-Control', 'no-cache');
+
+            console.log('Sending file:', {
+                type: poster.file.type,
+                name: poster.file.name,
+                size: fileData.length
+            });
 
             // Send the file data
             res.end(fileData);
@@ -312,26 +375,38 @@ export const handleApprove = async (req, res) => {
     if (!req.session.user || req.session.user.role !== 'admin') {
         return res.status(403).json({ error: 'Forbidden' });
     }
-    
+
     try {
         const posterCollection = client.db('CIRT').collection('POSTERS');
+        const poster = await posterCollection.findOne({ 
+            _id: new ObjectId(req.params.id)
+        });
+
+        if (!poster) {
+            return res.status(404).json({ error: 'Poster not found' });
+        }
+
+        // Update poster status
         const result = await posterCollection.updateOne(
             { _id: new ObjectId(req.params.id) },
-            { $set: { 
-                status: 'approved',
-                approvedBy: new ObjectId(req.session.user.id),
-                approvalDate: new Date()
-            } }
+            { $set: { status: 'approved' } }
         );
 
         if (result.modifiedCount > 0) {
+            // Send email notification if user wants email notifications for new posters
+            const userCollection = client.db('CIRT').collection('USERS');
+            const user = await userCollection.findOne({ _id: new ObjectId(poster.userId) });
+            
+            const emailData = getApprovalEmail(poster.title, 'Poster');
+            await sendEmail(user.email, emailData.subject, emailData.text, emailData.html);
+
             res.json({ message: 'Poster approved successfully' });
         } else {
             res.status(404).json({ error: 'Poster not found' });
         }
     } catch (err) {
         console.error('Error in handleApprove:', err);
-        res.status(400).json({ error: err.message });
+        res.status(500).json({ error: err.message });
     }
 };
 

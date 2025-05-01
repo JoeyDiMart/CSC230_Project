@@ -8,12 +8,8 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // Configure multer for manuscript uploads
-const storage = multer.diskStorage({
-    destination: './uploads/manuscripts',
-    filename: (req, file, cb) => {
-        cb(null, `${Date.now()}-${file.originalname}`);
-    }
-});
+const storage = multer.memoryStorage();
+
 
 export const upload = multer({
     storage,
@@ -83,5 +79,117 @@ export const handleDecision = async (req, res) => {
         }
     } catch (err) {
         res.status(400).json({ error: err.message });
+    }
+};
+
+export const handleUpdateStatus = async (req, res) => {
+    try {
+        console.log("🔧 Received request to update status");
+        const { id } = req.params;
+        const { status } = req.body;
+
+        console.log("📋 Request parameters:", { id, status });
+
+        const cirtdb = client.db('CIRT'); // Connect to the 'cirt' database
+        console.log("📂 Connected to 'CIRT' database");
+
+        const publicationCollection = cirtdb.collection('PUBLICATIONS');
+        console.log("📂 Accessed 'PUBLICATIONS' collection");
+
+        if (!ObjectId.isValid(id)) {
+            console.error("❌ Invalid ObjectId format:", id);
+            return res.status(400).json({ error: 'Invalid ID format' });
+        }
+
+        const result = await publicationCollection.updateOne(
+            { _id: new ObjectId(id) },
+            { $set: { status } }
+        );
+
+        console.log("🔍 Update result:", result);
+
+        if (result.modifiedCount > 0) {
+            console.log("✅ Status updated successfully for ID:", id);
+            res.json({ message: 'Status updated successfully' });
+        } else {
+            console.warn("⚠️ No publication found with ID:", id);
+            res.status(404).json({ error: 'Publication not found' });
+        }
+    } catch (err) {
+        console.error("💥 Error in handleUpdateStatus:", err);
+        res.status(500).json({ error: err.message });
+    }
+};
+
+export const handleReplaceFile = async (req, res) => {
+    console.log("Incoming PUT request to:", req.path);
+    try {
+        const { id } = req.params;
+        console.log("🔧 Extracted ID from params:", id);
+
+        const file = req.file;
+        console.log("📄 Uploaded file details:", file);
+
+        if (!file) {
+            console.error("❌ No file uploaded in the request.");
+            return res.status(400).json({ error: 'No file uploaded' });
+        }
+
+        if (!ObjectId.isValid(id)) {
+            console.error("❌ Invalid ObjectId format:", id);
+            return res.status(400).json({ error: 'Invalid ID format' });
+        }
+        const cirtDb = client.db('CIRT'); // Connect to the 'cirt' database
+
+        const publicationCollection = cirtDb.collection('PUBLICATIONS');
+        console.log("📂 Connected to PUBLICATIONS collection.");
+
+        const objectId = new ObjectId(id);
+        const doc = await publicationCollection.findOne({ _id: objectId });
+        if (!doc) {
+            console.warn("⚠️ No document found with ID:", id);
+        } else {
+            console.log("📄 Document before update:", doc);
+        }
+
+        const result = await publicationCollection.updateOne(
+            { _id:  new ObjectId(id) },
+            { $set: { file: file.buffer.toString('base64') } }
+        );
+
+        console.log("🔍 Update result:", result);
+
+        if (result.modifiedCount > 0) {
+            console.log("✅ File replaced successfully for publication ID:", id);
+            res.json({ message: 'File replaced successfully' });
+        } else {
+            console.warn("⚠️ No publication found with ID:", id);
+            res.status(404).json({ error: 'Publication not found' });
+        }
+    } catch (err) {
+        console.error("💥 Error in handleReplaceFile:", err);
+        res.status(500).json({ error: err.message });
+    }
+};
+
+export const handleUpdateComments = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { comments } = req.body;
+
+        const cirtdb= client.db('CIRT'); // Connect to the 'cirt' database
+        const publicationCollection = cirtdb.collection('PUBLICATIONS');
+        const result = await publicationCollection.updateOne(
+            { _id: new ObjectId(id) },
+            { $set: { comments } }
+        );
+
+        if (result.modifiedCount > 0) {
+            res.json({ message: 'Comments updated successfully' });
+        } else {
+            res.status(404).json({ error: 'Publication not found' });
+        }
+    } catch (err) {
+        res.status(500).json({ error: err.message });
     }
 };

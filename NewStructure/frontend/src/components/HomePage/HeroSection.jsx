@@ -2,15 +2,15 @@ import { FaUniversity } from "react-icons/fa";
 
 const HeroSection = () => {
   return (
-    <section className="bg-transparent w-full px-6  md:py-32 flex items-center justify-center ">
-      <div className="max-w-5xl text-center ">
+    <section className="w-screen h-screen bg-cover bg-center bg-no-repeat flex items-center justify-end pt-4" style={{backgroundImage:`url('/BackgroundImage2.png')`}}>
+      <div className="max-w-2xl mr-5">
         <div className="flex justify-center items-center gap-3 text-cirtRed">
           <FaUniversity size={28} />
           <span className="uppercase font-semibold tracking-wide text-sm">
             Criminology Institute Of Research And Training
           </span>
         </div>
-        <h1 className="text-4xl md:text-5xl font-bold text-testingColorBlack leading-tight">
+        <h1 className="text-4xl md:text-5xl font-bold text-testingColorWhite leading-tight">
           Empowering Criminal Justice Through Research & Training
         </h1>
         <p className="text-testingColorSubtitle max-w-2xl mx-auto text-base md:text-lg">

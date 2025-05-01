@@ -7,16 +7,15 @@ import Footer from './components/footer.jsx';
 import Home from './pages/homePage.jsx';
 import Login from './pages/loginPage.jsx';
 import Signup from "./pages/signupPage.jsx";
-import Account from "./pages/accountPage.jsx";
-import Dashboard from "./pages/dashboard/dashboardPage.jsx"
+import Dashboard from "./pages/dashboard/dashboardPage.jsx";
 import Publications from './pages/publicationsPage.jsx';
-import Events from './pages/eventsPage.jsx'
-import Users from './pages/dashboard/usersPage.jsx'
+import Events from './pages/eventsPage.jsx';
+import Users from './pages/dashboard/usersPage.jsx';
 import ResearchAssociates from './pages/researchAssociates.jsx';
-import PhotoGallery from './pages/dashboard/photoGalleryPage.jsx'
-import DashboardLayout from './components/Dashboard/DashboardLayout.jsx'
+import PhotoGallery from './pages/dashboard/photoGalleryPage.jsx';
+import DashboardLayout from './components/Dashboard/DashboardLayout.jsx';
 import PostersPage from './pages/postersPage.jsx';
-
+import ForgotPassword from './pages/forgotPasswordPage.jsx';
 
 // ✅ Wrapper to use useLocation and hide header/footer on certain routes
 function AppWrapper({ role, setRole, name, setName, email, setEmail }) {
@@ -38,11 +37,11 @@ function AppWrapper({ role, setRole, name, setName, email, setEmail }) {
           path="/login"
           element={<Login role={role} setRole={setRole} name={name} setName={setName} email={email} setEmail={setEmail} />}
         />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route
           path="/signup"
           element={<Signup role={role} setRole={setRole} name={name} setName={setName} email={email} setEmail={setEmail} />}
         />
-        <Route path="/account" element={<Account />} />
         {/* Dashboard routes with shared layout */}
         <Route path="/dashboard" element={<DashboardLayout />}>
           <Route index element={<Dashboard />} />

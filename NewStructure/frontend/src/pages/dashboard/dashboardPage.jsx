@@ -12,23 +12,23 @@ export default function DashboardPage() {
 
 // UNCOMMENT FOR PRESENTATION
 
-  useEffect (() => {
-    fetch("http://localhost:8081/check-session", {credentials : "include"})
-    .then(res => {
-      if(!res.ok) throw new Error("Not authenticated");
-      return res.json();
-    })
-    .then(data => {
-      setIsAuthenticated(true);
-      setLoading(false);
-      })
-      .catch(err => {
-        navigate("/login");
-        });
-  }, []);
+  // useEffect (() => {
+  //   fetch("http://localhost:8081/check-session", {credentials : "include"})
+  //   .then(res => {
+  //     if(!res.ok) throw new Error("Not authenticated");
+  //     return res.json();
+  //   })
+  //   .then(data => {
+  //     setIsAuthenticated(true);
+  //     setLoading(false);
+  //     })
+  //     .catch(err => {
+  //       navigate("/login");
+  //       });
+  // }, []);
 
-  if (loading) return <div>Loading...</div>;
-  if (!isAuthenticated) return <div>Not authenticated</div>;
+  // if (loading) return <div>Loading...</div>;
+  // if (!isAuthenticated) return <div>Not authenticated</div>;
 
   return (
     <div className="bg-transparent w-full h-full rounded-xl">
