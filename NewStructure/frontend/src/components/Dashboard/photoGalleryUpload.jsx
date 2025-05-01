@@ -62,19 +62,80 @@ const PhotoGalleryUpload = () => {
             setLoading(false);
         }
     };
-
-    // Fetch gallery photos
     const fetchPhotos = async () => {
         try {
-            console.log("Fetching photos from server...");
-            const response = await fetch("http://localhost:8081/api/photos");
-            const data = await response.json();
-            console.log(data)
+            console.log("Fetching photos from hardcoded data...");
+            const data = [
+                {
+                    name: "image0.jpeg",
+                    url: "/photos/image0.jpeg", // Use relative path
+                    title: "Image 0"
+                },
+                {
+                    name: "image1.jpeg",
+                    url: "/photos/image1.jpeg",
+                    title: "Image 1"
+                },
+                {
+                    name: "image2.jpeg",
+                    url: "/photos/image2.jpeg",
+                    title: "Image 2"
+                },
+                {
+                    name: "image3.jpeg",
+                    url: "/photos/image3.jpeg",
+                    title: "Image 3"
+                },
+                {
+                    name: "image4.jpeg",
+                    url: "/photos/image4.jpeg",
+                    title: "Image 4"
+                },
+                {
+                    name: "image5.jpeg",
+                    url: "/photos/image5.jpeg",
+                    title: "Image 5"
+                },
+                {
+                    name: "image6.jpeg",
+                    url: "/photos/image6.jpeg",
+                    title: "Image 6"
+                },
+                {
+                    name: "image7.jpeg",
+                    url: "/photos/image7.jpeg",
+                    title: "Image 7"
+                },
+                {
+                    name: "image8.jpeg",
+                    url: "/photos/image8.jpeg",
+                    title: "Image 8"
+                },
+                {
+                    name: "image9.jpeg",
+                    url: "/photos/image9.jpeg",
+                    title: "Image 9"
+                },
+            ];
+            console.log(data);
             setPhotos(data);
         } catch (error) {
             console.error("Error fetching photos:", error);
         }
     };
+    // todo change this back when done
+    // // Fetch gallery photos
+    // const fetchPhotos = async () => {
+    //     try {
+    //         console.log("Fetching photos from server...");
+    //         const response = await fetch("http://localhost:8081/api/photos");
+    //         const data = await response.json();
+    //         console.log(data)
+    //         setPhotos(data);
+    //     } catch (error) {
+    //         console.error("Error fetching photos:", error);
+    //     }
+    // };
 
 // Delete a photo (sends POST with file name to backend)
     const deletePhoto = async (photoName) => {

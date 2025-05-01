@@ -1,5 +1,5 @@
 import {Fragment, useState} from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import './signupPage.css'
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 
@@ -103,16 +103,23 @@ function Signup({ role, setRole, name, setName, email, setEmail }) {
                         <input type="email" name="email" placeholder="Email" value={formData.email} onChange={handleChange} required />
                     </div>
                     <div className="input-field">
-                        <input type={showPassword ? "text" : "password"} name="password" placeholder="Password" value={formData.password} onChange={handleChange} required />
-                        <span className="eye-icon" onClick={togglePasswordVisibility}>{showPassword ? <FaEye /> : <FaEyeSlash />}</span>
+                        <div className="password-input-container">
+                            <input type={showPassword ? "text" : "password"} name="password" placeholder="Password" value={formData.password} onChange={handleChange} required />
+                            <span className="eye-icon" onClick={togglePasswordVisibility}>{showPassword ? <FaEye /> : <FaEyeSlash />}</span>
+                        </div>
                     </div>
                     <div className="input-field">
-                        <input type={showVerifyPassword ? "text" : "password"} name="verifyPassword" placeholder="Verify Password" value={formData.verifyPassword} onChange={handleChange} required/>
-                        <span className="eye-icon" onClick={toggleVerifyPasswordVisibility}>{showVerifyPassword ? <FaEye /> : <FaEyeSlash />}</span>
+                        <div className="password-input-container">
+                            <input type={showVerifyPassword ? "text" : "password"} name="verifyPassword" placeholder="Verify Password" value={formData.verifyPassword} onChange={handleChange} required />
+                            <span className="eye-icon" onClick={toggleVerifyPasswordVisibility}>{showVerifyPassword ? <FaEye /> : <FaEyeSlash />}</span>
+                        </div>
                     </div>
                     {errorMessage && <p className="error-message">{errorMessage}</p>}
                     <div className="submit-button">
                         <button type="submit">Sign Up</button>
+                    </div>
+                    <div className="account-links">
+                        <p>Already have an account? <Link to="/Login">Sign in</Link></p>
                     </div>
                 </form>
             </div>
