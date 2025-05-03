@@ -2,7 +2,7 @@ import { FaUniversity } from "react-icons/fa";
 
 const HeroSection = () => {
   return (
-    <section className="w-screen h-[70vh] bg-cover bg-[center_35%] bg-no-repeat flex items-center justify-end pt-4" style={{backgroundImage:`url('/BackgroundImage2.png')`}}>
+    <section className="relative w-screen h-[80vh]  bg-cover bg-[center_30%] bg-no-repeat flex items-center justify-end pt-4" style={{backgroundImage:`url('/BackgroundImage2.png')`}}>
       <div className="max-w-2xl mr-5">
         <div className="flex justify-center items-center gap-3 text-cirtRed">
           <FaUniversity size={28} />

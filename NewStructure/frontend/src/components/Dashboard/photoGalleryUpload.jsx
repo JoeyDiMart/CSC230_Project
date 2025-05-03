@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useDropzone } from "react-dropzone";
+import { ImCross } from "react-icons/im";
+
 const PhotoGalleryUpload = () => {
     const [uploadPhoto, setUploadPhoto] = useState(null);
     const [imageTitle, setImageTitle] = useState("");
@@ -178,8 +180,7 @@ const PhotoGalleryUpload = () => {
     });
 
     return (
-        <div className="flex flex-col md:flex-row items-start justify-center gap-6 w-full max-w-7xl px-4">
-            
+        <div className="flex flex-col md:flex-row items-start gap-6 w-full px-4">
             {/* Upload Form */}
             <div className="flex flex-col w-full max-w-lg p-4 bg-transparent border-solid rounded-xl border-testingColorOutline mt-6">
                 <div className="mb-6">
@@ -231,13 +232,13 @@ const PhotoGalleryUpload = () => {
             </div>
 
             {/* Gallery */}
-            <div className="w-full md:w-2/3 max-h-[80vh] overflow-y-auto grid grid-cols-2 sm:grid-cols-3 gap-4 mt-6">
+            <div className="w-full md:flex-1 max-h-[80vh] overflow-y-auto grid grid-cols-2 sm:grid-cols-3 gap-4 mt-6 border pr-0 border-testingColorOutline p-4 pb-0 rounded-xl">
                 {photos.map((photo) => (
-                    <div key={photo.name} className="relative border border-testingColorOutline rounded-xl overflow-hidden">
+                    <div key={photo.name} className="relative border-solid border-testingColorOutline  rounded-xl overflow-hidden">
                         <button
                             onClick={() => deletePhoto(photo.name)}
-                            className="absolute top-2 right-2 text-white bg-cirtRed hover:bg-red-700 rounded-full w-6 h-6 flex items-center justify-center z-10">
-                            ✕
+                            className=" absolute right-2 top-2 text-white bg-testingColorOutline flex items-center justify-center z-10 rounded-full">
+                            <ImCross className="text-white" size={10} />
                         </button>
                         <img src={photo.url} alt={photo.title} className="w-full h-64 object-cover" />
                         <div className="bg-black bg-opacity-50 text-white text-center p-2">
