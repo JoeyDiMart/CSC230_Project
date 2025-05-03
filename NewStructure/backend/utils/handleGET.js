@@ -30,7 +30,7 @@ export const handleGetRequest = async (req, res) => {
             '/profile': userService.handleProfile,
             '/issues': publicationService.handleGetIssues,
             '/review': publicationService.handleGetReviews,
- //           '/api/photos': handleGetPhotos,
+           '/api/photos': handleGetPhotos,
             '/api/publications1': handleGetPublications1,
             '/api/publications2': handleGetPublications2,
             '/api/publications3': handleGetPublications3,
@@ -136,28 +136,39 @@ const handleCheckSubscriptionStatus = async (req, res) => {
     }
 };
 
-// // photo
-//         console.log("Photos directory:", photosDir);
-//         // Read the photos directory
-//         fs.readdir(photosDir, (err, files) => {
-//             if (err) {
-//                 console.error("Error reading photos directory:", err);
-//                 return res.status(500).json({ error: "Failed to fetch photos" });
-//             }
-//
-//             // Map file names to URLs
-//             const photos = files.map((file) => ({
-//                 name: file,
-//                 url: `NewStructure/photos/${file}` // Assuming static files are served from this path
-//             }));
-//
-//             res.status(200).json(photos);
-//         });
-//     } catch (error) {
-//         console.error("Error in handleGetPhotos:", error);
-//         res.status(500).json({ error: "Internal server error" });
-//     }
-// };
+// photo
+const handleGetPhotos = async (req, res) => {
+    console.log("✅ handleGetPhotos triggered");
+    // Define the path to the photos directory
+    const photosDir = path.join(__dirname, '../../Photos');
+    console.log("Photos directory:", photosDir);
+    try {
+        // Read the photos directory
+        fs.readdir(photosDir, (err, files) => {
+            if (err) {
+                console.error("Error reading photos directory:", err);
+                return res.status(500).json({error: "Failed to fetch photos"});
+            }
+
+            // Map file names to URLs and generate titles
+            const photos = files.map((file) => {
+                const title = file.replace(/\.[^/.]+$/, '') // Remove file extension
+                    .replace(/[_-]/g, ' '); // Replace underscores/dashes with spaces
+                return {
+                    name: file,
+                    url: `NewStructure/photos/${file}`, // Assuming static files are served from this path
+                    title: title
+                };
+            });
+
+            res.status(200).json(photos);
+        })
+    }
+    catch (error) {
+        console.error("Error in handleGetPhotos:", error);
+        res.status(500).json({ error: "Internal server error" });
+    }
+};
 
 // only accepted
 let handleGetPublications1 = async (req, res) => {
