@@ -1,5 +1,6 @@
 import * as posterService from '../services/posterService.js';
 import * as eventService from '../services/eventService.js';
+import * as eventSubscriptionService from '../services/eventSubscriptionService.js';
 import { client } from "../Database/Mongodb.js";
 
 export const handleDeleteRequest = async (req, res) => {
@@ -7,6 +8,7 @@ export const handleDeleteRequest = async (req, res) => {
 
     const requestHandlers = {
         '/posters/:id': posterService.handleDelete,
+        '/events/unsubscribe': eventSubscriptionService.handleUnsubscribe
     };
 
     const handler = requestHandlers[req.path];

@@ -3,6 +3,7 @@ import { ObjectId } from 'mongodb';
 import multer from 'multer';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { sendEmail, getDecisionChangeEmail } from './emailService.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -62,6 +63,14 @@ export const handleDecision = async (req, res) => {
 
     try {
         const manuscriptCollection = client.db().collection('manuscripts');
+        
+        // First get the current document to check the old status
+        const currentDoc = await manuscriptCollection.findOne({ _id: new ObjectId(req.params.id) });
+        if (!currentDoc) {
+            return res.status(404).json({ error: 'Manuscript not found' });
+        }
+
+        // Update the document
         const result = await manuscriptCollection.updateOne(
             { _id: new ObjectId(req.params.id) },
             { $set: { 
@@ -73,6 +82,29 @@ export const handleDecision = async (req, res) => {
         );
 
         if (result.modifiedCount > 0) {
+            // Send email notification if status has changed
+            if (currentDoc.status !== req.body.status) {
+                const emailContent = getDecisionChangeEmail(
+                    currentDoc.title,
+                    currentDoc.type || 'journal',
+                    currentDoc.status,
+                    req.body.status
+                );
+                
+                // Get the submitter's email
+                const userCollection = client.db().collection('users');
+                const submitter = await userCollection.findOne({ _id: currentDoc.submitterId });
+                
+                if (submitter && submitter.email) {
+                    await sendEmail(
+                        submitter.email,
+                        emailContent.subject,
+                        emailContent.text,
+                        emailContent.html
+                    );
+                }
+            }
+            
             res.json({ message: 'Decision updated successfully' });
         } else {
             res.status(404).json({ error: 'Manuscript not found' });

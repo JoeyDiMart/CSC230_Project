@@ -10,6 +10,7 @@ import { ObjectId } from 'mongodb';
 import * as crypto from 'crypto';
 import * as userService from '../services/userService.js';
 import * as publicationService from '../services/publicationService.js';
+import * as eventSubscriptionService from '../services/eventSubscriptionService.js';
 import { fromPath } from "pdf2pic";
 
 const __filename = fileURLToPath(import.meta.url);
@@ -38,8 +39,8 @@ export const handlePostRequest = async (req, res) => {
         '/api/photos/upload': uploadPhotos,
         '/posters/upload': handlePosterUpload,
         '/api/photos/delete': handleDeletePhotos,
-        '/forgot-password': userService.handleForgotPassword
-
+        '/forgot-password': userService.handleForgotPassword,
+        '/events/subscribe': eventSubscriptionService.handleSubscribe,
     };
     /*
      '/posters/upload': handleUpload,
