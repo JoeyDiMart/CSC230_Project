@@ -85,6 +85,24 @@ export const getRegistrationEmail = (username, loginLink) => ({
     `
 });
 
+// Template for decision change notification
+// @param title - title of the publication
+// @param type - type of content (poster or journal)
+// @param oldStatus - previous status
+// @param newStatus - new status
+// @returns Object containing email content
+export const getDecisionChangeEmail = (title, type, oldStatus, newStatus) => ({
+    subject: `Decision Changed: ${title}`,
+    text: `The status of your ${type.toLowerCase()} titled "${title}" has been changed from ${oldStatus} to ${newStatus}.`,
+    html: `
+        <h2>Decision Changed</h2>
+        <p>Your ${type.toLowerCase()} titled "${title}" has been updated:</p>
+        <p>Previous status: ${oldStatus}</p>
+        <p>New status: ${newStatus}</p>
+        <p>Check the system for more details.</p>
+    `
+});
+
 // Template for new content submission notification
 // @param submitter - name of the person who submitted
 // @param title - title of the submitted content

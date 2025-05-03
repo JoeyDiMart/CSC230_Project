@@ -10,6 +10,7 @@ import * as eventService from '../services/eventService.js';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import {client} from "../Database/Mongodb.js";
+import { ObjectId } from 'mongodb';
 import fs from "fs"
 
 export {handleGetMyPublications}
@@ -29,13 +30,14 @@ export const handleGetRequest = async (req, res) => {
             '/profile': userService.handleProfile,
             '/issues': publicationService.handleGetIssues,
             '/review': publicationService.handleGetReviews,
-            '/api/photos': handleGetPhotos,
+ //           '/api/photos': handleGetPhotos,
             '/api/publications1': handleGetPublications1,
             '/api/publications2': handleGetPublications2,
             '/api/publications3': handleGetPublications3,
             '/check-session': handleCheckSession,
             '/events': eventService.handleGetAll,
             '/events/range': eventService.handleGetByDateRange,
+            '/events/subscribe': handleCheckSubscriptionStatus,
             '/api/publications/search': handleSearchPublications,
             '/users': userService.handleGetAll,
             '/api/users/count': handleGetTotalUsers,
@@ -112,10 +114,29 @@ export const handleGetRequest = async (req, res) => {
     }
 };
 //
+const handleCheckSubscriptionStatus = async (req, res) => {
+    if (!req.session.user) {
+        return res.status(401).json({ error: 'Please log in' });
+    }
+
+    try {
+        const subscriptionCollection = client.db('CIRT').collection('EVENT_SUBSCRIPTIONS');
+        const existingSubscription = await subscriptionCollection.findOne({
+            userId: new ObjectId(req.session.user.id)
+        });
+
+        if (existingSubscription) {
+            res.json({ subscribed: true });
+        } else {
+            res.json({ subscribed: false });
+        }
+    } catch (err) {
+        console.error('Error checking subscription status:', err);
+        res.status(500).json({ error: 'Error checking subscription status' });
+    }
+};
+
 // // photo
-// let handleGetPhotos = async (req, res) => {
-//     try {
-//         const photosDir = path.join(__dirname, '../../photos');
 //         console.log("Photos directory:", photosDir);
 //         // Read the photos directory
 //         fs.readdir(photosDir, (err, files) => {
