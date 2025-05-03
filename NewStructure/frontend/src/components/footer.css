@@ -1,6 +1,5 @@
 /* Footer Container */
 .footer-container {
-    background-color: #b1afaf;
     color: white; /* All text is white */
     padding: 3rem 2rem;
     width: 100%;
@@ -129,7 +128,8 @@
 /* Social Links */
 .social-links {
     display: flex;
-    justify-content: space-between;
+    align-items: center;
+    justify-content: center;
     align-items: center;
     margin-top: 2rem;
 }
