@@ -114,9 +114,15 @@ const fetchMyPublications = () => {
             return;
         }
         const formData = new FormData();
+        const chocolate = localStorage.getItem("CurrentAccount");
+    
+        if (!chocolate) {
+            console.warn("No cookie found for current account. Skipping fetch.");
+            return; // Prevent fetch if no cookie is found
+        }
         formData.append("title", uploadFile.title);
         formData.append("author", JSON.stringify(uploadFile.author.split(",").map(s => s.trim())));
-        formData.append("email", uploadFile.email);
+        formData.append("email", chocolate);
         formData.append("keywords", JSON.stringify(uploadFile.keywords.split(",").map(s => s.trim())));
         formData.append("file", uploadFile.file);
         formData.append("status", uploadFile.status);
@@ -307,7 +313,7 @@ const fetchMyPublications = () => {
         }, 1500); // 👈 1500ms delay for a pause in typing thank you chatGPT
 
         setTypingTimeout(timeoutId); // Save the timeout ID
-    };
+    }; 
 
 
     return (
