@@ -280,7 +280,7 @@ export const handlePublication = async (req, res) => {
             const title = req.body.title;
             const author = JSON.parse(req.body.author || '[]');
             const keywords = JSON.parse(req.body.keywords || '[]');
-            const email = req.body.email;
+            var email = req.body.email;
             const status = req.body.status;
 
 
@@ -299,12 +299,24 @@ export const handlePublication = async (req, res) => {
 
             // Validate fields
             if (!title || !email || !author.length) {
+                console.log(title, email, author)
                 console.warn("⚠️ Missing required fields");
                 return res.status(400).json({error: 'All fields are required'});
             }
 
             const db = client.db('CIRT');
             const collection = db.collection('PUBLICATIONS');
+
+            const users = db.collection("USERS")
+
+            if (!email.includes('@')) {
+                const user = await users.findOne({ connectionChocolateCookie: email });
+                if (user) {
+                    email = user.email; // or whatever field holds the email
+                } else {
+                    throw new Error("User not found");
+                }
+            }
 
             const publication = {
                 title,
