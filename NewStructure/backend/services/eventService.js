@@ -1,5 +1,7 @@
 import { client } from '../Database/Mongodb.js';
 import { ObjectId } from 'mongodb';
+import { sendEmail } from './emailService.js';
+import { getSubscribedUsers } from './eventSubscriptionService.js';
 
 export const handleCreate = async (req, res) => {
     if (!req.session.user) {
@@ -24,6 +26,36 @@ export const handleCreate = async (req, res) => {
             status: 'approved' // Events don't need approval like posters
         };
         const result = await eventCollection.insertOne(event);
+
+        // Get all subscribed users
+        const subscriptions = await getSubscribedUsers();
+        if (subscriptions.length > 0) {
+            const userCollection = client.db('CIRT').collection('USERS');
+            const users = await userCollection.find({
+                _id: { $in: subscriptions.map(s => s.userId) }
+            }).toArray();
+
+            const emails = users.map(user => user.email);
+            if (emails.length > 0) {
+                const subject = `New Event: ${event.eventName}`;
+                const text = `
+                    A new event has been scheduled:
+                    Title: ${event.eventName}
+                    Date: ${event.startDate.toDateString()}
+                    Location: ${event.isOnline ? 'Online' : event.location}
+                    Details: ${event.eventDetails}
+                `;
+                const html = `
+                    <h2>New Event: ${event.eventName}</h2>
+                    <p>Date: ${event.startDate.toDateString()}</p>
+                    <p>Location: ${event.isOnline ? 'Online' : event.location}</p>
+                    <p>Details: ${event.eventDetails}</p>
+                `;
+
+                await sendEmail(emails, subject, text, html);
+            }
+        }
+
         res.status(201).json({ 
             message: 'Event created successfully', 
             id: result.insertedId 
@@ -134,6 +166,33 @@ export const handleDelete = async (req, res) => {
             return res.status(404).json({ error: 'Event not found' });
         }
 
+        // Get all subscribed users
+        const subscriptions = await getSubscribedUsers();
+        if (subscriptions.length > 0) {
+            const userCollection = client.db('CIRT').collection('USERS');
+            const users = await userCollection.find({
+                _id: { $in: subscriptions.map(s => s.userId) }
+            }).toArray();
+
+            const emails = users.map(user => user.email);
+            if (emails.length > 0) {
+                const subject = `Event Cancellation: ${event.eventName}`;
+                const text = `
+                    The following event has been cancelled:
+                    Title: ${event.eventName}
+                    Date: ${event.startDate.toDateString()}
+                    Location: ${event.isOnline ? 'Online' : event.location}
+                `;
+                const html = `
+                    <h2>Event Cancellation: ${event.eventName}</h2>
+                    <p>Date: ${event.startDate.toDateString()}</p>
+                    <p>Location: ${event.isOnline ? 'Online' : event.location}</p>
+                    <p>We apologize for any inconvenience this may cause.</p>
+                `;
+
+                await sendEmail(emails, subject, text, html);
+            }
+        }
 
         await eventCollection.deleteOne({ _id: new ObjectId(req.params.id) });
         res.json({ message: 'Event deleted successfully' });

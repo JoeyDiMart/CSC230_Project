@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useDropzone } from "react-dropzone";
+import { ImCross } from "react-icons/im";
+
 const PhotoGalleryUpload = () => {
     const [uploadPhoto, setUploadPhoto] = useState(null);
     const [imageTitle, setImageTitle] = useState("");
@@ -62,80 +64,81 @@ const PhotoGalleryUpload = () => {
             setLoading(false);
         }
     };
-    const fetchPhotos = async () => {
-        try {
-            console.log("Fetching photos from hardcoded data...");
-            const data = [
-                {
-                    name: "image0.jpeg",
-                    url: "/photos/image0.jpeg", // Use relative path
-                    title: "Image 0"
-                },
-                {
-                    name: "image1.jpeg",
-                    url: "/photos/image1.jpeg",
-                    title: "Image 1"
-                },
-                {
-                    name: "image2.jpeg",
-                    url: "/photos/image2.jpeg",
-                    title: "Image 2"
-                },
-                {
-                    name: "image3.jpeg",
-                    url: "/photos/image3.jpeg",
-                    title: "Image 3"
-                },
-                {
-                    name: "image4.jpeg",
-                    url: "/photos/image4.jpeg",
-                    title: "Image 4"
-                },
-                {
-                    name: "image5.jpeg",
-                    url: "/photos/image5.jpeg",
-                    title: "Image 5"
-                },
-                {
-                    name: "image6.jpeg",
-                    url: "/photos/image6.jpeg",
-                    title: "Image 6"
-                },
-                {
-                    name: "image7.jpeg",
-                    url: "/photos/image7.jpeg",
-                    title: "Image 7"
-                },
-                {
-                    name: "image8.jpeg",
-                    url: "/photos/image8.jpeg",
-                    title: "Image 8"
-                },
-                {
-                    name: "image9.jpeg",
-                    url: "/photos/image9.jpeg",
-                    title: "Image 9"
-                },
-            ];
-            console.log(data);
-            setPhotos(data);
-        } catch (error) {
-            console.error("Error fetching photos:", error);
-        }
-    };
-    // todo change this back when done
-    // // Fetch gallery photos
+    //todo get rid of this version if hardcode is not needed
     // const fetchPhotos = async () => {
     //     try {
-    //         console.log("Fetching photos from server...");
-    //         const response = await fetch("http://localhost:8081/api/photos");
-    //         const data = await response.json();
-    //         console.log(data)
+    //         console.log("Fetching photos from hardcoded data...");
+    //         const data = [
+    //             {
+    //                 name: "image0.jpeg",
+    //                 url: "/photos/image0.jpeg", // Use relative path
+    //                 title: "Image 0"
+    //             },
+    //             {
+    //                 name: "image1.jpeg",
+    //                 url: "/photos/image1.jpeg",
+    //                 title: "Image 1"
+    //             },
+    //             {
+    //                 name: "image2.jpeg",
+    //                 url: "/photos/image2.jpeg",
+    //                 title: "Image 2"
+    //             },
+    //             {
+    //                 name: "image3.jpeg",
+    //                 url: "/photos/image3.jpeg",
+    //                 title: "Image 3"
+    //             },
+    //             {
+    //                 name: "image4.jpeg",
+    //                 url: "/photos/image4.jpeg",
+    //                 title: "Image 4"
+    //             },
+    //             {
+    //                 name: "image5.jpeg",
+    //                 url: "/photos/image5.jpeg",
+    //                 title: "Image 5"
+    //             },
+    //             {
+    //                 name: "image6.jpeg",
+    //                 url: "/photos/image6.jpeg",
+    //                 title: "Image 6"
+    //             },
+    //             {
+    //                 name: "image7.jpeg",
+    //                 url: "/photos/image7.jpeg",
+    //                 title: "Image 7"
+    //             },
+    //             {
+    //                 name: "image8.jpeg",
+    //                 url: "/photos/image8.jpeg",
+    //                 title: "Image 8"
+    //             },
+    //             {
+    //                 name: "image9.jpeg",
+    //                 url: "/photos/image9.jpeg",
+    //                 title: "Image 9"
+    //             },
+    //         ];
+    //         console.log(data);
     //         setPhotos(data);
     //     } catch (error) {
     //         console.error("Error fetching photos:", error);
     //     }
     // };
+    // todo change this back when done
+    // Fetch gallery photos
+    const fetchPhotos = async () => {
+        try {
+            console.log("Fetching photos from server...");
+            const response = await fetch("http://localhost:8081/api/photos");
+            const data = await response.json();
+            console.log(data)
+            setPhotos(data);
+        } catch (error) {
+            console.error("Error fetching photos:", error);
+        }
+    };
 
 // Delete a photo (sends POST with file name to backend)
     const deletePhoto = async (photoName) => {
@@ -178,8 +181,7 @@ const PhotoGalleryUpload = () => {
     });
 
     return (
-        <div className="flex flex-col md:flex-row items-start justify-center gap-6 w-full max-w-7xl px-4">
-            
+        <div className="flex flex-col md:flex-row items-start gap-6 w-full px-4">
             {/* Upload Form */}
             <div className="flex flex-col w-full max-w-lg p-4 bg-transparent border-solid rounded-xl border-testingColorOutline mt-6">
                 <div className="mb-6">
@@ -231,13 +233,13 @@ const PhotoGalleryUpload = () => {
             </div>
 
             {/* Gallery */}
-            <div className="w-full md:w-2/3 max-h-[80vh] overflow-y-auto grid grid-cols-2 sm:grid-cols-3 gap-4 mt-6">
+            <div className="w-full md:flex-1 max-h-[80vh] overflow-y-auto grid grid-cols-2 sm:grid-cols-3 gap-4 mt-6 border pr-0 border-testingColorOutline p-4 pb-0 rounded-xl">
                 {photos.map((photo) => (
-                    <div key={photo.name} className="relative border border-testingColorOutline rounded-xl overflow-hidden">
+                    <div key={photo.name} className="relative border-solid border-testingColorOutline  rounded-xl overflow-hidden">
                         <button
                             onClick={() => deletePhoto(photo.name)}
-                            className="absolute top-2 right-2 text-white bg-cirtRed hover:bg-red-700 rounded-full w-6 h-6 flex items-center justify-center z-10">
-                            ✕
+                            className=" absolute right-2 top-2 text-white bg-testingColorOutline flex items-center justify-center z-10 rounded-full">
+                            <ImCross className="text-white" size={10} />
                         </button>
                         <img src={photo.url} alt={photo.title} className="w-full h-64 object-cover" />
                         <div className="bg-black bg-opacity-50 text-white text-center p-2">

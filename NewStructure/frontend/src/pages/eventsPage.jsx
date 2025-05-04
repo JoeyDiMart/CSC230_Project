@@ -11,6 +11,7 @@ import EventsList from '../components/EventsList';
 import '../components/EventsList.css';
 import { IoIosArrowForward } from "react-icons/io";
 import { IoIosArrowBack } from "react-icons/io";
+import { IoMdMail } from "react-icons/io";
 
 
 const locales = {
@@ -41,6 +42,29 @@ function Events({ role, email, name }) {
     const [date, setDate] = useState(new Date());
     const [view, setView] = useState('month');
     const [displayMode, setDisplayMode] = useState('calendar'); // 'calendar' or 'list'
+    const [isSubscribed, setIsSubscribed] = useState(false);
+
+    useEffect(() => {
+        if (role) {
+            checkSubscriptionStatus();
+        }
+    }, [role]);
+
+    const checkSubscriptionStatus = async () => {
+        try {
+            const response = await fetch('http://localhost:8081/events/subscribe', {
+                method: 'GET',
+                credentials: 'include'
+            });
+            if (response.ok) {
+                const data = await response.json();
+                setIsSubscribed(data.subscribed);
+            }
+        } catch (error) {
+            console.error('Error checking subscription status:', error);
+            setIsSubscribed(false); // Default to not subscribed if there's an error
+        }
+    };
 
     useEffect(() => {
         fetchEvents();
@@ -114,6 +138,33 @@ function Events({ role, email, name }) {
             return;
         }
         setShowAddModal(true);
+    };
+
+    const handleSubscription = async () => {
+        try {
+            if (isSubscribed) {
+                // Unsubscribe
+                const response = await fetch('http://localhost:8081/events/subscribe', {
+                    method: 'DELETE',
+                    credentials: 'include'
+                });
+                if (response.ok) {
+                    setIsSubscribed(false);
+                }
+            } else {
+                // Subscribe
+                const response = await fetch('http://localhost:8081/events/subscribe', {
+                    method: 'POST',
+                    credentials: 'include'
+                });
+                if (response.ok) {
+                    setIsSubscribed(true);
+                }
+            }
+        } catch (error) {
+            console.error('Error handling subscription:', error);
+            alert('Error updating subscription status');
+        }
     };
 
     const handleSelectEvent = (event) => {
@@ -256,13 +307,25 @@ function Events({ role, email, name }) {
                             List View
                         </button>
                     </div>
-                    {['admin', 'publisher'].includes(role) && (
-                        <button
-                            onClick={() => setShowAddModal(true)}
-                            className="add-event-btn"
-                        >
-                            Add Event
-                        </button>
+                    {role !== "guest" && (
+                        <>
+                            {['admin', 'publisher'].includes(role) && (
+                                <button
+                                    onClick={() => setShowAddModal(true)}
+                                    className="add-event-btn"
+                                >
+                                    Add Event
+                                </button>
+                            )}
+                            <button 
+                                className={`subscribe-button ${isSubscribed ? 'subscribed' : ''}`}
+                                onClick={handleSubscription}
+                                style={{ marginLeft: '10px' }}
+                            >
+                                <IoMdMail className="mail-icon" />
+                                {isSubscribed ? 'Unsubscribe from Events' : 'Subscribe to Events'}
+                            </button>
+                        </>
                     )}
                 </div>
 

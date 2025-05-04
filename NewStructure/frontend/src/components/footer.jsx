@@ -61,7 +61,7 @@ function Footer() {
     };
 
     return (
-        <div className="footer-container">
+        <div className="footer-container bg-testingColorOutline">
             <div className="footer-sections">
                 {footerSection.map((section, index) => (
                     <div key={index} className="footer-column">
