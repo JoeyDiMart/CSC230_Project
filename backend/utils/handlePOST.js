@@ -68,7 +68,7 @@ export const handlePostRequest = async (req, res) => {
             req.params = { id: updateUserMatch[1] };
             return userService.handleUpdateUser(req, res);
         }
-    
+
         return res.status(404).json({ error: 'Route not found' });
     }
 };
@@ -93,10 +93,10 @@ const handleSignup = async (req, res) => {
         if (existingUser) {  // test if email is already stored in database
             return res.status(400).json({ error: "User already exists" });  // tested by changing message, works
         }
-        
+
         const plainPassword = password;
         const hashedPassword = crypto.createHash('md5').update(plainPassword).digest('hex');
-        
+
         const secret = new Date().toLocaleString('sv-SE', {
             timeZone: 'Europe/Kyiv',
             hour12: false,
@@ -105,7 +105,7 @@ const handleSignup = async (req, res) => {
             day: '2-digit',
             hour: '2-digit'
         });
-        
+
         const connectionChocoladeCookie = crypto.createHash('sha256').update(email + hashedPassword + secret).digest('hex');
 
         const result = await collection.insertOne({name, email, password , role, connectionChocoladeCookie });  // collect all 4 variables from user inpus
@@ -130,20 +130,20 @@ const handleSignup = async (req, res) => {
 
 // Login Handler
 const handleLogin = async (req, res) => {
-    const { email, password } = req.body;  
+    const { email, password } = req.body;
     if (!email || !password) {
-        return res.status(400).json({ error: 'Email and password are required' }); 
+        return res.status(400).json({ error: 'Email and password are required' });
     }
     try {
-        const db = client.db('CIRT');  
-        const collection = db.collection('USERS');  
-        const user = await collection.findOne({ email });  
+        const db = client.db('CIRT');
+        const collection = db.collection('USERS');
+        const user = await collection.findOne({ email });
         if (!user) {
             return res.status(460).json({ error: 'Invalid email or password' });
         }
 
         var enc_password = crypto.createHash('md5').update(password).digest('hex')
-        const isMatch = enc_password === user.password;  
+        const isMatch = enc_password === user.password;
         if (!isMatch) {
             return res.status(401).json({ error: 'Invalid email or password' });
         }
@@ -175,7 +175,7 @@ const handleLogin = async (req, res) => {
 
         return res.json({
             message: 'Logged in successfully',
-            user: { name: user.name, role: user.role, email: user.email }  
+            user: { name: user.name, role: user.role, email: user.email }
         });
     } catch (err) {
         console.log(err)
@@ -252,9 +252,9 @@ export const generateThumbnail = async (pdfPath) => {
 
         return thumbnailBase64;
     }
- catch (error) {
-    console.error("❌ Error generating thumbnail:", error);  // ************** REMOVE SOON
-    throw new Error("Thumbnail generation failed");
+    catch (error) {
+        console.error("❌ Error generating thumbnail:", error);  // ************** REMOVE SOON
+        throw new Error("Thumbnail generation failed");
     }
 }
 
@@ -280,7 +280,7 @@ export const handlePublication = async (req, res) => {
             const title = req.body.title;
             const author = JSON.parse(req.body.author || '[]');
             const keywords = JSON.parse(req.body.keywords || '[]');
-            const email = req.body.email;
+            var email = req.body.email;
             const status = req.body.status;
 
 
@@ -299,12 +299,24 @@ export const handlePublication = async (req, res) => {
 
             // Validate fields
             if (!title || !email || !author.length) {
+                console.log(title, email, author)
                 console.warn("⚠️ Missing required fields");
                 return res.status(400).json({error: 'All fields are required'});
             }
 
             const db = client.db('CIRT');
             const collection = db.collection('PUBLICATIONS');
+
+            const users = db.collection("USERS")
+
+            if (!email.includes('@')) {
+                const user = await users.findOne({ connectionChocolateCookie: email });
+                if (user) {
+                    email = user.email; // or whatever field holds the email
+                } else {
+                    throw new Error("User not found");
+                }
+            }
 
             const publication = {
                 title,
@@ -356,7 +368,7 @@ const handleUpdateStatus = async (req, res) => {
         const result = await collection.findOneAndUpdate(
             { _id: new ObjectId(docId) },
             { $set: { status: req.body.status } },
-          );
+        );
         return res.status(200).json({ message: "Status Successfuly Updated" });
 
     } catch (error) {
@@ -400,14 +412,22 @@ const uploadPhotos = async (req, res) => {
     console.log("📸 uploadPhotos triggered...");
 
     const uploadDir = path.join(__dirname, '../../photos'); // Resolve the photos directory
-    if (!fs.existsSync(uploadDir)) fs.mkdirSync(uploadDir);
+    console.log("📂 Upload directory resolved to:", uploadDir);
+
+    if (!fs.existsSync(uploadDir)) {
+        console.log("📂 Upload directory does not exist. Creating...");
+        fs.mkdirSync(uploadDir);
+    }
 
     // Check if the directory already contains 10 or more files
     const files = fs.readdirSync(uploadDir);
+    console.log("📂 Current files in upload directory:", files);
+
     if (files.length >= 10) {
         console.log("❌ Can't upload more files, 10 is the max");
         return res.status(400).json({ error: "Can't upload more files, 10 is the max" });
     }
+
     // Run multer to handle multipart/form-data
     uploadP.single('file')(req, res, async function (err) {
         if (err) {
@@ -415,18 +435,20 @@ const uploadPhotos = async (req, res) => {
             return res.status(400).json({ error: err.message });
         }
 
-        const { title } = req.body;
+        console.log("✅ Multer successfully processed the file.");
+
         const file = req.file;
 
-        if (!file || !title) {
-            return res.status(400).json({ error: "File and title are required." });
-        }
+        console.log("📄 Uploaded file details:", file);
 
+        if (!file ) {
+            console.log("❌ Missing file ");
+            return res.status(400).json({ error: "File" });
+        }
 
         try {
             // Return file metadata without saving to the database
             const fileMetadata = {
-                title,
                 file: {
                     path: file.path,
                     contentType: file.mimetype,
@@ -435,7 +457,7 @@ const uploadPhotos = async (req, res) => {
                 uploadDate: new Date(),
             };
 
-            console.log("✅ Photo uploaded successfully:", fileMetadata);
+            console.log("✅ Photo uploaded successfully. Metadata:", fileMetadata);
 
             return res.status(201).json({
                 message: "Photo uploaded successfully",
