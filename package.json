@@ -1,0 +1,25 @@
+{
+  "name": "csc230_project",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node backend/main.js",
+    "heroku-postbuild": "cd frontend && npm install && npm run build",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JoeyDiMart/CSC230_Project.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/JoeyDiMart/CSC230_Project/issues"
+  },
+  "homepage": "https://github.com/JoeyDiMart/CSC230_Project#readme",
+  "engines": {
+    "node": "20.x"
+  }
+}
