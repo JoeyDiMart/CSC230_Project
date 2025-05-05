@@ -148,6 +148,13 @@
     font-weight: bold;
 }
 
-.publishedLink:hover {
-    text-decoration: underline;
+.upload-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.upload-btn:hover {
+    background-color: #0056b3;
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
 }

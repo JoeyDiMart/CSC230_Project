@@ -1,514 +1,223 @@
-import React, { useState } from "react";
-import styles from "./fellowPage.module.css";
-
-const initialFellowsData = [
-    {
-        id: 1,
-        name: "John Doe",
-        year: "2023",
-        bio: "John worked on AI research with Dr. Smith.",
-        fellowshipTopic: "Artificial Intelligence in Healthcare",
-        faculty: "Dr. Smith",
-        image: "/images/Fellows/image6.jpeg",
-        publishedLink: "https://example.com/publication1",
-    },
-    {
-        id: 2,
-        name: "Jane Smith",
-        year: "2022",
-        bio: "Jane focused on renewable energy solutions.",
-        fellowshipTopic: "Sustainable Energy Systeimport React, { useState } from \"react\";\n" +
-            "import styles from \"./fellowPage.module.css\";\n" +
-            "\n" +
-            "const FellowsPerPage = 8;\n" +
-            "\n" +
-            "function FellowPage({ role }) {\n" +
-            "    const [fellowsData, setFellowsData] = useState(initialFellowsData);\n" +
-            "    const [expandedFellow, setExpandedFellow] = useState(null);\n" +
-            "    const [newFellow, setNewFellow] = useState({\n" +
-            "        name: \"\",\n" +
-            "        year: \"\",\n" +
-            "        bio: \"\",\n" +
-            "        fellowshipTopic: \"\",\n" +
-            "        faculty: \"\",\n" +
-            "        image: \"\",\n" +
-            "        publishedLink: \"\",\n" +
-            "    });\n" +
-            "    const [currentPage, setCurrentPage] = useState(1);\n" +
-            "\n" +
-            "    const totalPages = Math.ceil(fellowsData.length / FellowsPerPage);\n" +
-            "    const startIndex = (currentPage - 1) * FellowsPerPage;\n" +
-            "    const endIndex = startIndex + FellowsPerPage;\n" +
-            "    const currentFellows = fellowsData.slice(startIndex, endIndex);\n" +
-            "\n" +
-            "    const handleExpand = (fellow) => {\n" +
-            "        setExpandedFellow(fellow);\n" +
-            "    };\n" +
-            "\n" +
-            "    const handleClose = () => {\n" +
-            "        setExpandedFellow(null);\n" +
-            "    };\n" +
-            "\n" +
-            "    const handleInputChange = (e) => {\n" +
-            "        const { name, value } = e.target;\n" +
-            "        setNewFellow((prev) => ({ ...prev, [name]: value }));\n" +
-            "    };\n" +
-            "\n" +
-            "    const handleAddFellow = (e) => {\n" +
-            "        e.preventDefault();\n" +
-            "        const newFellowData = { ...newFellow, id: fellowsData.length + 1 };\n" +
-            "        setFellowsData((prev) => [...prev, newFellowData]);\n" +
-            "        setNewFellow({\n" +
-            "            name: \"\",\n" +
-            "            year: \"\",\n" +
-            "            bio: \"\",\n" +
-            "            fellowshipTopic: \"\",\n" +
-            "            faculty: \"\",\n" +
-            "            image: \"\",\n" +
-            "            publishedLink: \"\",\n" +
-            "        });\n" +
-            "    };\n" +
-            "\n" +
-            "    const handleNextPage = () => {\n" +
-            "        if (currentPage < totalPages) {\n" +
-            "            setCurrentPage((prev) => prev + 1);\n" +
-            "        }\n" +
-            "    };\n" +
-            "\n" +
-            "    const handlePreviousPage = () => {\n" +
-            "        if (currentPage > 1) {\n" +
-            "            setCurrentPage((prev) => prev - 1);\n" +
-            "        }\n" +
-            "    };\n" +
-            "\n" +
-            "    return (\n" +
-            "        <div className={styles.fellowPage}>\n" +
-            "            <h1 className={styles.pageTitle}>Fellows</h1>\n" +
-            "            {role === \"admin\" && (\n" +
-            "                <form className={styles.adminForm} onSubmit={handleAddFellow}>\n" +
-            "                    <h2>Add New Fellow</h2>\n" +
-            "                    <input\n" +
-            "                        type=\"text\"\n" +
-            "                        name=\"name\"\n" +
-            "                        placeholder=\"Name\"\n" +
-            "                        value={newFellow.name}\n" +
-            "                        onChange={handleInputChange}\n" +
-            "                        required\n" +
-            "                    />\n" +
-            "                    <input\n" +
-            "                        type=\"text\"\n" +
-            "                        name=\"year\"\n" +
-            "                        placeholder=\"Year\"\n" +
-            "                        value={newFellow.year}\n" +
-            "                        onChange={handleInputChange}\n" +
-            "                        required\n" +
-            "                    />\n" +
-            "                    <textarea\n" +
-            "                        name=\"bio\"\n" +
-            "                        placeholder=\"Bio\"\n" +
-            "                        value={newFellow.bio}\n" +
-            "                        onChange={handleInputChange}\n" +
-            "                        required\n" +
-            "                    />\n" +
-            "                    <input\n" +
-            "                        type=\"text\"\n" +
-            "                        name=\"fellowshipTopic\"\n" +
-            "                        placeholder=\"Fellowship Topic\"\n" +
-            "                        value={newFellow.fellowshipTopic}\n" +
-            "                        onChange={handleInputChange}\n" +
-            "                        required\n" +
-            "                    />\n" +
-            "                    <input\n" +
-            "                        type=\"text\"\n" +
-            "                        name=\"faculty\"\n" +
-            "                        placeholder=\"Faculty\"\n" +
-            "                        value={newFellow.faculty}\n" +
-            "                        onChange={handleInputChange}\n" +
-            "                        required\n" +
-            "                    />\n" +
-            "                    <input\n" +
-            "                        type=\"url\"\n" +
-            "                        name=\"image\"\n" +
-            "                        placeholder=\"Image URL\"\n" +
-            "                        value={newFellow.image}\n" +
-            "                        onChange={handleInputChange}\n" +
-            "                        required\n" +
-            "                    />\n" +
-            "                    <input\n" +
-            "                        type=\"url\"\n" +
-            "                        name=\"publishedLink\"\n" +
-            "                        placeholder=\"Published Work Link\"\n" +
-            "                        value={newFellow.publishedLink}\n" +
-            "                        onChange={handleInputChange}\n" +
-            "                        required\n" +
-            "                    />\n" +
-            "                    <button type=\"submit\">Add Fellow</button>\n" +
-            "                </form>\n" +
-            "            )}\n" +
-            "            <div className={styles.fellowGrid}>\n" +
-            "                {currentFellows.map((fellow) => (\n" +
-            "                    <div\n" +
-            "                        key={fellow.id}\n" +
-            "                        className={styles.fellowCard}\n" +
-            "                        onClick={() => handleExpand(fellow)}\n" +
-            "                    >\n" +
-            "                        <button className={styles.fellowButton}>\n" +
-            "                            <img\n" +
-            "                                src={fellow.image}\n" +
-            "                                alt={fellow.name}\n" +
-            "                                className={styles.fellowImage}\n" +
-            "                            />\n" +
-            "                            <div className={styles.fellowInfo}>\n" +
-            "                                <h2 className={styles.fellowName}>{fellow.name}</h2>\n" +
-            "                                <p className={styles.fellowYear}>{fellow.year}</p>\n" +
-            "                            </div>\n" +
-            "                        </button>\n" +
-            "                    </div>\n" +
-            "                ))}\n" +
-            "            </div>\n" +
-            "\n" +
-            "            <div className={styles.pagination}>\n" +
-            "                <button\n" +
-            "                    onClick={handlePreviousPage}\n" +
-            "                    disabled={currentPage === 1}\n" +
-            "                >\n" +
-            "                    Previous\n" +
-            "                </button>\n" +
-            "                <span>\n" +
-            "                    Page {currentPage} of {totalPages}\n" +
-            "                </span>\n" +
-            "                <button\n" +
-            "                    onClick={handleNextPage}\n" +
-            "                    disabled={currentPage === totalPages}\n" +
-            "                >\n" +
-            "                    Next\n" +
-            "                </button>\n" +
-            "            </div>\n" +
-            "\n" +
-            "            {expandedFellow && (\n" +
-            "                <div className={`${styles.expandedContentContainer} ${styles.open}`}>\n" +
-            "                    <div className={styles.expandedContent}>\n" +
-            "                        <button\n" +
-            "                            className={styles.closeButton}\n" +
-            "                            onClick={handleClose}\n" +
-            "                        >\n" +
-            "                            &times;\n" +
-            "                        </button>\n" +
-            "                        <img\n" +
-            "                            src={expandedFellow.image}\n" +
-            "                            alt={expandedFellow.name}\n" +
-            "                            className={styles.expandedImage}\n" +
-            "                        />\n" +
-            "                        <div className={styles.expandedDetails}>\n" +
-            "                            <h2 className={styles.fellowName}>\n" +
-            "                                {expandedFellow.name} ({expandedFellow.year})\n" +
-            "                            </h2>\n" +
-            "                            <p className={styles.fellowBio}>{expandedFellow.bio}</p>\n" +
-            "                            <p>\n" +
-            "                                <strong>Fellowship Topic:</strong>{\" \"}\n" +
-            "                                {expandedFellow.fellowshipTopic}\n" +
-            "                            </p>\n" +
-            "                            <p>\n" +
-            "                                <strong>Faculty:</strong> {expandedFellow.faculty}\n" +
-            "                            </p>\n" +
-            "                            <a\n" +
-            "                                href={expandedFellow.publishedLink}\n" +
-            "                                target=\"_blank\"\n" +
-            "                                rel=\"noopener noreferrer\"\n" +
-            "                                className={styles.publishedLink}\n" +
-            "                            >\n" +
-            "                                View Published Work\n" +
-            "                            </a>\n" +
-            "                        </div>\n" +
-            "                    </div>\n" +
-            "                </div>\n" +
-            "            )}\n" +
-            "        </div>\n" +
-            "    );\n" +
-            "}\n" +
-            "\n" +
-            "export default FellowPage;ms",
-        faculty: "Dr. Johnson",
-        image: "/images/Fellows/image5.jpeg",
-        publishedLink: "https://example.com/publication2",
-    },
-    {
-        id: 3,
-        name: "John Doe",
-        year: "2023",
-        bio: "John worked on AI research with Dr. Smith.",
-        fellowshipTopic: "Artificial Intelligence in Healthcare",
-        faculty: "Dr. Smith",
-        image: "/images/Fellows/image6.jpeg",
-        publishedLink: "https://example.com/publication1",
-    },
-    {
-        id: 4,
-        name: "Jane Smith",
-        year: "2022",
-        bio: "Jane focused on renewable energy solutions.",
-        fellowshipTopic: "Sustainable Energy Systems",
-        faculty: "Dr. Johnson",
-        image: "/images/Fellows/image5.jpeg",
-        publishedLink: "https://example.com/publication2",
-    },{
-        id: 5,
-        name: "John Doe",
-        year: "2023",
-        bio: "John worked on AI research with Dr. Smith.",
-        fellowshipTopic: "Artificial Intelligence in Healthcare",
-        faculty: "Dr. Smith",
-        image: "/images/Fellows/image4.jpeg",
-        publishedLink: "https://example.com/publication1",
-    },
-    // Existing fellows
-    {
-        id: 6,
-        name: "Alice Johnson",
-        year: "2021",
-        bio: "Alice explored quantum computing applications.",
-        fellowshipTopic: "Quantum Computing in Cryptography",
-        faculty: "Dr. Brown",
-        image: "/images/Fellows/image3.jpeg",
-        publishedLink: "https://example.com/publication3",
-    },
-    {
-        id: 7,
-        name: "Bob Williams",
-        year: "2020",
-        bio: "Bob developed machine learning models for finance.",
-        fellowshipTopic: "Machine Learning in Financial Markets",
-        faculty: "Dr. Green",
-        image: "/images/Fellows/image2.jpeg",
-        publishedLink: "https://example.com/publication4",
-    },
-    {
-        id: 8,
-        name: "Catherine Lee",
-        year: "2019",
-        bio: "Catherine worked on renewable energy storage systems.",
-        fellowshipTopic: "Energy Storage Solutions",
-        faculty: "Dr. White",
-        image: "/images/Fellows/image1.jpeg",
-        publishedLink: "https://example.com/publication5",
-    },
-    {
-        id: 9,
-        name: "David Kim",
-        year: "2023",
-        bio: "David researched blockchain technology.",
-        fellowshipTopic: "Blockchain for Supply Chain Management",
-        faculty: "Dr. Black",
-        image: "/images/Fellows/image0.jpeg",
-        publishedLink: "https://example.com/publication6",
-    },
-];
-
-const FellowsPerPage = 8;
+import { useState, useEffect } from "react";
+import PropTypes from "prop-types";
+import "./fellowPage.module.css";
+import { ImCross } from "react-icons/im";
 
 function FellowPage({ role }) {
-    const [fellowsData, setFellowsData] = useState(initialFellowsData);
-    const [expandedFellow, setExpandedFellow] = useState(null);
+    const defaultFellows = [
+        {
+            name: "John Doe",
+            year: "2023",
+            bio: "John is a researcher in AI and machine learning.",
+            photo: "/images/Fellows/image3.jpeg",
+            publicationLink: "https://example.com/john-publication",
+            topic: "Artificial Intelligence",
+            collaborators: "Dr. Smith",
+            isMyFellowship: true
+        },
+        {
+            name: "Jane Smith",
+            year: "2022",
+            bio: "Jane specializes in renewable energy research.",
+            photo: "/images/Fellows/image1.jpeg",
+            publicationLink: "https://example.com/jane-publication",
+            topic: "Renewable Energy",
+            collaborators: "Dr. Johnson",
+            isMyFellowship: false
+        },
+        {
+            name: "Alice Brown",
+            year: "2021",
+            bio: "Alice focuses on quantum computing advancements.",
+            photo: "/images/Fellows/image6.jpeg",
+            publicationLink: "https://example.com/alice-publication",
+            topic: "Quantum Computing",
+            collaborators: "Dr. Lee",
+            isMyFellowship: true
+        }
+    ];
+
+    const [fellows, setFellows] = useState(defaultFellows);
+    const [searchQuery, setSearchQuery] = useState("");
+    const [showUpload, setShowUpload] = useState(false);
     const [newFellow, setNewFellow] = useState({
-        name: "",
-        year: "",
-        bio: "",
-        fellowshipTopic: "",
-        faculty: "",
-        image: "",
-        publishedLink: "",
+        name: '',
+        year: '',
+        bio: '',
+        photo: null,
+        publicationLink: '',
+        topic: '',
+        collaborators: '',
+        isMyFellowship: false
     });
-    const [currentPage, setCurrentPage] = useState(1);
 
-    const totalPages = Math.ceil(fellowsData.length / FellowsPerPage);
-    const startIndex = (currentPage - 1) * FellowsPerPage;
-    const endIndex = startIndex + FellowsPerPage;
-    const currentFellows = fellowsData.slice(startIndex, endIndex);
-
-    const handleExpand = (fellow) => {
-        setExpandedFellow(fellow);
-    };
-
-    const handleClose = () => {
-        setExpandedFellow(null);
-    };
+    useEffect(() => {
+        fetch("http://localhost:8081/fellows", {
+            credentials: 'include'
+        })
+            .then(res => res.json())
+            .then(data => setFellows(prev => [...prev, ...data]))
+            .catch(err => console.error("Error loading fellows:", err));
+    }, []);
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
-        setNewFellow((prev) => ({ ...prev, [name]: value }));
+        setNewFellow(prev => ({ ...prev, [name]: value }));
     };
 
-    const handleAddFellow = (e) => {
+    const handleFileChange = (e) => {
+        setNewFellow(prev => ({ ...prev, photo: e.target.files[0] }));
+    };
+
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        const newFellowData = { ...newFellow, id: fellowsData.length + 1 };
-        setFellowsData((prev) => [...prev, newFellowData]);
-        setNewFellow({
-            name: "",
-            year: "",
-            bio: "",
-            fellowshipTopic: "",
-            faculty: "",
-            image: "",
-            publishedLink: "",
+
+        const formData = new FormData();
+        Object.entries(newFellow).forEach(([key, value]) => {
+            formData.append(key, value);
         });
-    };
 
-    const handleNextPage = () => {
-        if (currentPage < totalPages) {
-            setCurrentPage((prev) => prev + 1);
+        try {
+            const res = await fetch("http://localhost:8081/fellows/upload", {
+                method: "POST",
+                credentials: "include",
+                body: formData
+            });
+
+            if (res.ok) {
+                alert("Fellow added successfully");
+                const updated = await res.json();
+                setFellows(prev => [...prev, updated]);
+                setShowUpload(false);
+            } else {
+                const err = await res.json();
+                alert("Upload failed: " + err.message);
+            }
+        } catch (error) {
+            console.error("Upload error:", error);
+            alert("Something went wrong.");
         }
     };
 
-    const handlePreviousPage = () => {
-        if (currentPage > 1) {
-            setCurrentPage((prev) => prev - 1);
-        }
-    };
+    const filteredFellows = fellows.filter(fellow =>
+        fellow.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        fellow.topic.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+
+    const myFellowships = filteredFellows.filter(fellow => fellow.isMyFellowship);
+    const otherFellowships = filteredFellows.filter(fellow => !fellow.isMyFellowship);
 
     return (
-        <div className={styles.fellowPage}>
-            <h1 className={styles.pageTitle}>Fellows</h1>
+        <div className="fellow-page">
+            <h1 className="text-center">Our Research Fellows</h1>
+
+            <div className="search-container">
+                <input
+                    type="text"
+                    placeholder="Search fellows by name or topic..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className="search-bar"
+                    style={{
+                        padding: "10px",
+                        border: "1px solid #ccc",
+                        borderRadius: "5px",
+                        width: "100%",
+                        maxWidth: "400px",
+                        marginBottom: "20px"
+                    }}
+                />
+            </div>
+
             {role === "admin" && (
-                <form className={styles.adminForm} onSubmit={handleAddFellow}>
-                    <h2>Add New Fellow</h2>
-                    <input
-                        type="text"
-                        name="name"
-                        placeholder="Name"
-                        value={newFellow.name}
-                        onChange={handleInputChange}
-                        required
-                    />
-                    <input
-                        type="text"
-                        name="year"
-                        placeholder="Year"
-                        value={newFellow.year}
-                        onChange={handleInputChange}
-                        required
-                    />
-                    <textarea
-                        name="bio"
-                        placeholder="Bio"
-                        value={newFellow.bio}
-                        onChange={handleInputChange}
-                        required
-                    />
-                    <input
-                        type="text"
-                        name="fellowshipTopic"
-                        placeholder="Fellowship Topic"
-                        value={newFellow.fellowshipTopic}
-                        onChange={handleInputChange}
-                        required
-                    />
-                    <input
-                        type="text"
-                        name="faculty"
-                        placeholder="Faculty"
-                        value={newFellow.faculty}
-                        onChange={handleInputChange}
-                        required
-                    />
-                    <input
-                        type="url"
-                        name="image"
-                        placeholder="Image URL"
-                        value={newFellow.image}
-                        onChange={handleInputChange}
-                        required
-                    />
-                    <input
-                        type="url"
-                        name="publishedLink"
-                        placeholder="Published Work Link"
-                        value={newFellow.publishedLink}
-                        onChange={handleInputChange}
-                        required
-                    />
-                    <button type="submit">Add Fellow</button>
-                </form>
+                <button
+                    className="upload-btn"
+                    onClick={() => setShowUpload(true)}
+                    style={{
+                        backgroundColor: "#007bff",
+                        color: "#fff",
+                        border: "none",
+                        padding: "10px 20px",
+                        borderRadius: "5px",
+                        cursor: "pointer",
+                        marginBottom: "20px"
+                    }}
+                >
+                    Upload New Fellow
+                </button>
             )}
-            <div className={styles.fellowGrid}>
-                {currentFellows.map((fellow) => (
-                    <div
-                        key={fellow.id}
-                        className={styles.fellowCard}
-                        onClick={() => handleExpand(fellow)}
-                    >
-                        <button className={styles.fellowButton}>
-                            <img
-                                src={fellow.image}
-                                alt={fellow.name}
-                                className={styles.fellowImage}
-                            />
-                            <div className={styles.fellowInfo}>
-                                <h2 className={styles.fellowName}>{fellow.name}</h2>
-                                <p className={styles.fellowYear}>{fellow.year}</p>
-                            </div>
+
+            {showUpload && (
+                <>
+                    <div className="popup-backdrop" onClick={() => setShowUpload(false)}></div>
+                    <div className="upload-popup">
+                        <button className="exit-upload" onClick={() => setShowUpload(false)}>
+                            <ImCross />
                         </button>
+                        <h2>Upload New Fellow</h2>
+                        <form onSubmit={handleSubmit} className="input-container">
+                            <input type="text" name="name" placeholder="Name" onChange={handleInputChange} required />
+                            <input type="text" name="year" placeholder="Fellowship Year" onChange={handleInputChange} required />
+                            <textarea name="bio" placeholder="Short Bio" onChange={handleInputChange} required />
+                            <input type="url" name="publicationLink" placeholder="Publication URL" onChange={handleInputChange} />
+                            <input type="text" name="topic" placeholder="Fellowship Topic" onChange={handleInputChange} />
+                            <input type="text" name="collaborators" placeholder="CIRT Faculty Collaborators" onChange={handleInputChange} />
+                            <label>
+                                <input
+                                    type="checkbox"
+                                    name="isMyFellowship"
+                                    onChange={(e) => setNewFellow(prev => ({ ...prev, isMyFellowship: e.target.checked }))}
+                                />
+                                My Fellowship
+                            </label>
+                            <input type="file" accept="image/*" onChange={handleFileChange} required />
+                            <button type="submit">Submit</button>
+                        </form>
+                    </div>
+                </>
+            )}
+
+            <h2>My Fellowships</h2>
+            <div className="fellow-grid">
+                {myFellowships.map((fellow, idx) => (
+                    <div className="fellow-card" key={idx}>
+                        <img src={fellow.photo} alt={fellow.name} />
+                        <h3>{fellow.name} ({fellow.year})</h3>
+                        <p>{fellow.bio}</p>
+                        <p><strong>Topic:</strong> {fellow.topic}</p>
+                        <p><strong>Collaborators:</strong> {fellow.collaborators}</p>
+                        {fellow.publicationLink && (
+                            <a href={fellow.publicationLink} target="_blank" rel="noopener noreferrer">
+                                View Publication
+                            </a>
+                        )}
                     </div>
                 ))}
             </div>
 
-            <div className={styles.pagination}>
-                <button
-                    onClick={handlePreviousPage}
-                    disabled={currentPage === 1}
-                >
-                    Previous
-                </button>
-                <span>
-                    Page {currentPage} of {totalPages}
-                </span>
-                <button
-                    onClick={handleNextPage}
-                    disabled={currentPage === totalPages}
-                >
-                    Next
-                </button>
-            </div>
-
-            {expandedFellow && (
-                <div className={`${styles.expandedContentContainer} ${styles.open}`}>
-                    <div className={styles.expandedContent}>
-                        <button
-                            className={styles.closeButton}
-                            onClick={handleClose}
-                        >
-                            &times;
-                        </button>
-                        <img
-                            src={expandedFellow.image}
-                            alt={expandedFellow.name}
-                            className={styles.expandedImage}
-                        />
-                        <div className={styles.expandedDetails}>
-                            <h2 className={styles.fellowName}>
-                                {expandedFellow.name} ({expandedFellow.year})
-                            </h2>
-                            <p className={styles.fellowBio}>{expandedFellow.bio}</p>
-                            <p>
-                                <strong>Fellowship Topic:</strong>{" "}
-                                {expandedFellow.fellowshipTopic}
-                            </p>
-                            <p>
-                                <strong>Faculty:</strong> {expandedFellow.faculty}
-                            </p>
-                            <a
-                                href={expandedFellow.publishedLink}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className={styles.publishedLink}
-                            >
-                                View Published Work
+            <h2>Other Fellowships</h2>
+            <div className="fellow-grid">
+                {otherFellowships.map((fellow, idx) => (
+                    <div className="fellow-card" key={idx}>
+                        <img src={fellow.photo} alt={fellow.name} />
+                        <h3>{fellow.name} ({fellow.year})</h3>
+                        <p>{fellow.bio}</p>
+                        <p><strong>Topic:</strong> {fellow.topic}</p>
+                        <p><strong>Collaborators:</strong> {fellow.collaborators}</p>
+                        {fellow.publicationLink && (
+                            <a href={fellow.publicationLink} target="_blank" rel="noopener noreferrer">
+                                View Publication
                             </a>
-                        </div>
+                        )}
                     </div>
-                </div>
-            )}
+                ))}
+            </div>
         </div>
     );
 }
+
+FellowPage.propTypes = {
+    role: PropTypes.string.isRequired
+};
 
 export default FellowPage;
