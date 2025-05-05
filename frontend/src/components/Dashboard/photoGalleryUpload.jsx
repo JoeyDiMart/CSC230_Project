@@ -75,6 +75,7 @@ const PhotoGalleryUpload = () => {
 
             if (response.ok) {
                 setPhotos(photos.filter((photo) => photo.name !== photoName));
+                setUploadLimitReached(false)
             } else {
                 alert("Failed to delete photo.");
             }

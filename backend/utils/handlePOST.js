@@ -419,7 +419,7 @@ const uploadPhotos = async (req, res) => {
         fs.mkdirSync(uploadDir);
     }
 
-    // Check if the directory already contains 10 or more files
+    // Check the number of files in the directory dynamically
     const files = fs.readdirSync(uploadDir);
     console.log("📂 Current files in upload directory:", files);
 
@@ -441,9 +441,9 @@ const uploadPhotos = async (req, res) => {
 
         console.log("📄 Uploaded file details:", file);
 
-        if (!file ) {
-            console.log("❌ Missing file ");
-            return res.status(400).json({ error: "File" });
+        if (!file) {
+            console.log("❌ Missing file");
+            return res.status(400).json({ error: "File is required" });
         }
 
         try {
