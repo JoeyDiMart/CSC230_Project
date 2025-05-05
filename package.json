@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start": "node backend/main.js",
-    "heroku-postbuild": "cd frontend && npm install && npm run build",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "heroku-prebuild": "npm config set legacy-peer-deps true",
+    "heroku-postbuild": "cd frontend && npm install && npm run build"
   },
   "repository": {
     "type": "git",
@@ -23,11 +23,11 @@
     "node": "20.x"
   },
   "dependencies": {
+    "connect-mongo": "^4.6.0",
     "cors": "^2.8.5",
     "express": "^4.18.2",
     "express-session": "^1.17.3",
-    "connect-mongo": "^4.6.0",
-    "mongodb": "^5.7.0",
+    "mongodb": "^4.17.2",
     "multer": "^1.4.5-lts.1"
   },
   "devDependencies": {
