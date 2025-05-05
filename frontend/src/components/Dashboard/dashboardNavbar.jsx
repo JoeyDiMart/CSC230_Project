@@ -1,6 +1,6 @@
 import React from "react";
 import { FaSearch, FaBell } from "react-icons/fa";
-import SearchForm from "./Navbar/searchForm";
+import SearchForm from "./Navbar/SearchForm";
 
 const Navbar = () => {
   return (
