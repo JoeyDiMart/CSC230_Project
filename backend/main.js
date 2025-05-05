@@ -34,7 +34,15 @@ app.use('/NewStructure/photos', express.static(path.join(__dirname, '../Photos')
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors({
-    origin: 'http://localhost:5173', // Specify the exact frontend origin
+    origin: function(origin, callback) {
+        // Allow requests from localhost:5173 and localhost:3000
+        const allowedOrigins = ['http://localhost:5173', 'http://localhost:3000'];
+        if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+            callback(null, true);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
     credentials: true, // Allow credentials
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization']
