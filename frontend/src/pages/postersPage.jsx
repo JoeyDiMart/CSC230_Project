@@ -253,6 +253,10 @@ function PostersPage({ role, email, name }) {
                 <div>
                     <div className="posters-wrapper">
                         {/* Search Bar */}
+                        <div className="flex flex-col w-full items-center justify-center pt-0 text-center">
+                            <h1 className=" text-black">Explore Approved Posters</h1>
+                            <p className="mt-2 text-lg text-center text-black">Discover visual insights submitted by our research community</p>
+                        </div>
                         <div className="search-bar-container">
                             <div className="animated-search-form">
                                 <button className="search-icon" onClick={handleSearch}>
