@@ -30,19 +30,26 @@ const app = express();
 app.use(favicon(path.join(__dirname, '..','frontend', 'public', 'UTampa_mark.png')));
 app.use('/NewStructure/photos', express.static(path.join(__dirname, '../Photos')));
 
+
+const allowedOrigins = [
+    'http://localhost:5173',
+    'http://localhost:8081',
+    'https://cirtutampa-b47a791bfcb6.herokuapp.com'
+];
+
 // Middleware setup
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors({
     origin: function(origin, callback) {
-        // Allow requests from localhost:5173 and localhost:3000
-        const allowedOrigins = ['http://localhost:5173', 'http://localhost:8081'];
-        if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+        if (!origin || allowedOrigins.includes(origin)) {
             callback(null, true);
         } else {
+            console.error('❌ Blocked by CORS:', origin);
             callback(new Error('Not allowed by CORS'));
         }
-    },
+    }
+    ,
     credentials: true, // Allow credentials
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization']
