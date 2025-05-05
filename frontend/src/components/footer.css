@@ -111,7 +111,7 @@
 }
 
 /* Subscribe Button */
-.subscribe-button {
+.sub-button {
     padding: 0.75rem;
     background-color: #C8102E;
     border: none;
@@ -121,8 +121,8 @@
     transition: background-color 0.3s ease;
 }
 
-.subscribe-button:hover {
-    background-color: #C8102E;
+.sub-button:hover {
+    background-color: #a10c24;
 }
 
 /* Social Links */

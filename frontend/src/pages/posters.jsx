@@ -10,50 +10,63 @@ function base64ToByteArray(base64Str) {
 }
 
 function Posters({ posters, onPosterClick }) {
+    const handleDownload = (poster, e) => {
+        e.stopPropagation(); // Prevent triggering the click on the container
+        const byteArray = base64ToByteArray(poster.file?.data);
+        const blob = new Blob([byteArray], { type: poster.file?.type });
+        const url = window.URL.createObjectURL(blob);
+
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = poster.file?.name || 'download';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        window.URL.revokeObjectURL(url); // Clean up
+    };
+
     return (
         <div className="posters-scroll-wrapper">
             {posters.length > 0 ? (
-                posters.map((poster, idx) => {
-                    const fileName = poster.file?.name;
-                    const binaryVersionOfData = base64ToByteArray(poster.file?.data);
-                    const theBlob = new Blob([binaryVersionOfData], { type: poster.file?.type });
-                    const downloadLink = window.URL.createObjectURL(theBlob);
-
-                    return (
-                        <div key={idx}
-                             className="poster-container"
-                             onClick={() => onPosterClick?.(poster)} >
-                            <div className="poster-title">
-                                <p><strong>{poster.title}</strong></p>
-                            </div>
-                            <p><strong>Author:</strong> {poster.author}</p>
-                            <p><strong>Keywords:</strong> {poster.keywords?.join(", ")}</p>
-                            
-                            {/* Show thumbnail preview if it's an image */}
-                            {poster.file?.type.startsWith('image/') && (
-                                <div className="poster-thumbnail">
-                                    <img src={downloadLink} alt={poster.title} />
-                                </div>
-                            )}
-
-                            {downloadLink && (
-                                <a
-                                    href={downloadLink}
-                                    download={fileName}
-                                    onClick={(e) => e.stopPropagation()}
-                                    style={{
-                                        color: "blue",
-                                        textDecoration: "underline",
-                                        display: "inline-block",
-                                        marginTop: "8px"
-                                    }}
-                                >
-                                    Download File
-                                </a>
-                            )}
+                posters.map((poster, idx) => (
+                    <div key={idx}
+                         className="poster-container"
+                         onClick={() => onPosterClick?.(poster)} >
+                        <div className="poster-title">
+                            <p><strong>{poster.title}</strong></p>
                         </div>
-                    );
-                })
+                        <p><strong>Author:</strong> {poster.author}</p>
+                        <p><strong>Keywords:</strong> {poster.keywords?.join(", ")}</p>
+
+                        {/* Show image preview */}
+                        {poster.file?.type?.startsWith('image/') && (
+                            <div className="poster-thumbnail">
+                                <img
+                                    src={`data:${poster.file.type};base64,${poster.file.data}`}
+                                    alt={poster.title}
+                                />
+                            </div>
+                        )}
+
+                        {poster.file && (
+                            <button
+                                onClick={(e) => handleDownload(poster, e)}
+                                style={{
+                                    color: "blue",
+                                    textDecoration: "underline",
+                                    display: "inline-block",
+                                    marginTop: "8px",
+                                    background: "none",
+                                    border: "none",
+                                    cursor: "pointer",
+                                    padding: 0
+                                }}
+                            >
+                                Download File
+                            </button>
+                        )}
+                    </div>
+                ))
             ) : (
                 <div>
                     <p>No Posters</p>

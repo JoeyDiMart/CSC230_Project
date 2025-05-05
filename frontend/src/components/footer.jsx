@@ -98,7 +98,7 @@ function Footer() {
                             placeholder="Enter email address"
                             className="subscribe-input"
                         />
-                        <button className="subscribe-button">
+                        <button className="sub-button">
                             Subscribe
                         </button>
                     </form>

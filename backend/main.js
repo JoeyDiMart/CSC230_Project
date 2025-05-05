@@ -36,7 +36,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cors({
     origin: function(origin, callback) {
         // Allow requests from localhost:5173 and localhost:3000
-        const allowedOrigins = ['http://localhost:5173', 'http://localhost:3000'];
+        const allowedOrigins = ['http://localhost:5173', 'http://localhost:8081'];
         if (!origin || allowedOrigins.indexOf(origin) !== -1) {
             callback(null, true);
         } else {
