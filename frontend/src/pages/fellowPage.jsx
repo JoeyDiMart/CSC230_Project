@@ -9,7 +9,7 @@ const initialFellowsData = [
         bio: "John worked on AI research with Dr. Smith.",
         fellowshipTopic: "Artificial Intelligence in Healthcare",
         faculty: "Dr. Smith",
-        image: "https://via.placeholder.com/200",
+        image: "/images/Fellows/image6.jpeg",
         publishedLink: "https://example.com/publication1",
     },
     {
@@ -19,7 +19,7 @@ const initialFellowsData = [
         bio: "Jane focused on renewable energy solutions.",
         fellowshipTopic: "Sustainable Energy Systems",
         faculty: "Dr. Johnson",
-        image: "https://via.placeholder.com/200",
+        image: "/images/Fellows/image5.jpeg",
         publishedLink: "https://example.com/publication2",
     },
 ];
