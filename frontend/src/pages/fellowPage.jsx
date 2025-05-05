@@ -129,23 +129,21 @@ function FellowPage({ role }) {
                 />
             </div>
 
-            {role === "admin" && (
-                <button
-                    className="upload-btn"
-                    onClick={() => setShowUpload(true)}
-                    style={{
-                        backgroundColor: "#007bff",
-                        color: "#fff",
-                        border: "none",
-                        padding: "10px 20px",
-                        borderRadius: "5px",
-                        cursor: "pointer",
-                        marginBottom: "20px"
-                    }}
-                >
-                    Upload New Fellow
-                </button>
-            )}
+            <button
+                className="upload-btn"
+                onClick={() => setShowUpload(true)}
+                style={{
+                    backgroundColor: "#007bff",
+                    color: "#fff",
+                    border: "none",
+                    padding: "10px 20px",
+                    borderRadius: "5px",
+                    cursor: "pointer",
+                    marginBottom: "20px"
+                }}
+            >
+                Upload New Fellow
+            </button>
 
             {showUpload && (
                 <>
