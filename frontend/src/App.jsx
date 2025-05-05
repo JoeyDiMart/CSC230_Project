@@ -1,6 +1,7 @@
 import './App.css';
 import { HashRouter as Router, Routes, Route, useLocation, Outlet } from "react-router-dom";
 import { useState, useEffect } from "react";
+import FellowPage from './pages/fellowPage.jsx';
 
 import Header from './components/header.jsx';
 import Footer from './components/footer.jsx';
@@ -55,7 +56,7 @@ function AppWrapper({ role, setRole, name, setName, email, setEmail }) {
          <Route path="/Events" element={<Events role={role} setRole={setRole} name={name} setName={setName} email={email} 		setEmail={setEmail} />} />
         <Route path="/Research-Associates" element={<ResearchAssociates />} />
         <Route path="/posters" element={<PostersPage role={role} name={name} email={email} />} />
-
+        <Route path="/fellow" element={<FellowPage />} />
       </Routes>
 
       {!hideHeaderFooter && <Footer />}

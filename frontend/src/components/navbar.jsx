@@ -40,6 +40,8 @@ function Navbar({ role, setRole, name, setName, setEmail }) {
                     <li><Link to="/posters" onClick={closeMobileMenu}>Posters</Link></li>
                     <li><Link to="/Events" onClick={closeMobileMenu}>Events</Link></li>
                     <li><Link to="/Research-Associates" onClick={closeMobileMenu}>Research Associates</Link></li>
+                    <li><Link to="/fellow" onClick={closeMobileMenu}>Fellowship</Link></li> {/* New link */}
+
                 </ul>
             </div>
 
