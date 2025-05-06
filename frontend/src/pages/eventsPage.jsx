@@ -53,7 +53,7 @@ function Events({ role, email, name }) {
 
     const checkSubscriptionStatus = async () => {
         try {
-            const response = await fetch('${API_BASE_URL}/events/subscribe', {
+            const response = await fetch(`${API_BASE_URL}/events/subscribe`, {
                 method: 'GET',
                 credentials: 'include'
             });
@@ -74,7 +74,7 @@ function Events({ role, email, name }) {
     const fetchEvents = async () => {
         try {
             // No need for credentials since we're making events public
-            const response = await fetch('${API_BASE_URL}/events');
+            const response = await fetch(`${API_BASE_URL}/events`);
             if (response.ok) {
                 const data = await response.json();
                 const formattedEvents = data.map(event => ({
@@ -100,7 +100,7 @@ function Events({ role, email, name }) {
         try {
             const url = selectedEvent
                 ? `${API_BASE_URL}/events/${selectedEvent._id}`
-                : '${API_BASE_URL}/events';
+                : `${API_BASE_URL}/events`;
             
             const method = selectedEvent ? 'PUT' : 'POST';
             
@@ -145,7 +145,7 @@ function Events({ role, email, name }) {
         try {
             if (isSubscribed) {
                 // Unsubscribe
-                const response = await fetch('${API_BASE_URL}/events/subscribe', {
+                const response = await fetch(`${API_BASE_URL}/events/subscribe`, {
                     method: 'DELETE',
                     credentials: 'include'
                 });
@@ -154,7 +154,7 @@ function Events({ role, email, name }) {
                 }
             } else {
                 // Subscribe
-                const response = await fetch('${API_BASE_URL}/events/subscribe', {
+                const response = await fetch(`${API_BASE_URL}/events/subscribe`, {
                     method: 'POST',
                     credentials: 'include'
                 });
