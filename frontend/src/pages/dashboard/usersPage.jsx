@@ -7,6 +7,8 @@ import { HiArrowSmRight } from "react-icons/hi";
 import { HiArrowSmLeft } from "react-icons/hi";
 import { TbArrowsRight } from "react-icons/tb";
 import { TbArrowsLeft } from "react-icons/tb";
+import API_BASE_URL from "../../config.js";
+
 
 
 
@@ -133,7 +135,7 @@ export default function UsersPage() {
 
   const fetchUsers = async () => {
     try {
-      const response = await fetch('http://localhost:8081/users', {
+      const response = await fetch('${API_BASE_URL}/users', {
         credentials: 'include'
       });
       const data = await response.json();
@@ -157,7 +159,7 @@ export default function UsersPage() {
       return;
     }
     try {
-      const response = await fetch('http://localhost:8081/signup', {
+      const response = await fetch('${API_BASE_URL}/signup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
@@ -175,7 +177,7 @@ export default function UsersPage() {
   const handleUpdateUser = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch(`http://localhost:8081/users/${selectedUser._id}`, {
+      const response = await fetch(`${API_BASE_URL}/users/${selectedUser._id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
@@ -214,7 +216,7 @@ export default function UsersPage() {
       return;
     }
     try {
-      const response = await fetch(`http://localhost:8081/users/${selectedUser._id}/password`, {
+      const response = await fetch(`${API_BASE_URL}/users/${selectedUser._id}/password`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
