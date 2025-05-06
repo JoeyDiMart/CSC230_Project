@@ -139,18 +139,35 @@ const handleCheckSubscriptionStatus = async (req, res) => {
 const handleGetPhotos = async (req, res) => {
     console.log("✅ handleGetPhotos triggered");
     // Define the path to the photos directory
-    const photosDir = path.join(__dirname, '../../Photos');
+    const photosDir = path.join(__dirname, '../../photos');
     console.log("Photos directory:", photosDir);
     try {
+        // Check if directory exists
+        if (!fs.existsSync(photosDir)) {
+            console.error("Photos directory does not exist:", photosDir);
+            return res.status(500).json({error: "Photos directory not found"});
+        }
+        
         // Read the photos directory
         fs.readdir(photosDir, (err, files) => {
             if (err) {
                 console.error("Error reading photos directory:", err);
                 return res.status(500).json({error: "Failed to fetch photos"});
             }
-
+            
+            if (!Array.isArray(files)) {
+                console.error("Files is not an array:", files);
+                return res.status(500).json({error: "Failed to read photos"});
+            }
+            
+            // Filter out non-image files
+            const imageFiles = files.filter(file => {
+                const ext = path.extname(file).toLowerCase();
+                return ['.jpg', '.jpeg', '.png', '.gif'].includes(ext);
+            });
+            
             // Map file names to URLs and generate titles
-            const photos = files.map((file) => {
+            const photos = imageFiles.map((file) => {
                 const title = file.replace(/\.[^/.]+$/, '') // Remove file extension
                     .replace(/[_-]/g, ' '); // Replace underscores/dashes with spaces
                 return {
@@ -159,9 +176,10 @@ const handleGetPhotos = async (req, res) => {
                     title: title
                 };
             });
-
+            
+            console.log(`Found ${photos.length} photos`);
             res.status(200).json(photos);
-        })
+        });
     }
     catch (error) {
         console.error("Error in handleGetPhotos:", error);
