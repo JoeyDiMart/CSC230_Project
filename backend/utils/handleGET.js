@@ -155,7 +155,7 @@ const handleGetPhotos = async (req, res) => {
                     .replace(/[_-]/g, ' '); // Replace underscores/dashes with spaces
                 return {
                     name: file,
-                    url: `/photos/${file}`, // Assuming static files are served from this path
+                    url: `../photos/${file}`, // Assuming static files are served from this path
                     title: title
                 };
             });
