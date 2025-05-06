@@ -135,7 +135,7 @@ export default function UsersPage() {
 
   const fetchUsers = async () => {
     try {
-      const response = await fetch('${API_BASE_URL}/users', {
+      const response = await fetch(`${API_BASE_URL}/users`, {
         credentials: 'include'
       });
       const data = await response.json();
@@ -159,7 +159,7 @@ export default function UsersPage() {
       return;
     }
     try {
-      const response = await fetch('${API_BASE_URL}/signup', {
+      const response = await fetch(`${API_BASE_URL}/signup`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',

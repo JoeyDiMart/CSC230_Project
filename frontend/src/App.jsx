@@ -73,7 +73,7 @@ function App() {
   useEffect(() => {
     const checkSession = async () => {
       try {
-        const response = await fetch(`${API_BASE_URL}/check-session1`, {
+        const response = await fetch(`${API_BASE_URL}/check-session`, {
           credentials: 'include'
         });
 
