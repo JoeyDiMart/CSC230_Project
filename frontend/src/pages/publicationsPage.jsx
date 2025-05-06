@@ -110,7 +110,7 @@ const fetchMyPublications = () => {
         e.preventDefault();
         setErrorMessage("");  // remove previous errors before sending new message
 
-        if (!uploadFile.title || !uploadFile.author || !uploadFile.file) {
+        if (!uploadFile.title || !uploadFile.file || uploadFile.author.length === 0) {
             alert("Please fill all fields.");
             return;
         }
@@ -122,14 +122,14 @@ const fetchMyPublications = () => {
             return; // Prevent fetch if no cookie is found
         }
         formData.append("title", uploadFile.title);
-        formData.append("author", JSON.stringify(uploadFile.author.split(",").map(s => s.trim())));
+        formData.append("author", JSON.stringify(uploadFile.author));
         formData.append("email", chocolate);
-        formData.append("keywords", JSON.stringify(uploadFile.keywords.split(",").map(s => s.trim())));
+        formData.append("keywords", JSON.stringify(uploadFile.keywords));
         formData.append("file", uploadFile.file);
         formData.append("status", uploadFile.status);
 
         try {
-            setShowUpload(false);  // delete this soon
+            setShowUpload(false);
             const res = await fetch(`${API_BASE_URL}/api/publications`, {
                 method: "POST",
                 body: formData
@@ -234,7 +234,7 @@ const fetchMyPublications = () => {
     };
 
 
-    // when reviewer/admin wants to upload a new file
+    // when publisher/reviewer/admin wants to upload a new file
     const handleFileReplace = async (file) => {
         if (!file || file.type !== 'application/pdf') {
             alert("Please upload a valid PDF file.");
@@ -243,7 +243,7 @@ const fetchMyPublications = () => {
         setReplacedFile(file);
         const formData = new FormData();
         formData.append("file", file);
-        console.log(file);
+
         try {
             const res = await fetch(`${API_BASE_URL}/api/publications/${popupPub._id}/replace-file`, {
                 method: "PUT",
@@ -251,10 +251,18 @@ const fetchMyPublications = () => {
             });
 
             if (res.ok) {
-                alert("PDF replaced successfully!");
+                alert("PDF and thumbnail replaced successfully!");
+
+                // Refresh relevant publication lists
+                fetchMyPublications();
+                if (role === "admin" || role === "reviewer") {
+                    fetchReviewPublications();
+                }
+
                 closePopup();
             } else {
-                alert("Failed to replace PDF.");
+                const errMsg = await res.json();
+                alert(errMsg?.error || "Failed to replace PDF.");
             }
         } catch (err) {
             console.error("PDF replacement error:", err);
