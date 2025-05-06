@@ -4,7 +4,7 @@ import { HiDotsVertical } from "react-icons/hi";
 
 
 const UserInfo = ({ user, isCollapsed, handleLogout }) => {
-    const [click, setClick] = useState(false)
+    //const [click, setClick] = useState(false)
 
   return (
     <div className="py-1 pl-2">

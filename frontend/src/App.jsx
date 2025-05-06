@@ -1,7 +1,6 @@
 import './App.css';
 import { HashRouter as Router, Routes, Route, useLocation, Outlet } from "react-router-dom";
 import { useState, useEffect } from "react";
-import FellowPage from './pages/fellowPage.jsx';
 import API_BASE_URL from "./config.js";
 
 import Header from './components/header.jsx';
@@ -18,6 +17,7 @@ import PhotoGallery from './pages/dashboard/photoGalleryPage.jsx';
 import DashboardLayout from './components/Dashboard/DashboardLayout.jsx';
 import PostersPage from './pages/postersPage.jsx';
 import ForgotPassword from './pages/forgotPasswordPage.jsx';
+import FellowPage from './pages/fellowPage.jsx';
 
 // ✅ Wrapper to use useLocation and hide header/footer on certain routes
 function AppWrapper({ role, setRole, name, setName, email, setEmail }) {
