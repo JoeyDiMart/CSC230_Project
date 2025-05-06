@@ -1,12 +1,13 @@
 import './photoGallery.css'
 import { useState, useEffect } from "react";
+import API_BASE_URL from "../config.js";
 
 function Gallery () {
     const [photos, setPhotos] = useState([]);
     const [index, setIndex] = useState(0);
 
     useEffect(() => {
-        fetch("http://localhost:8081/api/photos")
+        fetch("${API_BASE_URL}/api/photos")
             .then(response => {
                 return response.json();
             })            .then((data) => {

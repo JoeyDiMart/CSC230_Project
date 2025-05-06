@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import "./fellowPage.module.css";
 import { ImCross } from "react-icons/im";
+import API_BASE_URL from "../config.js";
 
 function FellowPage({ role }) {
     const defaultFellows = [
@@ -52,7 +53,7 @@ function FellowPage({ role }) {
     });
 
     useEffect(() => {
-        fetch("http://localhost:8081/fellows", {
+        fetch(`${API_BASE_URL}/fellows`, {
             credentials: 'include'
         })
             .then(res => res.json())
@@ -78,7 +79,7 @@ function FellowPage({ role }) {
         });
 
         try {
-            const res = await fetch("http://localhost:8081/fellows/upload", {
+            const res = await fetch(`${API_BASE_URL}/fellows/upload`, {
                 method: "POST",
                 credentials: "include",
                 body: formData

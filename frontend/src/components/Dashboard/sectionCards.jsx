@@ -1,5 +1,6 @@
 import {BiTrendingUp,BiTrendingDown} from 'react-icons/bi';
 import React, { useState, useEffect } from 'react';
+import API_BASE_URL from "../../config.js";
 
 const statsTemplate = [
   {
@@ -65,7 +66,7 @@ const SectionCards = () => {
         // get total publications
         const fetchTotalPublications = async () => {
             try {
-                const response = await fetch('http://localhost:8081/api/publications/count'); // Replace ith your API endpoint
+                const response = await fetch('${API_BASE_URL}/api/publications/count'); // Replace ith your API endpoint
                 if (!response.ok) {
                     throw new Error('Failed to fetch total publications');
                 }
@@ -83,7 +84,7 @@ const SectionCards = () => {
         // get total views
         const fetchTotalViews = async () => {
             try {
-                const response = await fetch('http://localhost:8081/api/views/count'); // Replace with your API endpoint
+                const response = await fetch('${API_BASE_URL}/api/views/count'); // Replace with your API endpoint
                 if (!response.ok) {
                     throw new Error('Failed to fetch total views');
                 }
@@ -101,7 +102,7 @@ const SectionCards = () => {
         // gets the total amount of users
         const fetchTotalUsers = async () => {
             try {
-                const response = await fetch('http://localhost:8081/api/users/count'); // Replace with your API endpoint
+                const response = await fetch('${API_BASE_URL}/api/users/count'); // Replace with your API endpoint
                 if (!response.ok) {
                     throw new Error('Failed to fetch total users');
                 }
@@ -120,7 +121,7 @@ const SectionCards = () => {
         // Fetch active reviewers
         const fetchActiveReviewers = async () => {
             try {
-                const response = await fetch('http://localhost:8081/api/reviewers/active'); // Replace with your API endpoint
+                const response = await fetch('${API_BASE_URL}/api/reviewers/active'); // Replace with your API endpoint
                 if (!response.ok) {
                     throw new Error('Failed to fetch active reviewers');
                 }

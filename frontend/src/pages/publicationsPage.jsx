@@ -5,6 +5,7 @@ import Pubs from './publications.jsx';
 import { ImCross } from "react-icons/im";
 import { IoIosArrowDropdownCircle } from "react-icons/io";
 import { FaSearch } from "react-icons/fa";
+import API_BASE_URL from "../config.js";
 
 
 function Publications({ role, email, name }) {
@@ -35,7 +36,7 @@ function Publications({ role, email, name }) {
 
     // get publications from database (only accepted ones)
     useEffect(() => {
-        fetch("http://localhost:8081/api/publications1")
+        fetch(`${API_BASE_URL}/api/publications1`)
             .then(response => response.json())  // Expecting an array of publications
             .then((data) => {
                 const acceptedPublications = data.filter(pub => pub.status === "accepted");
@@ -62,7 +63,7 @@ const fetchMyPublications = () => {
         return; // Prevent fetch if no cookie is found
     }
 
-    fetch(`http://localhost:8081/api/publications/byCookie/${chocolate}`)
+    fetch(`${API_BASE_URL}/api/publications/byCookie/${chocolate}`)
         .then((response) => response.json())
         .then((data) => {
             setMyPublications(data);
@@ -81,7 +82,7 @@ const fetchMyPublications = () => {
         }
     }, [role]);
     const fetchReviewPublications = () => {
-        fetch("http://localhost:8081/api/publications3")
+        fetch(`${API_BASE_URL}/api/publications3`)
             .then(response => response.json())  // Expecting an array of publications
             .then((data) => {
                 const underReview = data.filter(pub => pub.status === "under review");
@@ -129,7 +130,7 @@ const fetchMyPublications = () => {
 
         try {
             setShowUpload(false);  // delete this soon
-            const res = await fetch("http://localhost:8081/api/publications", {
+            const res = await fetch(`${API_BASE_URL}/api/publications`, {
                 method: "POST",
                 body: formData
             });
@@ -205,7 +206,7 @@ const fetchMyPublications = () => {
     // hit search button sends text and filter to backend
     const handleSearch = async () => {
         try {
-            const response = await fetch(`http://localhost:8081/api/publications/search?${searchFilter}=${searchText}`);
+            const response = await fetch(`${API_BASE_URL}/api/publications/search?${searchFilter}=${searchText}`);
             const data = await response.json();
 
             if (!response.ok) {
@@ -244,7 +245,7 @@ const fetchMyPublications = () => {
         formData.append("file", file);
         console.log(file);
         try {
-            const res = await fetch(`http://localhost:8081/api/publications/${popupPub._id}/replace-file`, {
+            const res = await fetch(`${API_BASE_URL}/api/publications/${popupPub._id}/replace-file`, {
                 method: "PUT",
                 body: formData,
             });
@@ -264,7 +265,7 @@ const fetchMyPublications = () => {
     // change status when accepted/denied
     const handleStatusUpdate = async (newStatus) => {
         try {
-            const res = await fetch(`http://localhost:8081/api/publications/${popupPub._id}/status`, {
+            const res = await fetch(`${API_BASE_URL}/api/publications/${popupPub._id}/status`, {
                 method: "PUT",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ status: newStatus }),
@@ -294,7 +295,7 @@ const fetchMyPublications = () => {
         typingTimeout.current = setTimeout(async () => {
             setSavingComment(true);
             try {
-                const res = await fetch(`http://localhost:8081/api/publications/${popupPub._id}/comments`, {
+                const res = await fetch(`${API_BASE_URL}/api/publications/${popupPub._id}/comments`, {
                     method: "PUT",
                     headers: {"Content-Type": "application/json"},
                     body: JSON.stringify({comments: newComment}),

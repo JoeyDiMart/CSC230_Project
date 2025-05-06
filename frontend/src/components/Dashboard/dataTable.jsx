@@ -4,7 +4,7 @@ import {useReactTable,getCoreRowModel, getSortedRowModel, getPaginationRowModel,
 import { FaRegCircleCheck } from "react-icons/fa6";
 import { PiSpinnerBold } from "react-icons/pi";
 import { ImCross } from "react-icons/im";
-
+import API_BASE_URL from "../../config.js";
 
 {/*API Simulation for backend call */}
 import { fetchUsers } from "./api"
@@ -111,7 +111,7 @@ export default function DataTable() {
 
     const handleUpdateStatus = async (newStatus) => {
       try {
-        const response = await fetch(`http://localhost:8081/publications/update`, {
+        const response = await fetch(`${API_BASE_URL}/publications/update`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json"

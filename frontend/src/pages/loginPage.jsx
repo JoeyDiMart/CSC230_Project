@@ -4,9 +4,10 @@ import './loginPage.css';
 import './signupPage.jsx'
 import {FaEye, FaEyeSlash} from "react-icons/fa";
 import { SHA256, MD5 } from 'crypto-js';
+import API_BASE_URL from "../config.js";
 
 
-function Login({ role, setRole, name, setName, email, setEmail }) {
+function Login({ setRole, setName, setEmail }) {
 
     // Eye Icon Functions
     const [showPassword, setShowPassword] = useState(false);
@@ -14,9 +15,6 @@ function Login({ role, setRole, name, setName, email, setEmail }) {
 
     const togglePasswordVisibility = () => {
         setShowPassword(!showPassword);
-    }
-    const toggleVerifyPasswordVisibility = () => {
-        setShowVerifyPassword(!showVerifyPassword);
     }
 
     const [formData, setFormData] = useState({
@@ -36,7 +34,7 @@ function Login({ role, setRole, name, setName, email, setEmail }) {
         e.preventDefault();
 
         try {
-            const response = await fetch("http://localhost:8081/login", {
+            const response = await fetch(`${API_BASE_URL}/login`, {
                 method: "POST",
                 headers: {"Content-Type": "application/json"},
                 credentials: 'include', //It tells the browser to send cookies with the request & allows session cookie to be saved in the browser

@@ -2,6 +2,7 @@ import './App.css';
 import { HashRouter as Router, Routes, Route, useLocation, Outlet } from "react-router-dom";
 import { useState, useEffect } from "react";
 import FellowPage from './pages/fellowPage.jsx';
+import API_BASE_URL from "./config.js";
 
 import Header from './components/header.jsx';
 import Footer from './components/footer.jsx';
@@ -72,7 +73,7 @@ function App() {
   useEffect(() => {
     const checkSession = async () => {
       try {
-        const response = await fetch("http://localhost:8081/check-session", {
+        const response = await fetch(`${API_BASE_URL}/check-session1`, {
           credentials: 'include'
         });
 
@@ -89,7 +90,7 @@ function App() {
     };
     const incrementViews = async () => {
       try {
-        await fetch("http://localhost:8081/api/views/increment", { method: "POST" });
+        await fetch(`${API_BASE_URL}/api/views/increment`, { method: "POST" });
       } catch (error) {
         console.error("Error incrementing views:", error);
       }

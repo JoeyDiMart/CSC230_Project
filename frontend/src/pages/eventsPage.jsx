@@ -12,6 +12,7 @@ import '../components/EventsList.css';
 import { IoIosArrowForward } from "react-icons/io";
 import { IoIosArrowBack } from "react-icons/io";
 import { IoMdMail } from "react-icons/io";
+import API_BASE_URL from "../config.js";
 
 
 const locales = {
@@ -52,7 +53,7 @@ function Events({ role, email, name }) {
 
     const checkSubscriptionStatus = async () => {
         try {
-            const response = await fetch('http://localhost:8081/events/subscribe', {
+            const response = await fetch('${API_BASE_URL}/events/subscribe', {
                 method: 'GET',
                 credentials: 'include'
             });
@@ -73,7 +74,7 @@ function Events({ role, email, name }) {
     const fetchEvents = async () => {
         try {
             // No need for credentials since we're making events public
-            const response = await fetch('http://localhost:8081/events');
+            const response = await fetch('${API_BASE_URL}/events');
             if (response.ok) {
                 const data = await response.json();
                 const formattedEvents = data.map(event => ({
@@ -98,8 +99,8 @@ function Events({ role, email, name }) {
 
         try {
             const url = selectedEvent
-                ? `http://localhost:8081/events/${selectedEvent._id}`
-                : 'http://localhost:8081/events';
+                ? `${API_BASE_URL}/events/${selectedEvent._id}`
+                : '${API_BASE_URL}/events';
             
             const method = selectedEvent ? 'PUT' : 'POST';
             
@@ -144,7 +145,7 @@ function Events({ role, email, name }) {
         try {
             if (isSubscribed) {
                 // Unsubscribe
-                const response = await fetch('http://localhost:8081/events/subscribe', {
+                const response = await fetch('${API_BASE_URL}/events/subscribe', {
                     method: 'DELETE',
                     credentials: 'include'
                 });
@@ -153,7 +154,7 @@ function Events({ role, email, name }) {
                 }
             } else {
                 // Subscribe
-                const response = await fetch('http://localhost:8081/events/subscribe', {
+                const response = await fetch('${API_BASE_URL}/events/subscribe', {
                     method: 'POST',
                     credentials: 'include'
                 });
@@ -206,7 +207,7 @@ function Events({ role, email, name }) {
 
         if (window.confirm('Are you sure you want to delete this event?')) {
             try {
-                const response = await fetch(`http://localhost:8081/events/${selectedEvent._id}`, {
+                const response = await fetch(`${API_BASE_URL}/events/${selectedEvent._id}`, {
                     method: 'DELETE',
                     credentials: 'include'
                 });

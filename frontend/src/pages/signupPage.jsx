@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import './signupPage.css'
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { SHA256, MD5 } from 'crypto-js';
+import API_BASE_URL from "../config.js";
 
 function Signup({ role, setRole, name, setName, email, setEmail }) {
 
@@ -62,7 +63,7 @@ function Signup({ role, setRole, name, setName, email, setEmail }) {
             setLoading(true);  // show a loading state
 
             // attempt to send to backend as body and wait for its response
-            const response = await fetch ("http://localhost:8081/signup", {
+            const response = await fetch (`${API_BASE_URL}/signup`, {
                 method: "POST",  // send post request and create a new user
                 headers: { "Content-Type": "application/json" },  // the type of data is json since we use mongoDB
                 body: JSON.stringify({

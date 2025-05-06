@@ -5,6 +5,7 @@ import Posters from './posters.jsx';
 import { ImCross } from "react-icons/im";
 import { FaSearch } from "react-icons/fa";
 import { IoIosArrowDropdownCircle } from "react-icons/io";
+import API_BASE_URL from "../config.js";
 
 
 
@@ -36,7 +37,7 @@ function PostersPage({ role, email, name }) {
     // Get approved posters
     useEffect(() => {
         setLoading(true);
-        fetch("http://localhost:8081/posters", {
+        fetch(`${API_BASE_URL}/posters`, {
             credentials: 'include'
         })
             .then(response => response.json())
@@ -62,7 +63,7 @@ function PostersPage({ role, email, name }) {
 
     const fetchMyPosters = async (emailParam) => {
         try {
-            const response = await fetch(`http://localhost:8081/posters/user/${emailParam}`, {
+            const response = await fetch(`${API_BASE_URL}/posters/user/${emailParam}`, {
                 credentials: 'include',
                 headers: {
                     'Accept': 'application/json'
@@ -98,7 +99,7 @@ function PostersPage({ role, email, name }) {
     }, [role]);
 
     const fetchPendingPosters = () => {
-        fetch("http://localhost:8081/posters/pending", {
+        fetch(`${API_BASE_URL}/posters/pending`, {
             credentials: 'include'
         })
             .then(response => response.json())
@@ -144,7 +145,7 @@ function PostersPage({ role, email, name }) {
 
         try {
             setShowUpload(false);
-            const res = await fetch("http://localhost:8081/posters/upload", {
+            const res = await fetch(`${API_BASE_URL}/posters/upload`, {
                 method: "POST",
                 body: formData,
                 credentials: 'include'
@@ -188,7 +189,7 @@ function PostersPage({ role, email, name }) {
     // Handle search
     const handleSearch = async () => {
         try {
-            const response = await fetch(`http://localhost:8081/posters/search?${searchFilter}=${searchText}`, {
+            const response = await fetch(`${API_BASE_URL}/posters/search?${searchFilter}=${searchText}`, {
                 credentials: 'include'
             });
             const data = await response.json();
@@ -218,7 +219,7 @@ function PostersPage({ role, email, name }) {
     // Handle poster approval (admin only)
     const handleApprovePoster = async (posterId) => {
         try {
-            const response = await fetch(`http://localhost:8081/posters/${posterId}/approve`, {
+            const response = await fetch(`${API_BASE_URL}/posters/${posterId}/approve`, {
                 method: 'PUT',
                 credentials: 'include'
             });
@@ -390,7 +391,7 @@ function PostersPage({ role, email, name }) {
                                                 onClick={async () => {
                                                     try {
                                                         const response = await fetch(
-                                                            `http://localhost:8081/posters/${popupPoster._id}/file`,
+                                                            `${API_BASE_URL}/posters/${popupPoster._id}/file`,
                                                             { 
                                                                 credentials: 'include',
                                                                 headers: {

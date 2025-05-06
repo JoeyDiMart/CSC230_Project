@@ -28,11 +28,6 @@ function Pubs({ pubs, showStatus, onPublicationClick }) {
         <div className="pubs-scroll-wrapper">
             {pubs.length > 0 ? (
                 pubs.map((publication, idx) => {
-                    //const fileName = publication.file?.name;
-                    //const binaryVersionOfData = base64ToByteArray(publication.file?.data);    make sure to remove later,
-                    //const theBlob = new Blob([binaryVersionOfData], { type: publication.file?.type });   made it so download link generates when pressed
-                    //const downloadLink = window.URL.createObjectURL(theBlob);
-
                     return (
                         <div key={idx} className="publication-container" style={ {height: "315px"} } onClick={() => onPublicationClick(publication)} >
                             <div className="top-bar"></div>

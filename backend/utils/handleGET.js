@@ -1,7 +1,6 @@
 /////////////////////
 // GET HANDLER CODE//
 /////////////////////
-// http://localhost:8081/api/publications
 // Imports
 import * as userService from '../services/userService.js';
 import * as publicationService from '../services/publicationService.js';
