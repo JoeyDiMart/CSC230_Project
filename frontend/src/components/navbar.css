@@ -200,7 +200,7 @@
         gap: 10px;
       }
       
-      .account-dropdown {
+      .profile-dropdown {
         position: relative; /* Keep label positioned normally */
         cursor: pointer;
         padding-right: 25px;
