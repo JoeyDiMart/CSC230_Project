@@ -4,7 +4,7 @@ import { FaSearch } from "react-icons/fa";
 import "./publicationsPage.css"; // Reuse the CSS from publicationsPage
 import API_BASE_URL from "../config.js";
 
-function FellowPage({ role }) {
+function FellowPage() {
     const [fellows, setFellows] = useState([]);
     const [searchQuery, setSearchQuery] = useState("");
     const [searchFilter, setSearchFilter] = useState("name");
@@ -19,6 +19,20 @@ function FellowPage({ role }) {
         collaborators: "",
         isMyFellowship: false,
     });
+
+    // useEffect(() => {
+    //     const fetchFellowships = async () => {
+    //         try {
+    //             const response = await fetch(`${API_BASE_URL}/api/fellowships`);
+    //             const data = await response.json();
+    //             setFellowships(data);
+    //         } catch (err) {
+    //             console.error("Error fetching fellowships:", err);
+    //         }
+    //     };
+    //
+    //     fetchFellowships();
+    // }, []);
 
     useEffect(() => {
         fetch(`${API_BASE_URL}/fellows`, { credentials: "include" })
@@ -42,21 +56,26 @@ function FellowPage({ role }) {
         Object.entries(newFellow).forEach(([key, value]) => {
             formData.append(key, value);
         });
-
+        console.log(formData);
         try {
-            const res = await fetch(`${API_BASE_URL}/fellows/upload`, {
+            console.log("Uploading new fellow:", newFellow);
+            console.log("api url", `${API_BASE_URL}/api/fellow/upload`);
+            const res = await fetch(`${API_BASE_URL}/api/fellow/upload`, {
                 method: "POST",
                 credentials: "include",
                 body: formData,
             });
+            console.log(res.status);
 
             if (res.ok) {
                 alert("Fellow added successfully");
+                console.log(res.data);
                 const updated = await res.json();
                 setFellows((prev) => [...prev, updated]);
                 setShowUpload(false);
             } else {
                 const err = await res.json();
+                console.log(err)
                 alert("Upload failed: " + err.message);
             }
         } catch (error) {
