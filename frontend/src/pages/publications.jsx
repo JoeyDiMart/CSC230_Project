@@ -16,7 +16,7 @@ function Pubs({ pubs, showStatus, onPublicationClick }) {
     const handleDownload = (e, publication) => {
         e.stopPropagation();
         const binaryVersionOfData = base64ToByteArray(publication.file?.data);
-        const theBlob = new Blob([binaryVersionOfData], { type: publication.file?.type });
+        const theBlob = new Blob([binaryVersionOfData], { type: publication.file?.type || publication.file?.contentType || 'application/pdf' });
         const downloadLink = window.URL.createObjectURL(theBlob);
         const a = document.createElement('a');
         a.href = downloadLink;

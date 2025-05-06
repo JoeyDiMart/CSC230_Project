@@ -289,13 +289,21 @@ export const handlePublication = async (req, res) => {
                 return res.status(400).json({ error: 'No file uploaded' });
             }
 
-            const fileData = fs.readFileSync(req.file.path);
+            const fileBuffer = req.file.buffer;
+            const base64Data = fileBuffer.toString('base64');
             const contentType = req.file.mimetype;
             const originalName = req.file.originalname;
 
-            // thumbnail generation
-            const thumbnailBase64 = await generateThumbnail(req.file.path);
+            // Create temp path and write file to disk
+            const uploadsDir = path.join(__dirname, 'uploads'); // use path-safe resolution
+            if (!fs.existsSync(uploadsDir)) {
+                fs.mkdirSync(uploadsDir);
+            }
+            fs.writeFileSync(tempPath, fileBuffer);
 
+            // Generate thumbnail
+            const thumbnailBase64 = await generateThumbnail(tempPath);
+            fs.unlinkSync(tempPath);
 
             // Validate fields
             if (!title || !email || !author.length) {
@@ -327,7 +335,7 @@ export const handlePublication = async (req, res) => {
                 comments: '',
                 file: {
                     name: originalName,
-                    data: fileData,
+                    data: base64Data,
                     contentType: contentType,
                 },
                 thumbnail: thumbnailBase64,
