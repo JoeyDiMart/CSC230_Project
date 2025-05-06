@@ -31,7 +31,7 @@ const PhotoGalleryUpload = () => {
         try {
             setLoading(true);
             setError("");
-            const response = await fetch("${API_BASE_URL}/api/photos/upload", {
+            const response = await fetch(`${API_BASE_URL}/api/photos/upload`, {
                 method: "POST",
                 body: formData,
             });
@@ -57,7 +57,7 @@ const PhotoGalleryUpload = () => {
     // Fetch gallery photos
     const fetchPhotos = async () => {
         try {
-            const response = await fetch("${API_BASE_URL}/api/photos");
+            const response = await fetch(`${API_BASE_URL}/api/photos`);
             const data = await response.json();
             setPhotos(data);
         } catch (error) {
@@ -68,7 +68,7 @@ const PhotoGalleryUpload = () => {
     // Delete a photo
     const deletePhoto = async (photoName) => {
         try {
-            const response = await fetch("${API_BASE_URL}/api/photos/delete", {
+            const response = await fetch(`${API_BASE_URL}/api/photos/delete`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ filename: photoName }),

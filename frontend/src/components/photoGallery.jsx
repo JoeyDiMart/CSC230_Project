@@ -7,7 +7,7 @@ function Gallery () {
     const [index, setIndex] = useState(0);
 
     useEffect(() => {
-        fetch("${API_BASE_URL}/api/photos")
+        fetch(`${API_BASE_URL}/api/photos`)
             .then(response => {
                 return response.json();
             })            .then((data) => {
