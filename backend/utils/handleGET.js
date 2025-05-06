@@ -112,7 +112,7 @@ export const handleGetRequest = async (req, res) => {
         res.status(500).json({ error: 'Internal server error' });
     }
 };
-//
+
 const handleCheckSubscriptionStatus = async (req, res) => {
     if (!req.session.user) {
         return res.status(401).json({ error: 'Please log in' });
@@ -155,7 +155,7 @@ const handleGetPhotos = async (req, res) => {
                     .replace(/[_-]/g, ' '); // Replace underscores/dashes with spaces
                 return {
                     name: file,
-                    url: `NewStructure/photos/${file}`, // Assuming static files are served from this path
+                    url: `/photos/${file}`, // Assuming static files are served from this path
                     title: title
                 };
             });
