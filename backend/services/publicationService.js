@@ -1,6 +1,6 @@
 import { client } from '../Database/Mongodb.js';
 import { ObjectId } from 'mongodb';
-import multer from 'multer';
+
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { sendEmail, getDecisionChangeEmail } from './emailService.js';
@@ -9,23 +9,6 @@ import fs from 'fs';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-
-// Configure multer for manuscript uploads
-const storage = multer.memoryStorage();
-
-
-export const upload = multer({
-    storage,
-    fileFilter: (req, file, cb) => {
-        const allowedTypes = ['application/pdf'];
-        if (allowedTypes.includes(file.mimetype)) {
-            cb(null, true);
-        } else {
-            cb(new Error('Only PDF and Word documents are allowed'), false);
-        }
-    },
-    limits: { fileSize: 30 * 1024 * 1024 }
-});
 
 
 export const handleGetReviews = async (req, res) => {

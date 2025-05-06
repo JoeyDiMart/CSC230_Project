@@ -12,6 +12,7 @@ import * as userService from '../services/userService.js';
 import * as publicationService from '../services/publicationService.js';
 import * as eventSubscriptionService from '../services/eventSubscriptionService.js';
 import { fromPath } from "pdf2pic";
+import { upload } from "./multerConfig.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -194,7 +195,7 @@ const handleLogout = (req, res) => {
     });
 };
 
-
+/*
 // Manuscript submission handler
 const handleSubmit = async (req, res) => {
     return publicationService.upload.single('manuscript')(req, res, (err) => {
@@ -202,6 +203,7 @@ const handleSubmit = async (req, res) => {
         return publicationService.handleSubmit(req, res);
     });
 };
+*/
 // Poster upload handler
 const handlePosterUpload = async (req, res) => {
     try {
@@ -214,24 +216,6 @@ const handlePosterUpload = async (req, res) => {
         return res.status(500).json({ error: err.message });
     }
 };
-
-
-// Set up Multer storage
-const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        const uploadDir = './uploads';
-        if (!fs.existsSync(uploadDir)) fs.mkdirSync(uploadDir);
-        cb(null, uploadDir);
-    },
-    filename: (req, file, cb) => {
-        // Use the original file name, replacing spaces with underscores
-        const cleanFileName = file.originalname.replace(/\s+/g, '_');
-        cb(null, cleanFileName);
-    }
-});
-
-const upload = multer({ storage: storage });
-
 
 
 export const generateThumbnail = async (pdfPath) => {
@@ -264,7 +248,6 @@ export const generateThumbnail = async (pdfPath) => {
 // chatgpt helped with debugging ********************************************** PUBLICATION UPLOAD IS RIGHT HERE
 // Wrap in middleware to use in the main handler
 export const handlePublication = async (req, res) => {
-    console.log("📥 handlePublication triggered...");
 
     // Run multer first to parse the multipart/form-data
     upload.single('file')(req, res, async function (err) {
@@ -283,6 +266,9 @@ export const handlePublication = async (req, res) => {
             var email = req.body.email;
             const status = req.body.status;
 
+            console.log("Received upload request");
+            console.log("File received:", req.file);
+            console.log("Body fields:", req.body);
 
             // Ensure file exists
             if (!req.file) {
@@ -320,7 +306,7 @@ export const handlePublication = async (req, res) => {
             if (!email.includes('@')) {
                 const user = await users.findOne({ connectionChocolateCookie: email });
                 if (user) {
-                    email = user.email; // or whatever field holds the email
+                    email = user.email;
                 } else {
                     throw new Error("User not found");
                 }
