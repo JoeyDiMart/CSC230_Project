@@ -11,6 +11,7 @@ import { fileURLToPath } from 'url';
 import {client} from "../Database/Mongodb.js";
 import { ObjectId } from 'mongodb';
 import fs from "fs"
+import * as fellowshipService from '../services/fellowshipService.js';
 
 export {handleGetMyPublications}
 
@@ -43,6 +44,7 @@ export const handleGetRequest = async (req, res) => {
             '/api/publications/count': handleGetTotalPublications,
             '/api/views/count': handleGetTotalViews,
             '/api/reviewers/active': handleGetActiveReviewers,
+            '/fellows': fellowshipService.handleGetFellowships,
 
         };
         //  '/users': userService.handleGetAll, this caused an error

@@ -12,6 +12,7 @@ import * as userService from '../services/userService.js';
 import * as publicationService from '../services/publicationService.js';
 import * as eventSubscriptionService from '../services/eventSubscriptionService.js';
 import { fromPath } from "pdf2pic";
+import * as fellowshipService from '../services/fellowshipService.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -41,6 +42,8 @@ export const handlePostRequest = async (req, res) => {
         '/api/photos/delete': handleDeletePhotos,
         '/forgot-password': userService.handleForgotPassword,
         '/events/subscribe': eventSubscriptionService.handleSubscribe,
+        '/api/fellow/upload': fellowshipService.handleCreateFellowship,
+
     };
     /*
      '/posters/upload': handleUpload,
