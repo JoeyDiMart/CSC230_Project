@@ -61,12 +61,17 @@ app.use(session({
     resave: true,
     saveUninitialized: false,
     cookie: {
-        secure: false, // Set to false for non-HTTPS needs to go to true when we launch
+        secure: process.env.NODE_ENV === 'production', // Secure in production, insecure in development
         httpOnly: true,
         maxAge: 24 * 60 * 60 * 1000, // 24 hours
-        sameSite: 'lax'
+        sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax' // 'none' for cross-site requests in production
     }
 }));
+
+// Trust the first proxy in production (required for secure cookies to work with proxies)
+if (process.env.NODE_ENV === 'production') {
+    app.set('trust proxy', 1);
+}
 
 // Serve static files from the "frontend" directory
 app.use(express.static(path.join(__dirname, '../frontend/dist')));
