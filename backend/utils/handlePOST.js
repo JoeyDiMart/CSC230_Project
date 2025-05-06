@@ -13,6 +13,7 @@ import * as publicationService from '../services/publicationService.js';
 import * as eventSubscriptionService from '../services/eventSubscriptionService.js';
 import { fromPath } from "pdf2pic";
 import * as fellowshipService from '../services/fellowshipService.js';
+import { upload } from './multerConfig.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -219,24 +220,6 @@ const handlePosterUpload = async (req, res) => {
 };
 
 
-// Set up Multer storage
-const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        const uploadDir = './uploads';
-        if (!fs.existsSync(uploadDir)) fs.mkdirSync(uploadDir);
-        cb(null, uploadDir);
-    },
-    filename: (req, file, cb) => {
-        // Use the original file name, replacing spaces with underscores
-        const cleanFileName = file.originalname.replace(/\s+/g, '_');
-        cb(null, cleanFileName);
-    }
-});
-
-const upload = multer({ storage: storage });
-
-
-
 export const generateThumbnail = async (pdfPath) => {
     try {
         const converter= fromPath(pdfPath, {
@@ -302,6 +285,7 @@ export const handlePublication = async (req, res) => {
             if (!fs.existsSync(uploadsDir)) {
                 fs.mkdirSync(uploadsDir);
             }
+            const tempPath = path.join(uploadsDir, `${Date.now()}_${originalName}`);
             fs.writeFileSync(tempPath, fileBuffer);
 
             // Generate thumbnail
@@ -348,15 +332,6 @@ export const handlePublication = async (req, res) => {
             const result = await collection.insertOne(publication);
 
             if (result.insertedId) {
-
-                // Delete the file from the server
-                fs.unlink(req.file.path, (unlinkErr) => {
-                    if (unlinkErr) {
-                        console.error("❌ Error deleting file:", unlinkErr);
-                    } else {
-                        console.log("🗑️ File deleted successfully from server.");
-                    }
-                });
 
                 return res.status(201).json({message: "Upload successful", publicationId: result.insertedId});
             } else {
