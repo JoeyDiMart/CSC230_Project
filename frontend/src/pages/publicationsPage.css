@@ -374,6 +374,10 @@
     gap: 10px;
 }
 
+.popup-comments {
+    overflow-y: auto;
+}
+
 .popup-comments textarea {
     background: var(--bg-main);
     color: var(--text-main);

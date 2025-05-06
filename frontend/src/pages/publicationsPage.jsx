@@ -427,7 +427,7 @@ const fetchMyPublications = () => {
                                     <p><strong>Authors:</strong> {popupPub.author?.join(", ")}</p>
                                     <p><strong>Keywords:</strong> {popupPub.keywords?.join(", ")}</p>
 
-                                    {(role === "reviewer" || role === "admin") && (
+                                    {(role !== "guest" ) && (
                                         <>
                                         <div className="drop-container">
                                             <div {...getReplaceRootProps()} className="drop-container">
@@ -436,21 +436,30 @@ const fetchMyPublications = () => {
                                                 {replacedFile && <p>File: {replacedFile.name}</p>}
                                             </div>
                                         </div>
-                                        <div className="popup-comments">
-                                            <textarea placeholder="Write your comments here..."
-                                                      value={currentComment}
-                                                      onChange={(e) => handleCommentChange(e.target.value)}
-                                            />
-                                        </div>
-                                            <div className="saving-text">
-                                                {savingComment && <p style={{ fontSize: "0.9rem", color: "#C8102E" }}>Saving...</p>}
-                                            </div>
-                                        <div style={{ marginTop: "20px", display: "flex", gap: "10px" }}>
-                                            <button onClick={() => handleStatusUpdate("accepted")} className="approve-btn">Approve</button>
-                                            <button onClick={() => handleStatusUpdate("denied")} className="deny-btn">Deny</button>
-                                        </div>
+                                            {(role === "admin" || role === "reviewer") && (
+                                                <>
+                                                    <div className="popup-comments">
+                                                        <textarea placeholder="Write your comments here..."
+                                                                  value={currentComment}
+                                                                  onChange={(e) => handleCommentChange(e.target.value)} />
+                                                    </div>
+                                                    <div className="saving-text">
+                                                        {savingComment && <p style={{ fontSize: "0.9rem", color: "#C8102E" }}>Saving...</p>}
+                                                    </div>
+                                                    <div style={{ marginTop: "20px", display: "flex", gap: "10px" }}>
+                                                        <button onClick={() => handleStatusUpdate("accepted")} className="approve-btn">Approve</button>
+                                                        <button onClick={() => handleStatusUpdate("denied")} className="deny-btn">Deny</button>
+                                                    </div>
+                                                </>)}
+                                            {(popupPub?.author?.includes(name)) && (
+                                                <>
+                                                    <div className="popup-comments">
+                                                        <p><strong>Comments:</strong> {popupPub?.comments || "No comments yet."}</p>
+                                                    </div>
+                                                </>
+                                            )}
                                         </>
-                                )}
+                                    )}
                                 </div>
                             </div>
                         </div>
