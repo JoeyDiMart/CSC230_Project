@@ -57,7 +57,7 @@ function AppWrapper({ role, setRole, name, setName, email, setEmail }) {
          <Route path="/Events" element={<Events role={role} setRole={setRole} name={name} setName={setName} email={email} 		setEmail={setEmail} />} />
         <Route path="/Research-Associates" element={<ResearchAssociates />} />
         <Route path="/posters" element={<PostersPage role={role} name={name} email={email} />} />
-        <Route path="/fellow" element={<FellowPage />} />
+        <Route path="/fellow" element={<FellowPage role={role}name={name} email={email} />} />
       </Routes>
 
       {!hideHeaderFooter && <Footer />}

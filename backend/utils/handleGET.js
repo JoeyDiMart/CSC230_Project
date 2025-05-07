@@ -11,7 +11,6 @@ import { fileURLToPath } from 'url';
 import {client} from "../Database/Mongodb.js";
 import { ObjectId } from 'mongodb';
 import fs from "fs"
-import * as fellowshipService from '../services/fellowshipService.js';
 
 export {handleGetMyPublications}
 
@@ -44,7 +43,7 @@ export const handleGetRequest = async (req, res) => {
             '/api/publications/count': handleGetTotalPublications,
             '/api/views/count': handleGetTotalViews,
             '/api/reviewers/active': handleGetActiveReviewers,
-            '/fellows': fellowshipService.handleGetFellowships,
+            '/api/fellows': handleGetFellowships,
 
         };
         //  '/users': userService.handleGetAll, this caused an error
@@ -396,6 +395,56 @@ const handleGetActiveReviewers = async (req, res) => {
         res.status(200).json({ total });
     } catch (err) {
         console.error("Error fetching active reviewers:", err);
+        res.status(500).json({ error: "Internal server error" });
+    }
+};
+
+// GET handler
+export const handleGetFellowships = async (req, res) => {
+    console.log("✅ handleGetFellowships triggered");
+    try {
+        const db = client.db('CIRT');
+        const collection = db.collection('FELLOWS');
+        const { userId } = req.query;
+        console.log("Received request to get fellowships with userId:", userId);
+        const query = userId ? { createdBy: userId } : {};
+        const fellowships = await collection.find(query).toArray();
+
+        // // Process each fellowship to temporarily save the image
+        // const tempFolder = path.join(__dirname, '../FellowImages');
+        // if (!fs.existsSync(tempFolder)) {
+        //     fs.mkdirSync(tempFolder, { recursive: true });
+        // }
+        // for (const fellow of fellowships) {
+        //     if (fellow.photo) {
+        //         const photoPath = path.join(tempFolder, path.basename(fellow.photo));
+        //         if (!fs.existsSync(photoPath)) {
+        //             // Simulate fetching the image from the database or another source
+        //             const imageData = fs.readFileSync(path.join(__dirname, fellow.photo)); // Adjust as needed
+        //             fs.writeFileSync(photoPath, imageData);
+        //         }
+        //     }
+        // }
+
+        console.log("Fetched fellowships:", fellowships);
+        res.status(200).json(fellowships);
+
+        // // Clean up the images after a delay
+        // setTimeout(() => {
+        //     for (const fellow of fellowships) {
+        //         if (fellow.photo) {
+        //             const photoPath = path.join(tempFolder, path.basename(fellow.photo));
+        //             if (fs.existsSync(photoPath)) {
+        //                 fs.unlink(photoPath, (err) => {
+        //                     if (err) console.error("Error deleting temp file:", err);
+        //                     else console.log("Temp file deleted:", photoPath);
+        //                 });
+        //             }
+        //         }
+        //     }
+        // }, 60000); // Delete after 1 minute
+    } catch (err) {
+        console.error("Error fetching fellowships:", err);
         res.status(500).json({ error: "Internal server error" });
     }
 };
