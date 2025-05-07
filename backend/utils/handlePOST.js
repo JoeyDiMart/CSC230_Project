@@ -468,7 +468,7 @@ const handleDeletePhotos = async (req, res) => {
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
         console.log("📂 Setting upload destination...");
-        const uploadDir = '../FellowImages';
+        const uploadDir = './FellowImages';
         if (!fs.existsSync(uploadDir)) {
             console.log("📂 Upload directory does not exist. Creating...");
             fs.mkdirSync(uploadDir, { recursive: true });  // Ensure the directory exists
@@ -541,7 +541,20 @@ export const handleCreateFellowship = async (req, res) => {
             const result = await collection.insertOne(newFellowship);
 
             console.log("✅ Fellowship created successfully with ID:", result.insertedId);
+
+            // Remove the uploaded file from the backend
+            if (req.file) {
+                const filePath = path.join(__dirname, '../FellowImages', req.file.filename);
+                fs.unlink(filePath, (unlinkErr) => {
+                    if (unlinkErr) {
+                        console.error("❌ Error deleting file:", unlinkErr);
+                    } else {
+                        console.log("🗑️ File deleted successfully:", filePath);
+                    }
+                });
+            }
             res.status(201).json({ ...newFellowship, _id: result.insertedId });
+
         } catch (dbError) {
             console.error("💥 Database error:", dbError);
             res.status(500).json({ error: "Internal server error" });
