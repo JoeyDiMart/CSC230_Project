@@ -11,9 +11,9 @@ import * as crypto from 'crypto';
 import * as userService from '../services/userService.js';
 import * as publicationService from '../services/publicationService.js';
 import * as eventSubscriptionService from '../services/eventSubscriptionService.js';
-import { fromPath } from "pdf2pic";
 import * as fellowshipService from '../services/fellowshipService.js';
 import { upload } from './multerConfig.js';
+import puppeteer from "puppeteer";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -222,29 +222,21 @@ const handlePosterUpload = async (req, res) => {
 
 
 export const generateThumbnail = async (pdfPath) => {
-    try {
-        const converter= fromPath(pdfPath, {
-            density: 100,        // Higher density = higher quality
-            saveFilename: "temp-thumbnail", // Just temporary
-            savePath: "./uploads",          // Save folder (temporary)
-            format: "png",       // We want a PNG image
-            width: 300,
-            height: 300,
-            page: 1
-        });
-        const conversionResult = await converter(1);
-        const thumbnailBuffer = fs.readFileSync(conversionResult.path);
-        const thumbnailBase64 = `data:image/png;base64,${thumbnailBuffer.toString('base64')}`;
-        fs.unlinkSync(conversionResult.path);
+    const browser = await puppeteer.launch({
+        headless: "new",
+        args: ["--no-sandbox", "--disable-setuid-sandbox"],
+    });
 
-        return thumbnailBase64;
-    }
-    catch (error) {
-        console.error("❌ Error generating thumbnail:", error);  // ************** REMOVE SOON
-        throw new Error("Thumbnail generation failed");
-    }
-}
+    const page = await browser.newPage();
+    const pdfBuffer = fs.readFileSync(pdfPath);
+    await page.setContent(`
+    <embed src="data:application/pdf;base64,${pdfBuffer.toString("base64")}" type="application/pdf" width="800" height="1000">
+  `);
+    const screenshotBuffer = await page.screenshot({ type: "png" });
+    await browser.close();
 
+    return `data:image/png;base64,${screenshotBuffer.toString("base64")}`;
+};
 
 
 
