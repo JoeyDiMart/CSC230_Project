@@ -35,7 +35,7 @@ function Navbar({ role, setRole, name, setName, setEmail }) {
                     <span></span>
                 </label>
                 
-                <ul className={click ? 'nav-menu active' : 'nav-menu'}>
+                <ul className={click ? 'nav-menu active backdrop-blur-md bg-testingColorGrey/30 border-b border-white/10' : 'nav-menu'}>
                     <li className="font-bold"><Link to="/Publications" onClick={closeMobileMenu}>Publications</Link></li>
                     <li><Link to="/posters" onClick={closeMobileMenu}>Posters</Link></li>
                     <li><Link to="/Events" onClick={closeMobileMenu}>Events</Link></li>
@@ -47,8 +47,8 @@ function Navbar({ role, setRole, name, setName, setEmail }) {
 
             {role === "guest" && (
                 <div className="auth-buttons">
-                    <button className="Login" onClick={() => navigate("/Login")}>Log in</button>
-                    <button className="signup" onClick={() => navigate("/Signup")}>Sign up</button>
+                    <button className="Login text-testingColorWhite " onClick={() => navigate("/Login")}>Log in</button>
+                    <button className="signup text-testingColorWhite" onClick={() => navigate("/Signup")}>Sign up</button>
                 </div>
             )}
 

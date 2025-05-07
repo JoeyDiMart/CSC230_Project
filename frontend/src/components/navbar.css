@@ -14,7 +14,7 @@
     justify-content: space-between; /* Space between the items */
     align-items: center;
     padding: 15px 25px;
-    z-index: 2;
+    z-index: 10000;
 }
 
 /* navbar items */
@@ -82,8 +82,8 @@
 /* Styling for the login button */
 .auth-buttons .Login {
     background-color: transparent;
-    color: #C8102E;
-    border: 3px solid black;
+    color: white;
+    border: 2px solid #444;
     border-radius: 20px; /* Small radius for subtle rounding */
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Soft shadow for smooth edges */
     transition: background-color 0.3s ease, transform 0.3s ease, color 0.3s ease;
@@ -92,15 +92,16 @@
 /* Hover effect for the login button */
 .auth-buttons .Login:hover {
     background-color: black;
-    color: #C8102E;
+    color: white;
+    border: 2px solid #C8102E;
     transform: scale(1.05);
 }
 
 /* Styling for the signup button */
 .auth-buttons .signup {
-    background-color: black;
-    color: #C8102E;
-    border: 3px solid black;
+    background-color: transparent;
+    color: #fff;
+    border: 2px solid #444;
     border-radius: 20px; /* Small radius for subtle rounding */
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Soft shadow for smooth edges */
     transition: background-color 0.3s ease, transform 0.3s ease, color 0.3s ease;
@@ -108,16 +109,16 @@
 
 /* Hover effect for the signup button */
 .auth-buttons .signup:hover {
-    background-color: transparent;
-    color: black;
-    border: 3px solid black;
+    background-color: black;
+    color: white;
+    border: 2px solid #C8102E;
     transform: scale(1.05);
 }
 
 .auth-buttons .signout {
     background-color: black;
     color: #C8102E;
-    border: 3px solid black;
+    border: 1px solid black;
     border-radius: 20px;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
     transition: background-color 0.3s ease, transform 0.3s ease, color 0.3s ease;
@@ -127,7 +128,7 @@
 .auth-buttons .signout:hover {
     background-color: transparent;
     color: black;
-    border: 3px solid black;
+    border: 1px solid black;
     transform: scale(1.05);
 }
 
@@ -140,6 +141,7 @@
     background: transparent;
     cursor: pointer;
     display: block;
+    z-index: 10;
     }
     
     .menu-icon input {
@@ -151,7 +153,7 @@
     position: absolute;
     height: 4px;
     width: 100%;
-    background: black;
+    background: #C8102E;
     border-radius: 9px;
     opacity: 1;
     left: 0;
@@ -291,37 +293,38 @@
         align-items: center;
         position: absolute;
         right: 75px;
-        bottom: 20px;
+        bottom: 25px;
     }
     .auth-buttons .signup {
         display: none;
     }
     .nav-items ul {
-        display: flex;
+        display: none; 
         flex-direction: column;
-        align-items: flex-start;
-        position: absolute;
-        top: 80px;
+        justify-content: flex-start;
+        align-items: center;
+        position: fixed;
+        top: 0;
         left: 0;
-        right: 0;
-        height: calc(100vh - 60px);
-        background-color: #363434;
-        padding: 20px;
-        gap: 50px;
+        width: 100vw;
+        height: 100vh;
+        padding: 100px 30px 40px;
+        gap: 35px;
+        background-color: rgba(0, 0, 0, 0.85);
+        backdrop-filter: blur(12px);
         list-style: none;
-        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
-        display: none;
-        z-index: 99;
+        z-index: 2;
         overflow-y: auto;
-    }
+      }
     
     .nav-items ul.active{
         display: flex;
+        animation: fadeSlideIn 0.2s ease forwards;
     }   
     .nav-items a{
         font-size: 32px;
         font-weight: bold;
-        color: #C8102E;
+        color: #fff;
     }
 }
 
