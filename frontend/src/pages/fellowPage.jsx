@@ -65,6 +65,9 @@ function FellowPage() {
         formData.append("isMyFellowship", newFellow.isMyFellowship ? "true" : "false");
         formData.append("photo", newFellow.photo);
 
+        console.log("FormData:", formData);
+        console.log("New fellow photo file:", newFellow.photo);
+
         try {
             const res = await fetch(`${API_BASE_URL}/api/fellow/upload`, {
                 method: "POST",

@@ -473,31 +473,59 @@ const handleDeletePhotos = async (req, res) => {
         res.status(500).json({ error: "Internal server error" });
     }
 }
+
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        const uploadDir = '../photos'; // Make sure this is correct relative path
+        console.log("📂 Setting upload destination...");
+        const uploadDir = '../FellowImages';
         if (!fs.existsSync(uploadDir)) {
+            console.log("📂 Upload directory does not exist. Creating...");
             fs.mkdirSync(uploadDir, { recursive: true });  // Ensure the directory exists
         }
+        console.log("📂 Upload directory set to:", uploadDir);
         cb(null, uploadDir);
     },
     filename: (req, file, cb) => {
-        cb(null, `${Date.now()}-${file.originalname}`);
+        const filename = `${Date.now()}-${file.originalname}`;
+        console.log("📄 Generated filename:", filename);
+        cb(null, filename);
     }
 });
 
-const uploadMiddleware = multer({ storage }).single('photo');
+const uploadMiddleware = multer({
+    storage,
+    fileFilter: (req, file, cb) => {
+        console.log("📋 Validating file type:", file?.mimetype || "No file provided");
+        if (!file) {
+            console.error("❌ No file provided");
+            return cb(new Error("No file provided"));
+        }
+        if (!['image/jpeg', 'image/png', 'application/pdf'].includes(file.mimetype)) {
+            console.error("❌ Invalid file type:", file.mimetype);
+            return cb(new Error('Invalid file type. Only JPG, PNG, and PDF are allowed.'));
+        }
+        console.log("✅ File type is valid.");
+        cb(null, true);
+    },
+}).single('photo');
+
 // POST handler
 export const handleCreateFellowship = async (req, res) => {
+    console.log("📥 handleCreateFellowship triggered...");
     uploadMiddleware(req, res, async (err) => {
         if (err) {
+            console.error("❌ Error during file upload:", err.message);
             return res.status(400).json({ error: err.message });
         }
 
-        // Proceed with the fellowship creation after file upload
+        console.log("✅ File upload successful. Proceeding with fellowship creation...");
+        console.log("📋 Request body:", req.body);
+        console.log("📄 Uploaded file details:", req.file);
+
         const { name, year, bio, publicationLink, topic, collaborators, isMyFellowship } = req.body;
-        console.log("Received data:", req.body);
+
         if (!name || !year || !bio || !publicationLink) {
+            console.warn("⚠️ Missing required fields:", { name, year, bio, publicationLink });
             return res.status(400).json({ error: "All fields are required" });
         }
 
@@ -513,10 +541,19 @@ export const handleCreateFellowship = async (req, res) => {
             photo: req.file ? `/uploads/${req.file.filename}` : null,
         };
 
-        const db = client.db("CIRT");
-        const collection = db.collection("FELLOWS");
-        const result = await collection.insertOne(newFellowship);
+        console.log("📦 New fellowship data:", newFellowship);
 
-        res.status(201).json({ ...newFellowship, _id: result.insertedId });
+        try {
+            const db = client.db("CIRT");
+            const collection = db.collection("FELLOWS");
+            console.log("📂 Inserting fellowship into database...");
+            const result = await collection.insertOne(newFellowship);
+
+            console.log("✅ Fellowship created successfully with ID:", result.insertedId);
+            res.status(201).json({ ...newFellowship, _id: result.insertedId });
+        } catch (dbError) {
+            console.error("💥 Database error:", dbError);
+            res.status(500).json({ error: "Internal server error" });
+        }
     });
 };
