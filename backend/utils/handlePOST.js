@@ -226,7 +226,7 @@ export const generateThumbnail = async (pdfPath) => {
         const stream = fs.createReadStream(pdfPath);
         const imageStream = await pdfThumbnail(stream, { resize: { width: 300 } });
 
-        const buffer = await getStream.buffer(imageStream); // convert stream to buffer
+        const buffer = await getStream(imageStream);
         const base64 = buffer.toString('base64');
 
         console.log("✅ Thumbnail generated. Length:", base64.length);
