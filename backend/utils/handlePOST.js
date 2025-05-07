@@ -221,14 +221,21 @@ const handlePosterUpload = async (req, res) => {
 
 
 export const generateThumbnail = async (pdfPath) => {
-    const pdfBuffer = fs.readFileSync(pdfPath);
-    const imageBuffer = await pdfThumbnail(pdfBuffer, {
-        resize: { width: 300 }
-    });
+    try {
+        const stream = fs.createReadStream(pdfPath);
+        const imageBuffer = await pdfThumbnail(stream, {
+            resize: { width: 300 }
+        });
 
-    return `data:image/png;base64,${imageBuffer.toString('base64')}`;
+        const base64 = imageBuffer.toString('base64');
+        console.log("✅ Thumbnail generated. Length:", base64.length);
+
+        return `data:image/png;base64,${base64}`;
+    } catch (err) {
+        console.error("❌ Thumbnail generation failed:", err.message);
+        return null;
+    }
 };
-
 
 
 // chatgpt helped with debugging ********************************************** PUBLICATION UPLOAD IS RIGHT HERE
