@@ -11,7 +11,6 @@ import * as crypto from 'crypto';
 import * as userService from '../services/userService.js';
 import * as publicationService from '../services/publicationService.js';
 import * as eventSubscriptionService from '../services/eventSubscriptionService.js';
-import * as fellowshipService from '../services/fellowshipService.js';
 import { upload } from './multerConfig.js';
 import puppeteer from "puppeteer";
 

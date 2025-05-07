@@ -30,7 +30,7 @@ const app = express();
 app.use(favicon(path.join(__dirname, '..','frontend', 'public', 'UTampa_mark.png')));
 app.use('/NewStructure/photos', express.static(path.join(__dirname, '../Photos')));
 app.use("/uploads", express.static("uploads"));
-
+app.use('/FellowImages', express.static(path.join(__dirname, 'FellowImages')));
 
 const allowedOrigins = [
     'http://localhost:5173',

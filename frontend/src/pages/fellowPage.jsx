@@ -20,22 +20,10 @@ function FellowPage() {
         isMyFellowship: false,
     });
 
-    // useEffect(() => {
-    //     const fetchFellowships = async () => {
-    //         try {
-    //             const response = await fetch(`${API_BASE_URL}/api/fellowships`);
-    //             const data = await response.json();
-    //             setFellowships(data);
-    //         } catch (err) {
-    //             console.error("Error fetching fellowships:", err);
-    //         }
-    //     };
-    //
-    //     fetchFellowships();
-    // }, []);
+
 
     useEffect(() => {
-        fetch(`${API_BASE_URL}/fellows`, { credentials: "include" })
+        fetch(`${API_BASE_URL}/api/fellows`, { credentials: "include" })
             .then((res) => res.json())
             .then((data) => setFellows(data))
             .catch((err) => console.error("Error loading fellows:", err));
@@ -214,7 +202,7 @@ function FellowPage() {
                 {filteredFellows.map((fellow, idx) => (
                     <div key={idx} className="publication-container">
                         <img
-                            src={fellow.photo}
+                            src={`${API_BASE_URL}${fellow.photo}`} // Prepend the base URL to the photo path
                             alt={fellow.name}
                             className="publication-thumbnail"
                         />
