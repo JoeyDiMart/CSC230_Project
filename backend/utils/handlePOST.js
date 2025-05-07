@@ -277,35 +277,27 @@ export const handlePublication = async (req, res) => {
             const contentType = req.file.mimetype;
             const originalName = req.file.originalname;
 
-            // Create temp path and write file to disk
-            const uploadsDir = path.join(__dirname, 'uploads'); // use path-safe resolution
+            // AI generated stuff
+            const uploadsDir = path.join(__dirname, 'uploads');
             if (!fs.existsSync(uploadsDir)) {
                 fs.mkdirSync(uploadsDir);
             }
+
             const tempPath = path.join(uploadsDir, `${Date.now()}_${originalName}`);
             fs.writeFileSync(tempPath, fileBuffer);
 
-            // Generate thumbnail
-            let thumbnailBase64 = await generateThumbnail(tempPath);
+            const thumbnailFilename = await generateThumbnail(tempPath, originalName);
             fs.unlinkSync(tempPath);
-            console.log("🖼️ Thumbnail type:", typeof thumbnailBase64); // Should be 'string'
-            console.log("🖼️ Thumbnail preview:", thumbnailBase64?.substring(0, 50)); // Should start with 'data:image/png;base64,...'
 
-            if (!thumbnailBase64 || typeof thumbnailBase64 !== 'string' || !thumbnailBase64.startsWith('data:image/png;base64,')) {
-                console.warn("❌ Invalid thumbnail, skipping...");
-                thumbnailBase64 = null;
-            }
-
-            // Validate fields
             if (!title || !email || !author.length) {
-                console.log(title, email, author)
-                console.warn("⚠️ Missing required fields");
-                return res.status(400).json({error: 'All fields are required'});
+                console.warn("⚠️ Missing required fields", title, email, author);
+                return res.status(400).json({ error: 'All fields are required' });
             }
+            // end of AI generated stuff
+
 
             const db = client.db('CIRT');
             const collection = db.collection('PUBLICATIONS');
-
             const users = db.collection("USERS")
 
             if (!email.includes('@')) {
@@ -316,9 +308,6 @@ export const handlePublication = async (req, res) => {
                     throw new Error("User not found");
                 }
             }
-
-            const thumbnailFilename = await generateThumbnail(tempPath, originalName);
-            fs.unlinkSync(tempPath); // remove temp PDF
 
             const publication = {
                 title,
@@ -332,7 +321,7 @@ export const handlePublication = async (req, res) => {
                     data: base64Data,
                     type: contentType || "application/pdf",
                 },
-                thumbnail: thumbnailFilename,  // only filename now
+                thumbnail: thumbnailFilename,
                 uploadedAt: new Date()
             };
 
