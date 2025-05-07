@@ -13,6 +13,7 @@ import * as eventSubscriptionService from '../services/eventSubscriptionService.
 import { upload } from './multerConfig.js';
 import pdfThumbnail from 'pdf-thumbnail';
 import fs from 'fs';
+import getStream from 'get-stream';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -223,20 +224,18 @@ const handlePosterUpload = async (req, res) => {
 export const generateThumbnail = async (pdfPath) => {
     try {
         const stream = fs.createReadStream(pdfPath);
-        const imageBuffer = await pdfThumbnail(stream, {
-            resize: { width: 300 }
-        });
+        const imageStream = await pdfThumbnail(stream, { resize: { width: 300 } });
 
-        const base64 = imageBuffer.toString('base64');
+        const buffer = await getStream.buffer(imageStream); // convert stream to buffer
+        const base64 = buffer.toString('base64');
+
         console.log("✅ Thumbnail generated. Length:", base64.length);
-
         return `data:image/png;base64,${base64}`;
     } catch (err) {
         console.error("❌ Thumbnail generation failed:", err.message);
         return null;
     }
 };
-
 
 
 // chatgpt helped with debugging ********************************************** PUBLICATION UPLOAD IS RIGHT HERE
