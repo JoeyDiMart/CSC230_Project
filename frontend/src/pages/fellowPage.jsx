@@ -51,56 +51,28 @@ function FellowPage() {
     };
 
 
+
     const handleSubmit = async (e) => {
         e.preventDefault();
 
         const formData = new FormData();
-        // formData.append("name", newFellow.name);
-        // formData.append("year", newFellow.year);
-        // formData.append("bio", newFellow.bio);
-        // formData.append("publicationLink", newFellow.publicationLink);
-        // formData.append("topic", newFellow.topic);
-        // formData.append("collaborators", newFellow.collaborators);
-        // formData.append("isMyFellowship", newFellow.isMyFellowship ? "true" : "false");
+        formData.append("name", newFellow.name);
+        formData.append("year", newFellow.year);
+        formData.append("bio", newFellow.bio);
+        formData.append("publicationLink", newFellow.publicationLink);
+        formData.append("topic", newFellow.topic);
+        formData.append("collaborators", newFellow.collaborators);
+        formData.append("isMyFellowship", newFellow.isMyFellowship ? "true" : "false");
+        formData.append("photo", newFellow.photo);
 
-        formData.append("name", "John Doe");
-        formData.append("year", "2023");
-        formData.append("bio", "A short bio about John Doe.");
-        formData.append("publicationLink", "https://example.com/publication");
-        formData.append("topic", "Artificial Intelligence");
-        formData.append("collaborators", "Jane Smith, Bob Johnson");
-        formData.append("isMyFellowship", "true");
-        // Log each field individually
-        console.log("Name:", formData.get("name"));
-        console.log("Year:", formData.get("year"));
-        console.log("Bio:", formData.get("bio"));
-        console.log("Publication Link:", formData.get("publicationLink"));
-        console.log("Topic:", formData.get("topic"));
-        console.log("Collaborators:", formData.get("collaborators"));
-        console.log("Is My Fellowship:", formData.get("isMyFellowship"));
-        const payload = {
-            name: "John Doe",
-            year: "2023",
-            bio: "A short bio about John Doe.",
-            publicationLink: "https://example.com/publication",
-            topic: "Artificial Intelligence",
-            collaborators: "Jane Smith, Bob Johnson",
-            isMyFellowship: true,
-        };
-        // Iterate over the FormData object to log all key-value pairs
-        console.log("Iterating over FormData:");
-        for (let [key, value] of formData.entries()) {
-            console.log(`${key}: ${value}`);
-        }
+        console.log("FormData:", formData);
+        console.log("New fellow photo file:", newFellow.photo);
 
         try {
             const res = await fetch(`${API_BASE_URL}/api/fellow/upload`, {
                 method: "POST",
                 credentials: "include",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(payload),
+                body: formData, // ✅ Do not set Content-Type manually
             });
 
             if (res.ok) {
@@ -117,6 +89,7 @@ function FellowPage() {
             alert("Something went wrong.");
         }
     };
+
     const filteredFellows = fellows.filter((fellow) =>
         fellow[searchFilter] && fellow[searchFilter].toLowerCase().includes(searchQuery.toLowerCase())
     );
