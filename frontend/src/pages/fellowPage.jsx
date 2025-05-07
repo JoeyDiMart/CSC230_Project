@@ -33,10 +33,14 @@ function FellowPage({role, email, name }) {
 
     // Fetch my fellowships
     useEffect(() => {
-        fetch(`${API_BASE_URL}/api/fellows?userId=${email}`, { credentials: "include" })
-            .then((res) => res.json())
-            .then((data) => setMyFellows(data))
-            .catch((err) => console.error("Error loading my fellows:", err));
+        if (email) { // Only fetch "my fellowships" if the user is logged in
+            fetch(`${API_BASE_URL}/api/fellows?userId=${email}`, { credentials: "include" })
+                .then((res) => res.json())
+                .then((data) => setMyFellows(data))
+                .catch((err) => console.error("Error loading my fellows:", err));
+        } else {
+            setMyFellows([]); // Clear "my fellowships" if not logged in
+        }
     }, [email]);
 
     const handleInputChange = (e) => {
@@ -213,25 +217,26 @@ function FellowPage({role, email, name }) {
                 </>
             )}
 
-            <div className="pubs-scroll-wrapper">
-                {filteredFellows.map((fellow, idx) => (
-                    <div
-                        key={idx}
-                        className="publication-container"
-                        onClick={() => openPreview(fellow)}
-                    >
-                        <img
-                            src={`${API_BASE_URL}${fellow.photo}`}
-                            alt={fellow.name}
-                            className="publication-thumbnail"
-                        />
-                        <div className="publication-info-wrapper">
-                            <h3>{fellow.topic}</h3> {/* Display only the topic */}
+            {email && (
+                <div className="pubs-scroll-wrapper">
+                    {myFellows.map((fellow, idx) => (
+                        <div
+                            key={idx}
+                            className="publication-container"
+                            onClick={() => openPreview(fellow)}
+                        >
+                            <img
+                                src={`${API_BASE_URL}${fellow.photo}`}
+                                alt={fellow.name}
+                                className="publication-thumbnail"
+                            />
+                            <div className="publication-info-wrapper">
+                                <h3>{fellow.topic}</h3>
+                            </div>
                         </div>
-                    </div>
-                ))}
-            </div>
-
+                    ))}
+                </div>
+            )}
             <div className="search-bar-container flex items-center justify-between flex-wrap gap-4 mb-6">
                 <h2>All Fellowships</h2>
                 <div className="animated-search-form flex items-center gap-2">
