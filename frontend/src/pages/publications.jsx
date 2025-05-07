@@ -34,9 +34,7 @@ function Pubs({ pubs, showStatus, onPublicationClick }) {
                             {/* take base64 and make it the thumbnail */}
                             {publication.thumbnail && (
                                 <img
-                                    src={publication.thumbnail.startsWith("data:image")
-                                        ? publication.thumbnail
-                                        : `data:image/png;base64,${publication.thumbnail}`}
+                                    src={`/thumbnails/${publication.thumbnail}`}
                                     alt="PDF thumbnail"
                                     style={{ width: "100%", maxHeight: "200px", objectFit: "contain" }}
                                 />
