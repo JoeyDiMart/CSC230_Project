@@ -45,10 +45,6 @@ export const handlePostRequest = async (req, res) => {
         '/api/fellow/upload': handleCreateFellowship,
 
     };
-    /*
-     '/posters/upload': handleUpload,
-     '/issues': publicationService.handleCreateIssue,
-     */
 
     // Check if the handler exists for this route
     const handler = requestHandlers[req.path];
@@ -220,15 +216,11 @@ const handlePosterUpload = async (req, res) => {
 };
 
 
-export const generateThumbnail = async (pdfPath) => {
+const generateThumbnail = async (pdfPath) => {
     try {
         console.log("📄 Generating thumbnail from:", pdfPath);
-
         const stream = fs.createReadStream(pdfPath);
-
-        const imageBuffer = await pdfThumbnail(stream, {
-            resize: { width: 300 }
-        });
+        const imageBuffer = await pdfThumbnail(stream, { resize: { width: 300 } });
 
         if (!Buffer.isBuffer(imageBuffer)) {
             throw new Error("Thumbnail is not a Buffer");
@@ -240,54 +232,48 @@ export const generateThumbnail = async (pdfPath) => {
         return `data:image/png;base64,${base64}`;
     } catch (err) {
         console.error("❌ Thumbnail generation failed:", err.message);
-
-
+        return null; // ✅ Important: fallback so app doesn’t break
+    }
+};
 
 
 // chatgpt helped with debugging ********************************************** PUBLICATION UPLOAD IS RIGHT HERE
 // Wrap in middleware to use in the main handler
-export const handlePublication = async (req, res) => {
+const handlePublication = async (req, res) => {
     console.log("📥 handlePublication triggered...");
 
-    // Run multer first to parse the multipart/form-data
     upload.single('file')(req, res, async function (err) {
         if (err) {
             console.error("❌ Multer error:", err);
-            return res.status(400).json({error: err.message});
+            return res.status(400).json({ error: err.message });
         }
 
         console.log("✅ Multer finished parsing request");
 
         try {
-            // Extract fields and parse arrays
             const title = req.body.title;
             const author = JSON.parse(req.body.author || '[]');
             const keywords = JSON.parse(req.body.keywords || '[]');
             let email = req.body.email;
             const status = req.body.status;
 
-
-            // Ensure file exists
-            if (!req.file) {
-                return res.status(400).json({ error: 'No file uploaded' });
-            }
+            if (!req.file) return res.status(400).json({ error: 'No file uploaded' });
 
             const fileBuffer = req.file.buffer;
             const base64Data = fileBuffer.toString('base64');
             const contentType = req.file.mimetype;
             const originalName = req.file.originalname;
 
-            // Create temp path and write file to disk
-            const uploadsDir = path.join(__dirname, 'uploads'); // use path-safe resolution
-            if (!fs.existsSync(uploadsDir)) {
-                fs.mkdirSync(uploadsDir);
-            }
+            // ✅ TEMP FILE PATH FIX FOR HEROKU
+            const uploadsDir = '/tmp';
             const tempPath = path.join(uploadsDir, `${Date.now()}_${originalName}`);
             fs.writeFileSync(tempPath, fileBuffer);
 
-            // Generate thumbnail
+            // ✅ GENERATE THUMBNAIL
             let thumbnailBase64 = await generateThumbnail(tempPath);
+            fs.unlinkSync(tempPath); // clean up temp file
 
+            // ✅ Ensure valid string
             if (thumbnailBase64 && typeof thumbnailBase64 !== 'string') {
                 if (Buffer.isBuffer(thumbnailBase64)) {
                     thumbnailBase64 = `data:image/png;base64,${thumbnailBase64.toString('base64')}`;
@@ -296,27 +282,19 @@ export const handlePublication = async (req, res) => {
                     thumbnailBase64 = null;
                 }
             }
-            fs.unlinkSync(tempPath);
 
-            // Validate fields
             if (!title || !email || !author.length) {
-                console.log(title, email, author)
-                console.warn("⚠️ Missing required fields");
-                return res.status(400).json({error: 'All fields are required'});
+                return res.status(400).json({ error: 'All fields are required' });
             }
 
             const db = client.db('CIRT');
             const collection = db.collection('PUBLICATIONS');
-
-            const users = db.collection("USERS")
+            const users = db.collection("USERS");
 
             if (!email.includes('@')) {
                 const user = await users.findOne({ connectionChocolateCookie: email });
-                if (user) {
-                    email = user.email; // or whatever field holds the email
-                } else {
-                    throw new Error("User not found");
-                }
+                if (user) email = user.email;
+                else throw new Error("User not found");
             }
 
             const publication = {
@@ -338,18 +316,18 @@ export const handlePublication = async (req, res) => {
             const result = await collection.insertOne(publication);
 
             if (result.insertedId) {
-
-                return res.status(201).json({message: "Upload successful", publicationId: result.insertedId});
+                return res.status(201).json({ message: "Upload successful", publicationId: result.insertedId });
             } else {
-                console.error("❌ Insertion failed");
-                return res.status(500).json({error: "Could not save publication"});
+                return res.status(500).json({ error: "Could not save publication" });
             }
+
         } catch (error) {
             console.error("💥 Server error:", error);
-            return res.status(500).json({error: "Internal server error"});
+            return res.status(500).json({ error: "Internal server error" });
         }
     });
-}
+};
+
 
 const handleUpdateStatus = async (req, res) => {
     try {
@@ -582,4 +560,13 @@ export const handleCreateFellowship = async (req, res) => {
             res.status(500).json({ error: "Internal server error" });
         }
     });
+};
+
+export {
+    handlePublication,
+    generateThumbnail,
+    handleUpdateStatus,
+    handleIncrementViews,
+    uploadPhotos,
+    handleDeletePhotos
 };
