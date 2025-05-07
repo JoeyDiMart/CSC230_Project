@@ -10,6 +10,7 @@ function FellowPage({role, email, name }) {
     const [searchQuery, setSearchQuery] = useState("");
     const [searchFilter, setSearchFilter] = useState("name");
     const [showUpload, setShowUpload] = useState(false);
+    const [selectedFellow, setSelectedFellow] = useState(null); // Track selected fellowship
     const [newFellow, setNewFellow] = useState({
         name: "",
         year: "",
@@ -90,6 +91,14 @@ function FellowPage({role, email, name }) {
     const filteredFellows = fellows.filter((fellow) =>
         fellow[searchFilter] && fellow[searchFilter].toLowerCase().includes(searchQuery.toLowerCase())
     );
+
+    const openPreview = (fellow) => {
+        setSelectedFellow(fellow);
+    };
+
+    const closePreview = () => {
+        setSelectedFellow(null);
+    };
 
     return (
         <div className="publisher-stuff">
@@ -209,7 +218,11 @@ function FellowPage({role, email, name }) {
 
             <div className="pubs-scroll-wrapper">
                 {filteredFellows.map((fellow, idx) => (
-                    <div key={idx} className="publication-container">
+                    <div
+                        key={idx}
+                        className="publication-container"
+                        onClick={() => openPreview(fellow)}
+                    >
                         <img
                             src={`${API_BASE_URL}${fellow.photo}`}
                             alt={fellow.name}
@@ -221,6 +234,7 @@ function FellowPage({role, email, name }) {
                     </div>
                 ))}
             </div>
+
             <h2>All Fellowships</h2>
             <div className="search-bar-container">
                 <div className="animated-search-form">
@@ -252,18 +266,45 @@ function FellowPage({role, email, name }) {
 
             <div className="pubs-scroll-wrapper">
                 {filteredFellows.map((fellow, idx) => (
-                    <div key={idx} className="publication-container">
+                    <div
+                        key={idx}
+                        className="publication-container"
+                        onClick={() => openPreview(fellow)}
+                    >
                         <img
                             src={`${API_BASE_URL}${fellow.photo}`}
                             alt={fellow.name}
                             className="publication-thumbnail"
                         />
                         <div className="publication-info-wrapper">
-                            <h3>{fellow.topic}</h3> {/* Display only the topic */}
+                            <h3>{fellow.topic}</h3>
                         </div>
                     </div>
                 ))}
             </div>
+            {selectedFellow && (
+                <>
+                    <div className="popup-backdrop" onClick={closePreview}></div>
+                    <div className="popup-overlay">
+                        <div className="popup-content">
+                            <button className="popup-close" onClick={closePreview}>
+                                <ImCross size={20} />
+                            </button>
+                            <h2>{selectedFellow.name}</h2>
+                            <p><strong>Year:</strong> {selectedFellow.year}</p>
+                            <p><strong>Bio:</strong> {selectedFellow.bio}</p>
+                            <p><strong>Publication Link:</strong> <a href={selectedFellow.publicationLink} target="_blank" rel="noopener noreferrer">{selectedFellow.publicationLink}</a></p>
+                            <p><strong>Topic:</strong> {selectedFellow.topic}</p>
+                            <p><strong>Collaborators:</strong> {selectedFellow.collaborators}</p>
+                            <img
+                                src={`${API_BASE_URL}${selectedFellow.photo}`}
+                                alt={selectedFellow.name}
+                                className="publication-thumbnail"
+                            />
+                        </div>
+                    </div>
+                </>
+            )}
         </div>
     );
 }
