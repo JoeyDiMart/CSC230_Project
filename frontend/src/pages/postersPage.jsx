@@ -342,14 +342,19 @@ function PostersPage({ role, email, name }) {
 
                         {/* Display Posters */}
                         <div className="posters-section">
-                            <h2>Approved Posters</h2>
+                            <div className="m-6">
+                                <h2>Approved Posters</h2>
+                            </div>
                             <Posters posters={posters} onPosterClick={(poster) => handlePosterPopup(poster)} />
                         </div>
 
                         {/* My Posters Section */}
                         {role !== 'guest' && (
                             <div className="posters-section">
-                                <h2>My Posters</h2>
+                                <div className="m-6">
+                                    <h2>My Posters</h2>
+                                </div>
+                                
                                 {loadingMyPosters ? (
                                     <div className="loading-container">
                                         <div className="loading-spinner"></div>
@@ -368,7 +373,10 @@ function PostersPage({ role, email, name }) {
                         {/* Pending Posters Section (Admin Only) */}
                         {role === 'admin' && (
                             <div className="posters-section">
-                                <h2>Pending Posters</h2>
+                                <div>
+                                    <h2>Pending Posters</h2>
+                                </div>
+
                                 <Posters posters={pendingPosters} onPosterClick={(poster) => handlePosterPopup(poster, "pending")} />
                             </div>
                         )}

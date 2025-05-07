@@ -103,7 +103,6 @@ function FellowPage({role, email, name }) {
     return (
         <div className="publisher-stuff">
             <div className="pub-header">
-                <h2>My Fellowships</h2>
                 <button onClick={() => setShowUpload(true)} className="upload">
                     Upload New Fellow
                 </button>
@@ -182,8 +181,9 @@ function FellowPage({role, email, name }) {
                 </>
             )}
 
-            <div className="search-bar-container">
-                <div className="animated-search-form">
+            <div className="search-bar-container flex items-center justify-between flex-wrap gap-4 mb-6">
+            <h2>My Fellowships</h2>
+                <div className="animated-search-form text-black">
                     <button className="search-icon">
                         <FaSearch size={14} />
                     </button>
@@ -229,9 +229,9 @@ function FellowPage({role, email, name }) {
                 ))}
             </div>
 
-            <h2>All Fellowships</h2>
-            <div className="search-bar-container">
-                <div className="animated-search-form">
+            <div className="search-bar-container flex items-center justify-between flex-wrap gap-4 mb-6">
+                <h2>All Fellowships</h2>
+                <div className="animated-search-form flex items-center gap-2">
                     <button className="search-icon">
                         <FaSearch size={14} />
                     </button>

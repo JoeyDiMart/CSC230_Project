@@ -5,7 +5,8 @@
     gap: 1rem;
     padding: 80px 20px 80px;
     width: 100%;
-    max-width: 1400px;
+    max-width: fit-content;
+    max-height: min-content;
     margin: 0 auto;
     overflow: hidden;
 }
@@ -29,6 +30,6 @@
     height: auto;
     object-fit: cover;
     max-width: 100%;
-    max-height: 350px; /* might need to delete this */
+    max-height: 250px; /* might need to delete this */
     border-radius: 10px;
 }
