@@ -211,30 +211,12 @@ function FellowPage({role, email, name }) {
                 {filteredFellows.map((fellow, idx) => (
                     <div key={idx} className="publication-container">
                         <img
-                            src={`${API_BASE_URL}${fellow.photo}`} // Prepend the base URL to the photo path
+                            src={`${API_BASE_URL}${fellow.photo}`}
                             alt={fellow.name}
                             className="publication-thumbnail"
                         />
                         <div className="publication-info-wrapper">
-                            <h3>
-                                {fellow.name} ({fellow.year})
-                            </h3>
-                            <p>{fellow.bio}</p>
-                            <p>
-                                <strong>Topic:</strong> {fellow.topic}
-                            </p>
-                            <p>
-                                <strong>Collaborators:</strong> {fellow.collaborators}
-                            </p>
-                            {fellow.publicationLink && (
-                                <a
-                                    href={fellow.publicationLink}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                >
-                                    View Publication
-                                </a>
-                            )}
+                            <h3>{fellow.topic}</h3> {/* Display only the topic */}
                         </div>
                     </div>
                 ))}
@@ -277,25 +259,7 @@ function FellowPage({role, email, name }) {
                             className="publication-thumbnail"
                         />
                         <div className="publication-info-wrapper">
-                            <h3>
-                                {fellow.name} ({fellow.year})
-                            </h3>
-                            <p>{fellow.bio}</p>
-                            <p>
-                                <strong>Topic:</strong> {fellow.topic}
-                            </p>
-                            <p>
-                                <strong>Collaborators:</strong> {fellow.collaborators}
-                            </p>
-                            {fellow.publicationLink && (
-                                <a
-                                    href={fellow.publicationLink}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                >
-                                    View Publication
-                                </a>
-                            )}
+                            <h3>{fellow.topic}</h3> {/* Display only the topic */}
                         </div>
                     </div>
                 ))}
