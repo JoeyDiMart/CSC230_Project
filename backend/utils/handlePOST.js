@@ -220,6 +220,9 @@ const handlePosterUpload = async (req, res) => {
 };
 
 
+import fs from 'fs';
+import pdfThumbnail from 'pdf-thumbnail';
+
 export const generateThumbnail = async (pdfPath) => {
     try {
         const stream = fs.createReadStream(pdfPath);
@@ -236,6 +239,7 @@ export const generateThumbnail = async (pdfPath) => {
         return null;
     }
 };
+
 
 
 // chatgpt helped with debugging ********************************************** PUBLICATION UPLOAD IS RIGHT HERE
