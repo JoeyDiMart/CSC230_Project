@@ -270,14 +270,16 @@
     z-index: 1000;
 }
 
-.poster-popup-content {
+ .poster-popup-content {
     background-color: white;
     padding: 20px;
     border-radius: 8px;
+    width: 300px;
     max-width: 800px;
     max-height: 90vh;
     overflow-y: auto;
     position: relative;
+    animation: fadeSlideIn 0.3s ease forwards;
 }
 
 .close-popup {
@@ -288,7 +290,8 @@
     border: none;
     cursor: pointer;
     color: #C8102E;
-}
+    animation: fadeSlideOut 0.3s ease forwards;
+} 
 
 .poster-preview {
     margin: 20px 0;
@@ -361,3 +364,27 @@
     cursor: pointer;
     transition: background-color 0.2s ease;
 }
+
+      /*Creating Animation*/
+      @keyframes fadeSlideIn {
+        0% {
+          opacity: 0;
+          transform: translateY(-10px);
+        }
+        100% {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes fadeSlideOut {
+        100%{
+            opacity: 1;
+            transform: translateY(0);
+        }
+        0% {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+
+      }
