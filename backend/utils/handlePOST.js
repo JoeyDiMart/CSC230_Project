@@ -13,7 +13,8 @@ import * as eventSubscriptionService from '../services/eventSubscriptionService.
 import { upload } from './multerConfig.js';
 import pdfThumbnail from 'pdf-thumbnail';
 import fs from 'fs';
-import getStream from 'get-stream';
+import { buffer as getStreamBuffer } from 'get-stream';
+
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -221,16 +222,24 @@ const handlePosterUpload = async (req, res) => {
 };
 
 
-export const generateThumbnail = async (pdfPath) => {
+export const generateThumbnail = async (pdfPath, originalName) => {
     try {
         const stream = fs.createReadStream(pdfPath);
         const imageStream = await pdfThumbnail(stream, { resize: { width: 300 } });
 
-        const buffer = await getStream(imageStream);
-        const base64 = buffer.toString('base64');
+        const buffer = await getStream.buffer(imageStream);
 
-        console.log("✅ Thumbnail generated. Length:", base64.length);
-        return `data:image/png;base64,${base64}`;
+        const thumbnailsDir = path.join(__dirname, '../public/thumbnails');
+        if (!fs.existsSync(thumbnailsDir)) {
+            fs.mkdirSync(thumbnailsDir, { recursive: true });
+        }
+
+        const filename = `${Date.now()}_${originalName.replace(/\.[^/.]+$/, '')}.png`;
+        const fullPath = path.join(thumbnailsDir, filename);
+        fs.writeFileSync(fullPath, buffer);
+
+        console.log("✅ Thumbnail saved as:", filename);
+        return filename;
     } catch (err) {
         console.error("❌ Thumbnail generation failed:", err.message);
         return null;
@@ -283,12 +292,9 @@ export const handlePublication = async (req, res) => {
             console.log("🖼️ Thumbnail type:", typeof thumbnailBase64); // Should be 'string'
             console.log("🖼️ Thumbnail preview:", thumbnailBase64?.substring(0, 50)); // Should start with 'data:image/png;base64,...'
 
-            // Safety check: if it's a Buffer or somehow an object, force string
-            if (Buffer.isBuffer(thumbnailBase64)) {
-                thumbnailBase64 = `data:image/png;base64,${thumbnailBase64.toString('base64')}`;
-            } else if (typeof thumbnailBase64 !== 'string') {
-                console.warn("⚠️ Unexpected thumbnail format. Forcing stringify.");
-                thumbnailBase64 = `data:image/png;base64,${Buffer.from(JSON.stringify(thumbnailBase64)).toString('base64')}`;
+            if (!thumbnailBase64 || typeof thumbnailBase64 !== 'string' || !thumbnailBase64.startsWith('data:image/png;base64,')) {
+                console.warn("❌ Invalid thumbnail, skipping...");
+                thumbnailBase64 = null;
             }
 
             // Validate fields
@@ -312,6 +318,9 @@ export const handlePublication = async (req, res) => {
                 }
             }
 
+            const thumbnailFilename = await generateThumbnail(tempPath, originalName);
+            fs.unlinkSync(tempPath); // remove temp PDF
+
             const publication = {
                 title,
                 author,
@@ -324,7 +333,7 @@ export const handlePublication = async (req, res) => {
                     data: base64Data,
                     type: contentType || "application/pdf",
                 },
-                thumbnail: thumbnailBase64,
+                thumbnail: thumbnailFilename,  // only filename now
                 uploadedAt: new Date()
             };
 
