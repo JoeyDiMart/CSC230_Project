@@ -266,7 +266,7 @@ export const handlePublication = async (req, res) => {
             const title = req.body.title;
             const author = JSON.parse(req.body.author || '[]');
             const keywords = JSON.parse(req.body.keywords || '[]');
-            var email = req.body.email;
+            let email = req.body.email;
             const status = req.body.status;
 
 
@@ -323,7 +323,7 @@ export const handlePublication = async (req, res) => {
                 file: {
                     name: originalName,
                     data: base64Data,
-                    contentType: contentType,
+                    type: contentType || "application/pdf",
                 },
                 thumbnail: thumbnailBase64,
                 uploadedAt: new Date()

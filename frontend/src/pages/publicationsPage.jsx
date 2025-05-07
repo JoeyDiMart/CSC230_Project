@@ -122,9 +122,17 @@ const fetchMyPublications = () => {
             return; // Prevent fetch if no cookie is found
         }
         formData.append("title", uploadFile.title);
-        formData.append("author", JSON.stringify(uploadFile.author));
+        formData.append("author", JSON.stringify(
+            Array.isArray(uploadFile.author)
+                ? uploadFile.author
+                : uploadFile.author.split(",").map(s => s.trim())
+        ));
         formData.append("email", chocolate);
-        formData.append("keywords", JSON.stringify(uploadFile.keywords));
+        formData.append("keywords", JSON.stringify(
+            Array.isArray(uploadFile.keywords)
+                ? uploadFile.keywords
+                : uploadFile.keywords.split(",").map(s => s.trim())
+        ));
         formData.append("file", uploadFile.file);
         formData.append("status", uploadFile.status);
 
@@ -223,6 +231,8 @@ const fetchMyPublications = () => {
 
     // helper functions for the popup logic to open and close
     const openPopup = (publication) => {
+        console.log("📎 Opening popup with file:", publication.file);
+        console.log("📎 File data length:", publication.file?.data?.length);
         setPopupPub(publication);
         setCurrentComment(publication.comments || ""); // <== add this
         setShowPopup(true);
@@ -423,16 +433,26 @@ const fetchMyPublications = () => {
 
                             <div className="popup-layout">
                                 <div className="popup-pdf">
-                                    <embed
-                                        src={`data:application/pdf;base64,${popupPub?.file?.data}`}
-                                        type="application/pdf"
-                                        width="100%"
-                                        height="100%"
-                                    />
+                                    {popupPub?.file?.data ? (
+                                        <embed
+                                            src={`data:${popupPub?.file?.type || 'application/pdf'};base64,${popupPub?.file?.data}`}
+                                            type="application/pdf"
+                                            width="100%"
+                                            height="100%"
+                                        />
+                                    ) : (
+                                        <p style={{ padding: "1rem", color: "red", fontWeight: "bold" }}>
+                                            ⚠️ Preview unavailable – file data is missing.
+                                        </p>
+                                    )}
                                 </div>
                                 <div className="popup-info">
                                     <h2>{popupPub.title}</h2>
-                                    <p><strong>Authors:</strong> {popupPub.author?.join(", ")}</p>
+                                    <p><strong>Authors:</strong>
+                                        {Array.isArray(popupPub.author)
+                                            ? popupPub.author.join(", ")
+                                            : popupPub.author || "N/A"}
+                                    </p>
                                     <p><strong>Keywords:</strong> {popupPub.keywords?.join(", ")}</p>
 
                                     {(role !== "guest" ) && (
