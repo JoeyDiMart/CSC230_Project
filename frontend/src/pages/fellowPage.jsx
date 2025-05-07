@@ -138,7 +138,7 @@ function FellowPage({role, email, name }) {
                 </div>
             </div>
 
-            <div className="pub-header">
+            <div className="pub-header flex items-center justify-between flex-wrap gap-4 mb-6">
                 <button onClick={() => setShowUpload(true)} className="upload">
                     Upload New Fellow
                 </button>
