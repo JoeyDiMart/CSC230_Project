@@ -43,7 +43,7 @@ export const handlePostRequest = async (req, res) => {
         '/api/photos/delete': handleDeletePhotos,
         '/forgot-password': userService.handleForgotPassword,
         '/events/subscribe': eventSubscriptionService.handleSubscribe,
-        '/api/fellow/upload': fellowshipService.handleCreateFellowship,
+        '/api/fellow/upload': handleCreateFellowship,
 
     };
     /*
@@ -473,4 +473,50 @@ const handleDeletePhotos = async (req, res) => {
         res.status(500).json({ error: "Internal server error" });
     }
 }
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        const uploadDir = '../photos'; // Make sure this is correct relative path
+        if (!fs.existsSync(uploadDir)) {
+            fs.mkdirSync(uploadDir, { recursive: true });  // Ensure the directory exists
+        }
+        cb(null, uploadDir);
+    },
+    filename: (req, file, cb) => {
+        cb(null, `${Date.now()}-${file.originalname}`);
+    }
+});
 
+const uploadMiddleware = multer({ storage }).single('photo');
+// POST handler
+export const handleCreateFellowship = async (req, res) => {
+    uploadMiddleware(req, res, async (err) => {
+        if (err) {
+            return res.status(400).json({ error: err.message });
+        }
+
+        // Proceed with the fellowship creation after file upload
+        const { name, year, bio, publicationLink, topic, collaborators, isMyFellowship } = req.body;
+        console.log("Received data:", req.body);
+        if (!name || !year || !bio || !publicationLink) {
+            return res.status(400).json({ error: "All fields are required" });
+        }
+
+        const newFellowship = {
+            name,
+            year,
+            bio,
+            publicationLink,
+            topic,
+            collaborators,
+            isMyFellowship: isMyFellowship === "true",
+            createdAt: new Date(),
+            photo: req.file ? `/uploads/${req.file.filename}` : null,
+        };
+
+        const db = client.db("CIRT");
+        const collection = db.collection("FELLOWS");
+        const result = await collection.insertOne(newFellowship);
+
+        res.status(201).json({ ...newFellowship, _id: result.insertedId });
+    });
+};
