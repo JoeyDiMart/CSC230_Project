@@ -134,7 +134,7 @@ function FellowPage({role, email, name }) {
                 </div>
             </div>
 
-            <div className="pub-header">
+            <div className="pub-header flex items-center justify-center">
                 <button onClick={() => setShowUpload(true)} className="upload">
                     Upload New Fellow
                 </button>
