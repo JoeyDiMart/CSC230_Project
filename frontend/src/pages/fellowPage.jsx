@@ -127,6 +127,7 @@ function FellowPage({role, email, name }) {
                                     name="name"
                                     placeholder="Name"
                                     onChange={handleInputChange}
+                                    maxLength="50" // Limit name to 50 characters
                                     required
                                 />
                                 <input
@@ -134,12 +135,15 @@ function FellowPage({role, email, name }) {
                                     name="year"
                                     placeholder="Fellowship Year"
                                     onChange={handleInputChange}
+                                    pattern="\d{4}" // Only allow 4-digit numbers
+                                    title="Please enter a valid 4-digit year"
                                     required
                                 />
                                 <textarea
                                     name="bio"
                                     placeholder="Short Bio"
                                     onChange={handleInputChange}
+                                    maxLength="500" // Limit bio to 500 characters
                                     required
                                 />
                                 <input
@@ -153,12 +157,14 @@ function FellowPage({role, email, name }) {
                                     name="topic"
                                     placeholder="Fellowship Topic"
                                     onChange={handleInputChange}
+                                    maxLength="100" // Limit topic to 100 characters
                                 />
                                 <input
                                     type="text"
                                     name="collaborators"
                                     placeholder="Collaborators"
                                     onChange={handleInputChange}
+                                    maxLength="200" // Limit collaborators to 200 characters
                                 />
                                 Add Photo Here
                                 <input
