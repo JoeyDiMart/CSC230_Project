@@ -231,8 +231,6 @@ const fetchMyPublications = () => {
 
     // helper functions for the popup logic to open and close
     const openPopup = (publication) => {
-        console.log("📎 Opening popup with file:", publication.file);
-        console.log("📎 File data length:", publication.file?.data?.length);
         setPopupPub(publication);
         setCurrentComment(publication.comments || ""); // <== add this
         setShowPopup(true);
