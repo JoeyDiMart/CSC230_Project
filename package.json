@@ -5,8 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node backend/main.js",
-    "heroku-postbuild": "cd frontend && npm install && npm run build",
-    "postinstall": "PUPPETEER_CACHE_DIR=.cache/puppeteer PUPPETEER_SKIP_DOWNLOAD=false node node_modules/puppeteer/install.js"
+    "heroku-postbuild": "cd frontend && npm install && npm run build"
   },
   "type": "module",
   "repository": {
@@ -31,7 +30,7 @@
     "mongodb": "^4.17.2",
     "multer": "^1.4.5-lts.1",
     "nodemailer": "^7.0.2",
-    "puppeteer": "^19.11.1",
+    "pdf-thumbnail": "^1.0.6",
     "serve-favicon": "^2.5.0"
   },
   "devDependencies": {
