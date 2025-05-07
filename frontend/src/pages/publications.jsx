@@ -39,6 +39,8 @@ function Pubs({ pubs, showStatus, onPublicationClick }) {
                                     style={{ width: "100%", maxHeight: "200px", objectFit: "contain" }}
                                 />
                             )}
+                            <p>{publication.thumbnail}</p>
+
                             <div className="publication-info-wrapper">
                                 {showStatus && (
                                     <p className="publication-status">{publication.status}</p>
