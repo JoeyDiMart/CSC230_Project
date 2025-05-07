@@ -50,42 +50,75 @@ function FellowPage() {
         setNewFellow((prev) => ({ ...prev, photo: e.target.files[0] }));
     };
 
+
     const handleSubmit = async (e) => {
         e.preventDefault();
+
         const formData = new FormData();
-        Object.entries(newFellow).forEach(([key, value]) => {
-            formData.append(key, value);
-        });
-        console.log(formData);
+        // formData.append("name", newFellow.name);
+        // formData.append("year", newFellow.year);
+        // formData.append("bio", newFellow.bio);
+        // formData.append("publicationLink", newFellow.publicationLink);
+        // formData.append("topic", newFellow.topic);
+        // formData.append("collaborators", newFellow.collaborators);
+        // formData.append("isMyFellowship", newFellow.isMyFellowship ? "true" : "false");
+
+        formData.append("name", "John Doe");
+        formData.append("year", "2023");
+        formData.append("bio", "A short bio about John Doe.");
+        formData.append("publicationLink", "https://example.com/publication");
+        formData.append("topic", "Artificial Intelligence");
+        formData.append("collaborators", "Jane Smith, Bob Johnson");
+        formData.append("isMyFellowship", "true");
+        // Log each field individually
+        console.log("Name:", formData.get("name"));
+        console.log("Year:", formData.get("year"));
+        console.log("Bio:", formData.get("bio"));
+        console.log("Publication Link:", formData.get("publicationLink"));
+        console.log("Topic:", formData.get("topic"));
+        console.log("Collaborators:", formData.get("collaborators"));
+        console.log("Is My Fellowship:", formData.get("isMyFellowship"));
+        const payload = {
+            name: "John Doe",
+            year: "2023",
+            bio: "A short bio about John Doe.",
+            publicationLink: "https://example.com/publication",
+            topic: "Artificial Intelligence",
+            collaborators: "Jane Smith, Bob Johnson",
+            isMyFellowship: true,
+        };
+        // Iterate over the FormData object to log all key-value pairs
+        console.log("Iterating over FormData:");
+        for (let [key, value] of formData.entries()) {
+            console.log(`${key}: ${value}`);
+        }
+
         try {
-            console.log("Uploading new fellow:", newFellow);
-            console.log("api url", `${API_BASE_URL}/api/fellow/upload`);
             const res = await fetch(`${API_BASE_URL}/api/fellow/upload`, {
                 method: "POST",
                 credentials: "include",
-                body: formData,
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(payload),
             });
-            console.log(res.status);
 
             if (res.ok) {
-                alert("Fellow added successfully");
-                console.log(res.data);
                 const updated = await res.json();
                 setFellows((prev) => [...prev, updated]);
                 setShowUpload(false);
+                alert("Fellow added successfully");
             } else {
                 const err = await res.json();
-                console.log(err)
-                alert("Upload failed: " + err.message);
+                alert("Upload failed: " + err.error);
             }
         } catch (error) {
             console.error("Upload error:", error);
             alert("Something went wrong.");
         }
     };
-
     const filteredFellows = fellows.filter((fellow) =>
-        fellow[searchFilter].toLowerCase().includes(searchQuery.toLowerCase())
+        fellow[searchFilter] && fellow[searchFilter].toLowerCase().includes(searchQuery.toLowerCase())
     );
 
     return (

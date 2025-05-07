@@ -176,6 +176,7 @@ const handleLogin = async (req, res) => {
             email: user.email,
             role: user.role
         };
+        console.log(req.session.user.name);
 
         return res.json({
             message: 'Logged in successfully',
