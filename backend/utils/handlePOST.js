@@ -227,8 +227,12 @@ export const generateThumbnail = async (pdfPath) => {
             resize: { width: 300 }
         });
 
+        if (!Buffer.isBuffer(imageBuffer)) {
+            throw new Error("Thumbnail is not a Buffer");
+        }
+
         const base64 = imageBuffer.toString('base64');
-        console.log("✅ Thumbnail generated. Length:", base64.length);
+        console.log("✅ Thumbnail generated, length:", base64.length);
 
         return `data:image/png;base64,${base64}`;
     } catch (err) {
@@ -281,7 +285,16 @@ export const handlePublication = async (req, res) => {
             fs.writeFileSync(tempPath, fileBuffer);
 
             // Generate thumbnail
-            const thumbnailBase64 = await generateThumbnail(tempPath);
+            let thumbnailBase64 = await generateThumbnail(tempPath);
+
+            if (thumbnailBase64 && typeof thumbnailBase64 !== 'string') {
+                if (Buffer.isBuffer(thumbnailBase64)) {
+                    thumbnailBase64 = `data:image/png;base64,${thumbnailBase64.toString('base64')}`;
+                } else {
+                    console.warn("⚠️ Unexpected thumbnail type. Setting to null.");
+                    thumbnailBase64 = null;
+                }
+            }
             fs.unlinkSync(tempPath);
 
             // Validate fields
