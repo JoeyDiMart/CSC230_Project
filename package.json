@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start": "node backend/main.js",
-    "heroku-prebuild": "npm config set legacy-peer-deps true",
-    "heroku-postbuild": "cd frontend && npm install && npm run build"
+    "heroku-postbuild": "cd frontend && npm install && npm run build",
+    "postinstall": "PUPPETEER_CACHE_DIR=.cache/puppeteer PUPPETEER_SKIP_DOWNLOAD=false node node_modules/puppeteer/install.js"
   },
   "type": "module",
   "repository": {
