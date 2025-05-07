@@ -401,50 +401,51 @@ const handleGetActiveReviewers = async (req, res) => {
 
 // GET handler
 export const handleGetFellowships = async (req, res) => {
-    console.log("✅ handleGetFellowships triggered");
+    console.log("📸 handleGetFellowships triggered...");
     try {
-        const db = client.db('CIRT');
-        const collection = db.collection('FELLOWS');
-        const { userId } = req.query;
-        console.log("Received request to get fellowships with userId:", userId);
-        const query = userId ? { createdBy: userId } : {};
-        const fellowships = await collection.find(query).toArray();
+        const db = client.db("CIRT");
+        const collection = db.collection("FELLOWS");
 
-        // // Process each fellowship to temporarily save the image
-        // const tempFolder = path.join(__dirname, '../FellowImages');
-        // if (!fs.existsSync(tempFolder)) {
-        //     fs.mkdirSync(tempFolder, { recursive: true });
-        // }
-        // for (const fellow of fellowships) {
-        //     if (fellow.photo) {
-        //         const photoPath = path.join(tempFolder, path.basename(fellow.photo));
-        //         if (!fs.existsSync(photoPath)) {
-        //             // Simulate fetching the image from the database or another source
-        //             const imageData = fs.readFileSync(path.join(__dirname, fellow.photo)); // Adjust as needed
-        //             fs.writeFileSync(photoPath, imageData);
-        //         }
-        //     }
-        // }
+        // Fetch fellowships with their photos
+        const fellowships = await collection.find({}).toArray();
 
-        console.log("Fetched fellowships:", fellowships);
-        res.status(200).json(fellowships);
+        if (!fellowships.length) {
+            return res.status(404).json({ error: "No fellowships found" });
+        }
 
-        // // Clean up the images after a delay
-        // setTimeout(() => {
-        //     for (const fellow of fellowships) {
-        //         if (fellow.photo) {
-        //             const photoPath = path.join(tempFolder, path.basename(fellow.photo));
-        //             if (fs.existsSync(photoPath)) {
-        //                 fs.unlink(photoPath, (err) => {
-        //                     if (err) console.error("Error deleting temp file:", err);
-        //                     else console.log("Temp file deleted:", photoPath);
-        //                 });
-        //             }
-        //         }
-        //     }
-        // }, 60000); // Delete after 1 minute
-    } catch (err) {
-        console.error("Error fetching fellowships:", err);
+        // Directory to save decoded images
+        const outputDir = path.join(__dirname, "../FellowImages");
+        if (!fs.existsSync(outputDir)) {
+            fs.mkdirSync(outputDir);
+        }
+
+        // Map the data to include all fields and decode photos
+        const formattedFellowships = fellowships.map(fellowship => {
+            let photoPath = null;
+
+            if (fellowship.photo) {
+                const buffer = Buffer.from(fellowship.photo, "base64");
+                photoPath = path.join(outputDir, `${fellowship.name.replace(/\s+/g, "_")}.png`);
+                fs.writeFileSync(photoPath, buffer);
+            }
+
+            return {
+                name: fellowship.name,
+                year: fellowship.year,
+                bio: fellowship.bio,
+                photo: photoPath ? `/FellowImages/${path.basename(photoPath)}` : null,
+                publicationLink: fellowship.publicationLink,
+                topic: fellowship.topic,
+                collaborators: fellowship.collaborators,
+                isMyFellowship: fellowship.isMyFellowship || false,
+            };
+        });
+
+        console.log("✅ Photos decoded and saved successfully:", formattedFellowships);
+
+        res.status(200).json(formattedFellowships);
+    } catch (error) {
+        console.error("💥 Error fetching fellowship photos:", error);
         res.status(500).json({ error: "Internal server error" });
     }
 };

@@ -480,47 +480,26 @@ const handleDeletePhotos = async (req, res) => {
     }
 }
 
-const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        console.log("📂 Setting upload destination...");
-        const uploadDir = './FellowImages';
-        if (!fs.existsSync(uploadDir)) {
-            console.log("📂 Upload directory does not exist. Creating...");
-            fs.mkdirSync(uploadDir, { recursive: true });  // Ensure the directory exists
-        }
-        console.log("📂 Upload directory set to:", uploadDir);
-        cb(null, uploadDir);
-    },
-    filename: (req, file, cb) => {
-        const filename = `${Date.now()}-${file.originalname}`;
-        console.log("📄 Generated filename:", filename);
-        cb(null, filename);
-    }
-});
 
-const uploadMiddleware = multer({
-    storage,
+export const uploadPhoto = multer({
+    storage: multer.memoryStorage(),
     fileFilter: (req, file, cb) => {
-        console.log("📋 Validating file type:", file?.mimetype || "No file provided");
-        if (!file) {
-            console.error("❌ No file provided");
-            return cb(new Error("No file provided"));
+        const allowedMimeTypes = ["image/jpeg", "image/png", "image/gif"]; // Add allowed image types
+        if (allowedMimeTypes.includes(file.mimetype)) {
+            cb(null, true); // Accept the file
+        } else {
+            cb(new Error("Only image files are allowed")); // Reject the file
         }
-        if (!['image/jpeg', 'image/png', 'application/pdf'].includes(file.mimetype)) {
-            console.error("❌ Invalid file type:", file.mimetype);
-            return cb(new Error('Invalid file type. Only JPG, PNG, and PDF are allowed.'));
-        }
-        console.log("✅ File type is valid.");
-        cb(null, true);
     },
-}).single('photo');
-
+});
 // POST handler
 export const handleCreateFellowship = async (req, res) => {
     console.log("📥 handleCreateFellowship triggered...");
-    uploadMiddleware(req, res, async (err) => {
+
+    // Run multer to handle multipart/form-data
+    uploadPhoto.single('photo')(req, res, async function (err) {
         if (err) {
-            console.error("❌ Error during file upload:", err.message);
+            console.error("❌ Multer error:", err);
             return res.status(400).json({ error: err.message });
         }
 
@@ -535,6 +514,12 @@ export const handleCreateFellowship = async (req, res) => {
             return res.status(400).json({ error: "All fields are required" });
         }
 
+        let photoBase64 = null;
+        if (req.file) {
+            const fileBuffer = req.file.buffer;
+            photoBase64 = fileBuffer.toString('base64');
+        }
+
         const newFellowship = {
             name,
             year,
@@ -544,32 +529,17 @@ export const handleCreateFellowship = async (req, res) => {
             collaborators,
             isMyFellowship: isMyFellowship === "true",
             createdAt: new Date(),
-            photo: req.file ? `/FellowImages/${req.file.filename}` : null,
+            photo: photoBase64, // Save the Base64 string
         };
 
-        console.log("📦 New fellowship data:", newFellowship);
 
         try {
             const db = client.db("CIRT");
             const collection = db.collection("FELLOWS");
-            console.log("📂 Inserting fellowship into database...");
             const result = await collection.insertOne(newFellowship);
 
             console.log("✅ Fellowship created successfully with ID:", result.insertedId);
-
-            // // Remove the uploaded file from the backend
-            // if (req.file) {
-            //     const filePath = path.join(__dirname, '../FellowImages', req.file.filename);
-            //     fs.unlink(filePath, (unlinkErr) => {
-            //         if (unlinkErr) {
-            //             console.error("❌ Error deleting file:", unlinkErr);
-            //         } else {
-            //             console.log("🗑️ File deleted successfully:", filePath);
-            //         }
-            //     });
-            // }
             res.status(201).json({ ...newFellowship, _id: result.insertedId });
-
         } catch (dbError) {
             console.error("💥 Database error:", dbError);
             res.status(500).json({ error: "Internal server error" });
