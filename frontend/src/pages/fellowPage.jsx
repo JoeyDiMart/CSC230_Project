@@ -4,8 +4,9 @@ import { FaSearch } from "react-icons/fa";
 import "./publicationsPage.css"; // Reuse the CSS from publicationsPage
 import API_BASE_URL from "../config.js";
 
-function FellowPage() {
+function FellowPage({role, email, name }) {
     const [fellows, setFellows] = useState([]);
+    const [myFellows, setMyFellows] = useState([]);
     const [searchQuery, setSearchQuery] = useState("");
     const [searchFilter, setSearchFilter] = useState("name");
     const [showUpload, setShowUpload] = useState(false);
@@ -28,6 +29,14 @@ function FellowPage() {
             .then((data) => setFellows(data))
             .catch((err) => console.error("Error loading fellows:", err));
     }, []);
+
+    // Fetch my fellowships
+    useEffect(() => {
+        fetch(`${API_BASE_URL}/api/fellows?userId=${email}`, { credentials: "include" })
+            .then((res) => res.json())
+            .then((data) => setMyFellows(data))
+            .catch((err) => console.error("Error loading my fellows:", err));
+    }, [email]);
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -85,7 +94,7 @@ function FellowPage() {
     return (
         <div className="publisher-stuff">
             <div className="pub-header">
-                <h2>Fellowships</h2>
+                <h2>My Fellowships</h2>
                 <button onClick={() => setShowUpload(true)} className="upload">
                     Upload New Fellow
                 </button>
@@ -203,6 +212,67 @@ function FellowPage() {
                     <div key={idx} className="publication-container">
                         <img
                             src={`${API_BASE_URL}${fellow.photo}`} // Prepend the base URL to the photo path
+                            alt={fellow.name}
+                            className="publication-thumbnail"
+                        />
+                        <div className="publication-info-wrapper">
+                            <h3>
+                                {fellow.name} ({fellow.year})
+                            </h3>
+                            <p>{fellow.bio}</p>
+                            <p>
+                                <strong>Topic:</strong> {fellow.topic}
+                            </p>
+                            <p>
+                                <strong>Collaborators:</strong> {fellow.collaborators}
+                            </p>
+                            {fellow.publicationLink && (
+                                <a
+                                    href={fellow.publicationLink}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                >
+                                    View Publication
+                                </a>
+                            )}
+                        </div>
+                    </div>
+                ))}
+            </div>
+            <h2>All Fellowships</h2>
+            <div className="search-bar-container">
+                <div className="animated-search-form">
+                    <button className="search-icon">
+                        <FaSearch size={14} />
+                    </button>
+                    <input
+                        type="text"
+                        className="animated-search-input"
+                        placeholder="Search..."
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                    />
+                    <div className="select-wrapper">
+                        <div className="select-inner">
+                            <select
+                                className="search-filter"
+                                value={searchFilter}
+                                onChange={(e) => setSearchFilter(e.target.value)}
+                            >
+                                <option value="name">Name</option>
+                                <option value="topic">Topic</option>
+                                <option value="year">Year</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div className="pubs-scroll-wrapper">
+                {filteredFellows.map((fellow, idx) => (
+                    <div key={idx} className="publication-container">
+                        <img
+                            src={`${API_BASE_URL}${fellow.photo}`}
                             alt={fellow.name}
                             className="publication-thumbnail"
                         />
