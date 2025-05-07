@@ -226,9 +226,9 @@ export const generateThumbnail = async (pdfPath, originalName) => {
         const stream = fs.createReadStream(pdfPath);
         const imageStream = await pdfThumbnail(stream, { resize: { width: 300 } });
 
-        const buffer = await getStream.buffer(imageStream);
+        const buffer = await getStream(imageStream);
 
-        const thumbnailsDir = path.join(__dirname, '../public/thumbnails');
+        const thumbnailsDir = path.join(__dirname, '../thumbnails');
         if (!fs.existsSync(thumbnailsDir)) {
             fs.mkdirSync(thumbnailsDir, { recursive: true });
         }
