@@ -101,7 +101,39 @@ function FellowPage({role, email, name }) {
     };
 
     return (
+
         <div className="publisher-stuff">
+    
+
+            <div className="search-bar-container flex items-center justify-between flex-wrap gap-4 mb-6">
+            <h2>My Fellowships</h2>
+                <div className="animated-search-form text-black">
+                    <button className="search-icon">
+                        <FaSearch size={14} />
+                    </button>
+                    <input
+                        type="text"
+                        className="animated-search-input"
+                        placeholder="Search..."
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                    />
+                    <div className="select-wrapper">
+                        <div className="select-inner">
+                            <select
+                                className="search-filter"
+                                value={searchFilter}
+                                onChange={(e) => setSearchFilter(e.target.value)}
+                            >
+                                <option value="name">Name</option>
+                                <option value="topic">Topic</option>
+                                <option value="year">Year</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <div className="pub-header">
                 <button onClick={() => setShowUpload(true)} className="upload">
                     Upload New Fellow
@@ -180,35 +212,6 @@ function FellowPage({role, email, name }) {
                     </form>
                 </>
             )}
-
-            <div className="search-bar-container flex items-center justify-between flex-wrap gap-4 mb-6">
-            <h2>My Fellowships</h2>
-                <div className="animated-search-form text-black">
-                    <button className="search-icon">
-                        <FaSearch size={14} />
-                    </button>
-                    <input
-                        type="text"
-                        className="animated-search-input"
-                        placeholder="Search..."
-                        value={searchQuery}
-                        onChange={(e) => setSearchQuery(e.target.value)}
-                    />
-                    <div className="select-wrapper">
-                        <div className="select-inner">
-                            <select
-                                className="search-filter"
-                                value={searchFilter}
-                                onChange={(e) => setSearchFilter(e.target.value)}
-                            >
-                                <option value="name">Name</option>
-                                <option value="topic">Topic</option>
-                                <option value="year">Year</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-            </div>
 
             <div className="pubs-scroll-wrapper">
                 {filteredFellows.map((fellow, idx) => (
