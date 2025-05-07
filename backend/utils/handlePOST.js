@@ -529,7 +529,7 @@ export const handleCreateFellowship = async (req, res) => {
             collaborators,
             isMyFellowship: isMyFellowship === "true",
             createdAt: new Date(),
-            photo: req.file ? `/uploads/${req.file.filename}` : null,
+            photo: req.file ? `/FellowImages/${req.file.filename}` : null,
         };
 
         console.log("📦 New fellowship data:", newFellowship);
@@ -542,17 +542,17 @@ export const handleCreateFellowship = async (req, res) => {
 
             console.log("✅ Fellowship created successfully with ID:", result.insertedId);
 
-            // Remove the uploaded file from the backend
-            if (req.file) {
-                const filePath = path.join(__dirname, '../FellowImages', req.file.filename);
-                fs.unlink(filePath, (unlinkErr) => {
-                    if (unlinkErr) {
-                        console.error("❌ Error deleting file:", unlinkErr);
-                    } else {
-                        console.log("🗑️ File deleted successfully:", filePath);
-                    }
-                });
-            }
+            // // Remove the uploaded file from the backend
+            // if (req.file) {
+            //     const filePath = path.join(__dirname, '../FellowImages', req.file.filename);
+            //     fs.unlink(filePath, (unlinkErr) => {
+            //         if (unlinkErr) {
+            //             console.error("❌ Error deleting file:", unlinkErr);
+            //         } else {
+            //             console.log("🗑️ File deleted successfully:", filePath);
+            //         }
+            //     });
+            // }
             res.status(201).json({ ...newFellowship, _id: result.insertedId });
 
         } catch (dbError) {
