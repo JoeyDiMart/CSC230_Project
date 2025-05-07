@@ -5,7 +5,6 @@ import {client} from "../Database/Mongodb.js";
 import path from 'path';
 import { fileURLToPath } from 'url';
 import multer from "multer";
-import fs from "fs";
 import { ObjectId } from 'mongodb';
 import * as crypto from 'crypto';
 import * as userService from '../services/userService.js';
@@ -13,6 +12,7 @@ import * as publicationService from '../services/publicationService.js';
 import * as eventSubscriptionService from '../services/eventSubscriptionService.js';
 import { upload } from './multerConfig.js';
 import pdfThumbnail from 'pdf-thumbnail';
+import fs from 'fs';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -219,9 +219,6 @@ const handlePosterUpload = async (req, res) => {
     }
 };
 
-
-import fs from 'fs';
-import pdfThumbnail from 'pdf-thumbnail';
 
 export const generateThumbnail = async (pdfPath) => {
     try {
