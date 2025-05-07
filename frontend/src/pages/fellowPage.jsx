@@ -60,7 +60,7 @@ function FellowPage({role, email, name }) {
         formData.append("publicationLink", newFellow.publicationLink);
         formData.append("topic", newFellow.topic);
         formData.append("collaborators", newFellow.collaborators);
-        formData.append("isMyFellowship", newFellow.isMyFellowship ? "true" : "false");
+        formData.append("isMyFellowship", email ? "true" : "false");
         formData.append("photo", newFellow.photo);
 
         console.log("FormData:", formData);
@@ -160,19 +160,7 @@ function FellowPage({role, email, name }) {
                                     placeholder="Collaborators"
                                     onChange={handleInputChange}
                                 />
-                                <label>
-                                    <input
-                                        type="checkbox"
-                                        name="isMyFellowship"
-                                        onChange={(e) =>
-                                            setNewFellow((prev) => ({
-                                                ...prev,
-                                                isMyFellowship: e.target.checked,
-                                            }))
-                                        }
-                                    />
-                                    My Fellowship
-                                </label>
+                                Add Photo Here
                                 <input
                                     type="file"
                                     accept="image/*"
