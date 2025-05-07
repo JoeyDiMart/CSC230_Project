@@ -251,8 +251,6 @@ export const handlePublication = async (req, res) => {
             return res.status(400).json({error: err.message});
         }
 
-        console.log("✅ Multer finished parsing request");
-
         try {
             // Extract fields and parse arrays
             const title = req.body.title;
@@ -281,8 +279,18 @@ export const handlePublication = async (req, res) => {
             fs.writeFileSync(tempPath, fileBuffer);
 
             // Generate thumbnail
-            const thumbnailBase64 = await generateThumbnail(tempPath);
+            let thumbnailBase64 = await generateThumbnail(tempPath);
             fs.unlinkSync(tempPath);
+            console.log("🖼️ Thumbnail type:", typeof thumbnailBase64); // Should be 'string'
+            console.log("🖼️ Thumbnail preview:", thumbnailBase64?.substring(0, 50)); // Should start with 'data:image/png;base64,...'
+
+            // Safety check: if it's a Buffer or somehow an object, force string
+            if (Buffer.isBuffer(thumbnailBase64)) {
+                thumbnailBase64 = `data:image/png;base64,${thumbnailBase64.toString('base64')}`;
+            } else if (typeof thumbnailBase64 !== 'string') {
+                console.warn("⚠️ Unexpected thumbnail format. Forcing stringify.");
+                thumbnailBase64 = `data:image/png;base64,${Buffer.from(JSON.stringify(thumbnailBase64)).toString('base64')}`;
+            }
 
             // Validate fields
             if (!title || !email || !author.length) {
