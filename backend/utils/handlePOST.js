@@ -13,7 +13,7 @@ import * as publicationService from '../services/publicationService.js';
 import * as eventSubscriptionService from '../services/eventSubscriptionService.js';
 import * as fellowshipService from '../services/fellowshipService.js';
 import { upload } from './multerConfig.js';
-import puppeteer from "puppeteer";
+import pdfThumbnail from 'pdf-thumbnail';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -222,20 +222,12 @@ const handlePosterUpload = async (req, res) => {
 
 
 export const generateThumbnail = async (pdfPath) => {
-    const browser = await puppeteer.launch({
-        headless: "new",
-        args: ["--no-sandbox", "--disable-setuid-sandbox"],
+    const pdfBuffer = fs.readFileSync(pdfPath);
+    const imageBuffer = await pdfThumbnail(pdfBuffer, {
+        resize: { width: 300 }
     });
 
-    const page = await browser.newPage();
-    const pdfBuffer = fs.readFileSync(pdfPath);
-    await page.setContent(`
-    <embed src="data:application/pdf;base64,${pdfBuffer.toString("base64")}" type="application/pdf" width="800" height="1000">
-  `);
-    const screenshotBuffer = await page.screenshot({ type: "png" });
-    await browser.close();
-
-    return `data:image/png;base64,${screenshotBuffer.toString("base64")}`;
+    return `data:image/png;base64,${imageBuffer.toString('base64')}`;
 };
 
 
