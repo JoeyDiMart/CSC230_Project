@@ -6,7 +6,6 @@
   "scripts": {
     "start": "node backend/main.js",
     "heroku-postbuild": "cd frontend && npm install && npm run build",
-    "postinstall": "PUPPETEER_CACHE_DIR=.cache/puppeteer PUPPETEER_SKIP_DOWNLOAD=false node node_modules/puppeteer/install.js"
   },
   "type": "module",
   "repository": {
