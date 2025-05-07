@@ -33,7 +33,7 @@ function Pubs({ pubs, showStatus, onPublicationClick }) {
                             <div className="top-bar"></div>
                             {/* take base64 and make it the thumbnail */}
                                 <img
-                                    src={publication.thumbnail}
+                                    src={`data:image/png;base64,${publication.preview}`}
                                     alt="Thumbnail"
                                     className="publication-thumbnail"
                                     loading="lazy"
