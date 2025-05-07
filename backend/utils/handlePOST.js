@@ -13,7 +13,7 @@ import * as eventSubscriptionService from '../services/eventSubscriptionService.
 import { upload } from './multerConfig.js';
 import pdfThumbnail from 'pdf-thumbnail';
 import fs from 'fs';
-
+import getStream from 'get-stream';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
