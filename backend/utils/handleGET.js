@@ -427,6 +427,17 @@ export const handleGetFellowships = async (req, res) => {
                 const buffer = Buffer.from(fellowship.photo, "base64");
                 photoPath = path.join(outputDir, `${fellowship.name.replace(/\s+/g, "_")}.png`);
                 fs.writeFileSync(photoPath, buffer);
+
+                // 🔥 Delete after 60 seconds
+                setTimeout(() => {
+                    fs.unlink(photoPath, (err) => {
+                        if (err) {
+                            console.error("Failed to delete temp photo:", photoPath, err);
+                        } else {
+                            console.log("✅ Temp photo deleted:", photoPath);
+                        }
+                    });
+                }, 60000); // 60 seconds
             }
 
             return {
