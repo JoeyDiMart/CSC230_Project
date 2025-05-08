@@ -32,6 +32,7 @@ function Posters({ posters, onPosterClick }) {
                     <div key={idx}
                          className="poster-container"
                          onClick={() => onPosterClick?.(poster)} >
+                        <div className="top-bar"></div>
                         <div className="poster-title">
                             <p><strong>{poster.title}</strong></p>
                         </div>
