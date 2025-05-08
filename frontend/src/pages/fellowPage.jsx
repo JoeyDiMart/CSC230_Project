@@ -147,11 +147,13 @@ function FellowPage({role, email, name }) {
                 </div>
             </div>
 
-            <div className="pub-header" style={{ position: "absolute", top: "100px", right: "10px" }}>
-                <button onClick={() => setShowUpload(true)} className="upload">
-                    Upload New Fellow
-                </button>
-            </div>
+            {email && (
+                <div className="pub-header" style={{ position: "absolute", top: "100px", right: "10px" }}>
+                    <button onClick={() => setShowUpload(true)} className="upload">
+                        Upload New Fellow
+                    </button>
+                </div>
+            )}
 
             {showUpload && (
                 <>
