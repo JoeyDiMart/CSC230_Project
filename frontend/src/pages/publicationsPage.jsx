@@ -472,10 +472,12 @@ const fetchMyPublications = () => {
                                                     <div className="saving-text">
                                                         {savingComment && <p style={{ fontSize: "0.9rem", color: "#C8102E" }}>Saving...</p>}
                                                     </div>
+                                                    {role == "reviewer" && (
                                                     <div style={{ marginTop: "20px", display: "flex", gap: "10px" }}>
                                                         <button onClick={() => handleStatusUpdate("accepted")} className="approve-btn">Approve</button>
                                                         <button onClick={() => handleStatusUpdate("denied")} className="deny-btn">Deny</button>
                                                     </div>
+                                                    )}
                                                 </>)}
                                             {(popupPub?.author?.includes(name)) && (
                                                 <>
