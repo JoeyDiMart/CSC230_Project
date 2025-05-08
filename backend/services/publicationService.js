@@ -11,7 +11,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 
-export const handleGetReviews = async (req, res) => {
+/*export const handleGetReviews = async (req, res) => {
     if (!req.session.user) {
         return res.status(401).json({ error: 'Please log in' });
     }
@@ -97,7 +97,7 @@ export const handleDecision = async (req, res) => {
     } catch (err) {
         res.status(400).json({ error: err.message });
     }
-};
+};*/
 
 export const handleUpdateStatus = async (req, res) => {
     try {
@@ -163,7 +163,8 @@ export const handleReplaceFile = async (req, res) => {
         fs.writeFileSync(tempPath, file.buffer);
 
         // Generate preview thumbnail from PDF first page
-        const base64Preview = await generateThumbnail(tempPath);
+        const thumbnailBuffer = await generateThumbnail(tempPath);
+
 
         // Delete the temp PDF after thumbnail is created
         fs.unlinkSync(tempPath);
@@ -172,7 +173,7 @@ export const handleReplaceFile = async (req, res) => {
         const updatedFile = {
             name: file.originalname,
             type: file.mimetype,
-            data: file.buffer.toString('base64')   // encode to base 64
+            data: file.buffer  // encode to base 64
         };
 
         // Update document with new file, preview, and status
@@ -181,7 +182,7 @@ export const handleReplaceFile = async (req, res) => {
             {
                 $set: {
                     file: updatedFile,
-                    preview: base64Preview,
+                    thumbnail: thumbnailBuffer,
                     status: "under review"
                 }
             }
