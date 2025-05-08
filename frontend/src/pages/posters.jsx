@@ -41,7 +41,9 @@ function Posters({ posters, onPosterClick }) {
                             {poster.file?.type?.startsWith('image/') && (
                                 <div className="poster-thumbnail">
                                     <img
-                                        src={`data:${poster.file.type};base64,${poster.file.data}`}
+                                        src={URL.createObjectURL(
+                                            new Blob([base64ToByteArray(poster.file.data)], { type: poster.file.type })
+                                        )}
                                         alt={poster.title}
                                     />
                                 </div>
