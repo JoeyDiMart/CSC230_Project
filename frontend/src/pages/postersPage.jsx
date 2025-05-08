@@ -269,6 +269,11 @@ function PostersPage({ role, email, name }) {
                                     placeholder="Search..."
                                     value={searchText}
                                     onChange={(e) => setSearchText(e.target.value)}
+                                    onKeyDown={(e) => {
+                                        if (e.key === 'Enter') {
+                                            handleSearch();
+                                        }
+                                    }}
                                 />
                                 <div className="select-wrapper">
                                     <div className="select-inner">
