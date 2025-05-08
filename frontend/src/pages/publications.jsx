@@ -32,11 +32,9 @@ function Pubs({ pubs, showStatus, onPublicationClick }) {
                         <div key={idx} className="publication-container" style={ {height: "315px"} } onClick={() => onPublicationClick(publication)} >
                             <div className="top-bar"></div>
                             {/* take base64 and make it the thumbnail */}
-                            {publication.thumbnail?.data && (
+                            {publication.thumbnail && (
                                 <img
-                                    src={`data:image/png;base64,${btoa(
-                                        String.fromCharCode(...publication.thumbnail.data)
-                                    )}`}
+                                    src={publication.thumbnail}
                                     alt="PDF thumbnail"
                                     style={{ width: "100%", maxHeight: "200px", objectFit: "contain" }}
                                 />

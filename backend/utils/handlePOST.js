@@ -271,23 +271,21 @@ export const handlePublication = async (req, res) => {
             const contentType = req.file.mimetype;
             const originalName = req.file.originalname;
 
-            // AI generated stuff
-            const uploadsDir = path.join(__dirname, 'uploads');
-            if (!fs.existsSync(uploadsDir)) {
-                fs.mkdirSync(uploadsDir);
-            }
 
-            const tempPath = path.join(uploadsDir, `${Date.now()}_${originalName}`);
+            const tempPath = path.join(__dirname, 'uploads', `${Date.now()}_${originalName}`);
             fs.writeFileSync(tempPath, fileBuffer);
 
-            const thumbnailFilename = await generateThumbnail(tempPath, originalName);
-            fs.unlinkSync(tempPath);
+            // Generate thumbnail buffer
+            const stream = fs.createReadStream(tempPath);
+            const imageStream = await pdfThumbnail(stream, { resize: { width: 300 } });
 
-            if (!title || !email || !author.length) {
-                console.warn("⚠️ Missing required fields", title, email, author);
-                return res.status(400).json({ error: 'All fields are required' });
+            const chunks = [];
+            for await (const chunk of imageStream) {
+                chunks.push(chunk);
             }
-            // end of AI generated stuff
+            const thumbnailBuffer = Buffer.concat(chunks);
+
+            fs.unlinkSync(tempPath); // Clean up temp PDF
 
 
             const db = client.db('CIRT');
