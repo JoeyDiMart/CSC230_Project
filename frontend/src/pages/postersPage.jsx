@@ -8,7 +8,6 @@ import { IoIosArrowDropdownCircle } from "react-icons/io";
 import API_BASE_URL from "../config.js";
 
 
-
 function PostersPage({ role, email, name }) {
     const [showUpload, setShowUpload] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
