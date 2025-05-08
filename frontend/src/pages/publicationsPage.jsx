@@ -37,8 +37,16 @@ function Publications({ role, email, name }) {
     // get publications from database (only accepted ones)
     useEffect(() => {
         fetch(`${API_BASE_URL}/api/publications1`)
-            .then(response => response.json())  // Expecting an array of publications
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
             .then((data) => {
+                if (!Array.isArray(data)) {
+                    throw new Error("Unexpected API response format");
+                }
                 const acceptedPublications = data.filter(pub => pub.status === "accepted");
                 setPublications(acceptedPublications);
             })
@@ -47,7 +55,6 @@ function Publications({ role, email, name }) {
                 setErrorMessage("Failed to load publications. Please try again later.");
             });
     }, []);
-
 
 
  // Only fetch my publications once on mount (not every render!)
