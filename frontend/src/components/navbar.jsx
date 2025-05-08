@@ -27,6 +27,10 @@ function Navbar({ role, setRole, name, setName, setEmail }) {
 
     return (
         <nav className="navbar ">
+            <div className="branding">
+                <Link to="/"><img src="/UTampa_mark.png" alt="Tampa img" className="logo" />  {/* UTampa Logo */}</Link>
+                <Link to="/" className="brand-title"></Link>
+            </div>
             <div className="nav-items">
                 <label htmlFor="menu-icon" className="menu-icon">
                     <input type="checkbox" id="menu-icon" checked={click} onChange={handleClick}/>
@@ -35,7 +39,7 @@ function Navbar({ role, setRole, name, setName, setEmail }) {
                     <span></span>
                 </label>
                 
-                <ul className={click ? 'nav-menu active backdrop-blur-md bg-testingColorGrey/30 border-b border-white/10' : 'nav-menu'}>
+                <ul className={click ? 'nav-menu active ' : 'nav-menu'}>
                     <li className="font-bold"><Link to="/Publications" onClick={closeMobileMenu}>Publications</Link></li>
                     <li><Link to="/posters" onClick={closeMobileMenu}>Posters</Link></li>
                     <li><Link to="/Events" onClick={closeMobileMenu}>Events</Link></li>

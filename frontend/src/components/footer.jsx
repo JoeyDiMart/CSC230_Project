@@ -5,10 +5,10 @@ const footerSection = [
     {
         title: "Explore Content",
         subTitle: [
-            { text: "Search for Publication", link: "/Publications" },
-            { text: "By Title", link: "/Publications" },
-            { text: "By Author", link: "/Publications" },
-            { text: "By Keyword", link: "/Publications" }
+            { text: "Search for Publication", link: "/#/Publications" },
+            { text: "Explore Upcoming Events ", link: "/#/Events" },
+            { text: "Check Our Posters", link: "/#/posters" },
+            { text: "Learn About Our Fellowship", link: "/#/fellow" }
         ]
     },
     {

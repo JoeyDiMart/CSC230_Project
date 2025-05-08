@@ -18,16 +18,16 @@ const HeroSection = () => {
         </p>
         <div className="flex justify-center gap-4 pt-4">
           <a
-            href="/#/Research-Associates"
+            href="/#/Events"
             className="bg-cirtRed text-white px-6 py-3 rounded-full font-semibold hover:bg-opacity-90 transition duration-300"
           >
-            Learn More
+            Events
           </a>
           <a
-            href="/#/Publications"
+            href="/#/Research-Associates"
             className="border border-cirtRed text-cirtRed px-6 py-3 rounded-full font-semibold hover:bg-cirtRed hover:text-white transition duration-300"
           >
-            View Publications
+            Research Associates
           </a>
         </div>
       </div>
