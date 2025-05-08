@@ -89,7 +89,7 @@ function Login({ setRole, setName, setEmail }) {
     
         } catch (error) {
             console.error("Error during login: ", error);
-            alert("An unexpected error occurred");
+            alert("My lord, if though sees this message, you are deemed worthy of this egg.\n🥚\nTake great care not to break it as though broke our website");
         }
     };
 
