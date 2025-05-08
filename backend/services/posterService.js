@@ -116,7 +116,7 @@ export const handleGetPending = async (req, res) => {
 
         const posters = await posterCollection
             .find(query)
-            .sort({ uploadDate: -1 })
+            .project({ file: 0 }) // ✅ Do not fetch base64-encoded file data
             .toArray();
             
         // Convert ObjectIds to strings for response
