@@ -343,10 +343,10 @@ const fetchMyPublications = () => {
                     </div>
                     {showUpload && (
                         <>
-                        <div className="popup-backdrop" onClick={() => setShowUpload(false)}></div>
+                        <div className="pub-popup-backdrop" onClick={() => setShowUpload(false)}></div>
                         <form onSubmit={handleSubmit}>
-                        <div className="upload-popup">
-                            <button onClick={() => setShowUpload(false)} className="exit-upload"><ImCross size={12} />
+                        <div className="pub-upload-popup">
+                            <button onClick={() => setShowUpload(false)} className="pub-exit-upload"><ImCross size={12} />
                             </button>
                             <h2>Upload a Publication</h2>
                             <div className="input-container">
@@ -361,7 +361,7 @@ const fetchMyPublications = () => {
                                     {uploadFile.file && uploadFile.file.name && (
                                         <p>File uploaded is {uploadFile.file.name}</p>
                                     )}                                </div>
-                                <button type="submit" className="submit-upload">Submit</button>
+                                <button type="submit" className="pub-submit-upload">Submit</button>
                             </div>
                         </div>
                         </form>

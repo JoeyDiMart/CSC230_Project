@@ -4,7 +4,7 @@
     padding-bottom: 80px;
 }
 
-.upload-popup {
+.pub-upload-popup {
     position: fixed;
     top: 50%;
     left: 50%;
@@ -47,15 +47,15 @@
     transition: transform 0.3s ease;
 }
 
-.upload:hover {
+.pub-upload:hover {
     transform: scale(1.05);
 }
-.upload-popup .exit-upload {
+.pub-upload-popup .exit-upload {
     position: absolute; /* Position relative to the nearest positioned ancestor (if any) */
     top: 10px; /* Distance from the top */
     right: 10px; /* Distance from the right */
 }
-.upload-popup .h2 {
+.pub-upload-popup .h2 {
     text-align: center;
     margin: 0;
     width: 100%;
