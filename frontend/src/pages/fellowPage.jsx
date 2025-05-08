@@ -28,10 +28,17 @@ function FellowPage({role, email, name }) {
     useEffect(() => {
         fetch(`${API_BASE_URL}/api/fellows`, { credentials: "include" })
             .then((res) => res.json())
-            .then((data) => setFellows(data))
+            .then((data) => {
+                if (data && data.length > 0) { // Check if fellows exist
+                    console.log("Fetched fellows:", data); // Debugging
+                    setFellows(data);
+                } else {
+                    console.log("No fellows found in the database.");
+                    setFellows([]); // Clear fellows if none exist
+                }
+            })
             .catch((err) => console.error("Error loading fellows:", err));
     }, []);
-
     // Fetch my fellowships
     useEffect(() => {
         if (email) { // Only fetch "my fellowships" if the user is logged in
@@ -96,6 +103,7 @@ function FellowPage({role, email, name }) {
     const filteredFellows = fellows.filter((fellow) =>
         fellow[searchFilter] && fellow[searchFilter].toLowerCase().includes(searchQuery.toLowerCase())
     );
+    console.log("filteredFellows", filteredFellows); // Debugging
 
     const openPreview = (fellow) => {
         setSelectedFellow(fellow);
