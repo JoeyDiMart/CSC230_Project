@@ -239,16 +239,35 @@ function PostersPage({ role, email, name }) {
 
     return (
         <div>
-            {loading ? (
-                <div className="loading-container">
-                    <div className="loading-spinner"></div>
-                    <p>Loading posters...</p>
+            <div className="posters-wrapper">
+                {/* Title + Description */}
+                <div className="flex flex-col w-full items-center justify-center pt-0 text-center">
+                    <h1 className="text-black">Explore Approved Posters</h1>
+                    <p className="mt-2 text-lg text-center text-black">Discover visual insights submitted by our research community</p>
                 </div>
-            ) : loadingError ? (
-                <div className="error-container">
-                    <p>Failed to load posters. Please refresh the page.</p>
-                    <button onClick={() => window.location.reload()}>Refresh</button>
-                </div>
+
+                {/* Show Loading Message (inside posters section) */}
+                {loading ? (
+                    <div className="loading-container">
+                        <div className="loading-spinner"></div>
+                        <p>Loading posters...</p>
+                    </div>
+                ) : loadingError ? (
+                    <div className="error-container">
+                        <p>Failed to load posters. Please refresh the page.</p>
+                        <button onClick={() => window.location.reload()}>Refresh</button>
+                    </div>
+                ) : (
+                    <>
+                        <div className="posters-section">
+                            <div className="m-6">
+                                <h2>Approved Posters</h2>
+                            </div>
+                            <Posters posters={posters} onPosterClick={(poster) => handlePosterPopup(poster)} />
+                        </div>
+                    </>
+                )}
+            </div>
             ) : (
                 <div>
                     <div className="posters-wrapper">
