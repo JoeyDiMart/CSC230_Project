@@ -338,9 +338,6 @@ function PostersPage({ role, email, name }) {
                                             <input {...getInputProps()} />
                                             <p>Drag & drop a file here, or click to select</p>
                                             <p>Accepted formats: JPEG, PNG, GIF, PDF</p>
-                                            {uploadFile.file && (
-                                                <p>Selected file: {uploadFile.file.name}</p>
-                                            )}
                                         </div>
                                         <button type="submit">Upload</button>
                                     </form>
