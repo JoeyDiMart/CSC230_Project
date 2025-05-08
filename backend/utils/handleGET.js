@@ -434,7 +434,12 @@ export const handleGetFellowships = async (req, res) => {
     try {
         const db = client.db("CIRT");
         const collection = db.collection("FELLOWS");
-
+        // Check if the collection has any documents
+        const count = await collection.countDocuments();
+        if (count === 0) {
+            console.log("No fellowships found in the database.");
+            return; // Exit early without doing anything
+        }
         // Fetch fellowships with their photos
         const fellowships = await collection.find({}).toArray();
 
