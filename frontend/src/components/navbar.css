@@ -12,7 +12,7 @@
     justify-content: space-between; /* Space between the items */
     align-items: center;
     padding:  25px;
-    z-index: 10000;
+    z-index: 100;
 }
 
 /* navbar items */
@@ -25,7 +25,7 @@
 .logo {
     display: flex;
     justify-content: center;
-    align-items: center;                       
+    align-items: center;                     
 }
 /* Make nav-items flexbox */
 .nav-items ul {
@@ -80,6 +80,7 @@
 .auth-buttons button {
     cursor: pointer;
     font-size: 15px;
+    z-index: 100;
 }
 /* Styling for the login button */
 .auth-buttons .Login {
@@ -124,6 +125,7 @@
     border-radius: 20px;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
     transition: background-color 0.3s ease, transform 0.3s ease, color 0.3s ease;
+    z-index: 100;
 }
 
 /* Hover effect for the signup button */
@@ -132,6 +134,7 @@
     color: white;
     border: 2px solid #C8102E;
     transform: scale(1.05);
+    z-index: 100;
 }
 
 .menu-icon {
@@ -207,7 +210,6 @@
       .profile-dropdown {
         position: relative; /* Keep label positioned normally */
         cursor: pointer;
-        padding-right: 25px;
       }
       .profile-button {
         background-color: transparent;
@@ -216,6 +218,7 @@
         border-radius: 20px; /* Small radius for subtle rounding */
         box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Soft shadow for smooth edges */
         transition: background-color 0.3s ease, transform 0.3s ease, color 0.3s ease;
+        z-index: 100;
     }
     .profile-button:hover {
         background-color: black;
@@ -304,20 +307,18 @@
     .nav-items ul {
         display: none; 
         flex-direction: column;
-        justify-content: flex-start;
+        justify-content: center;
         align-items: center;
         position: fixed;
         top: 0;
         left: 0;
         width: 100vw;
         height: 100vh;
-        padding: 100px 30px 40px;
         gap: 35px;
         background-color: rgba(0, 0, 0, 0.85);
         backdrop-filter: blur(12px);
         list-style: none;
         z-index: 2;
-        overflow-y: auto;
       }
     
     .nav-items ul.active{

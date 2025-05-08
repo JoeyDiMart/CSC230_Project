@@ -26,7 +26,7 @@ function Navbar({ role, setRole, name, setName, setEmail }) {
     }, []);
 
     return (
-        <nav className="navbar ">
+        <nav className="navbar">
             <div className="branding">
                 <Link to="/"><img src="/UTampa_mark.png" alt="Tampa img" className="logo" />  {/* UTampa Logo */}</Link>
                 <Link to="/" className="brand-title"></Link>
