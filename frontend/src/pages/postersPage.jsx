@@ -293,16 +293,15 @@ function PostersPage({ role, email, name }) {
                                     </div>
                                 </div>
                             </div>
-                        </div>
-
-                        {/* Upload Button (for publishers and admins) */}
+                                 {/* Upload Button (for publishers and admins) */}
                         {(role === 'publisher' || role === 'admin') && (
-                            <div className="publisher-stuff">
-                                <button className="upload" onClick={() => setShowUpload(true)}>
+                            <div className="flex items-center w-100 bg-transparent ml-2">
+                                <button className="flex items-center rounded-xl text-white" onClick={() => setShowUpload(true)}>
                                     Upload Poster
                                 </button>
                             </div>
                         )}
+                        </div>
 
                         {/* Upload Popup */}
                         {showUpload && (

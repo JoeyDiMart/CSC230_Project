@@ -17,9 +17,13 @@
 
 /* navbar items */
 .nav-items {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
 
 }
 .logo {
@@ -141,8 +145,6 @@
     position: absolute;
     width: 40px;
     height: 30px;
-    margin-right: 1.5rem;
-    right: 0;
     background: transparent;
     cursor: pointer;
     display: block;
@@ -256,7 +258,6 @@
         animation: fadeSlideIn 0.2s ease forwards;
         position: absolute;
         top: 100%;
-        left: -25px;
         background-color: #222;
         border: 1px solid #444;
         border-radius: 8px;
@@ -273,7 +274,6 @@
       }
       
       .dropdown-content li {
-        padding: 8px 16px;
         list-style: none;
         cursor: pointer;
       }
@@ -284,10 +284,6 @@
         display: block;
         width: 100%;
         text-decoration: none;
-      }
-      
-      .dropdown-content li:hover {
-        background-color: #444;
       }
       
 
@@ -301,6 +297,16 @@
         right: 75px;
         bottom: 25px;
     }
+    .menu-icon {
+      display: block;
+      position: absolute;
+      top: 50%;
+      right: 25px;
+      transform: translateY(-50%);
+      width: 40px;
+      height: 30px;
+      z-index: 1001;
+    }
     .auth-buttons .signup {
         display: none;
     }
@@ -311,7 +317,6 @@
         align-items: center;
         position: fixed;
         top: 0;
-        left: 0;
         width: 100vw;
         height: 100vh;
         gap: 35px;
@@ -319,6 +324,7 @@
         backdrop-filter: blur(12px);
         list-style: none;
         z-index: 2;
+
       }
     
     .nav-items ul.active{
@@ -330,6 +336,7 @@
         font-weight: bold;
         color: #fff;
     }
+    
 }
 
 /* For Computer*/
@@ -343,3 +350,19 @@
         display: none;
     }
     }
+
+/* Mid-size screens: Prevent overlap around 1143px */
+@media (max-width: 1200px) and (min-width: 769px) {
+  .navbar {
+    flex-wrap: wrap;
+  }
+
+  .nav-items {
+    display: flex;
+
+    justify-content: flex-start;
+    padding-right: 30%;
+  }
+
+
+}
