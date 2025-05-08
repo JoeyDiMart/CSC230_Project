@@ -163,7 +163,7 @@ function FellowPage({role, email, name }) {
                                     name="name"
                                     placeholder="Name"
                                     onChange={handleInputChange}
-                                    maxLength="50" // Limit name to 50 characters
+                                    maxLength="20" // Limit name to 20 characters
                                     required
                                 />
                                 <input
@@ -179,7 +179,7 @@ function FellowPage({role, email, name }) {
                                     name="bio"
                                     placeholder="Short Bio"
                                     onChange={handleInputChange}
-                                    maxLength="500" // Limit bio to 500 characters
+                                    maxLength="100" // Limit bio to 100 characters
                                     required
                                 />
                                 <input
@@ -200,7 +200,7 @@ function FellowPage({role, email, name }) {
                                     name="collaborators"
                                     placeholder="Collaborators"
                                     onChange={handleInputChange}
-                                    maxLength="200" // Limit collaborators to 200 characters
+                                    maxLength="50" // Limit collaborators to 50 characters
                                 />
                                 Add Photo Here
                                 <input
