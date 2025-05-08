@@ -19,7 +19,7 @@ const associates = [
   {
     name: "Chivon Fitch",
     title: "CIRT Liaison to the Industry Advisory Board",
-    specialties: "Policing/Law Enforcement, Criminal Justice Policy, Victimization, Corrections, Social Justice/ Criminal Justice Reform",
+    specialties: "Policing/Law Enforcement, Criminal Justice Policy, Victimization, Corrections",
     email: "Cfitch@ut.edu",
     img: "/chivonFitch.jpg"
   },
@@ -73,13 +73,6 @@ const associates = [
     img: "/defaultResearchAssociates.jpg"
   },
   {
-    name: "Rhissa Briones Robinson",
-    title: "Research Associate",
-    specialties: "Victimization, Violent Crime, Juvenile Delinquency, Theoretical Approaches",
-    email: "rrobinson@ut.edu",
-    img: "/defaultResearchAssociates.jpg"
-  },
-  {
     name: "Gabriel Paez",
     title: "Research Associate",
     specialties: "Policing/Law Enforcement, Victimization",
@@ -123,22 +116,3 @@ function ResearchAssociates() {
 }
 
 export default ResearchAssociates;
-
-/*
-                <div className="col-sm-6 col-md-3">
-                        <div className="box">
-                            <div className="box-image">
-                                <img src="{image}" alt="{alternative name}" />
-                            </div>
-                            <div className="box-content">
-                                <h3 className="name">{name}</h3>
-                                <h4>{Role}}</h4>
-                                <h4>Specialties: {specialties}</h4>
-                                <a href="mailto:{email}" className="emailButton">{email}</a>
-                            </div>
-                        </div>
-                    </div>
-
-
-fill in {}
- */
