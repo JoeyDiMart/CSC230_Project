@@ -1,32 +1,15 @@
 /* Styling for the Header */
 .header {
     position: fixed;  /* Fixes the header at the top */
-    top: 0;           /* Aligns it to the top of the viewport */
-    left: 0;
     width: 100vw;  /* Full viewport width */
     /* background-color: #C8102E; */
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 5px 20px;
     height: 60px;
+    padding-bottom: 2px;
     z-index: 3;
 
-}
-.h1-title {
-    margin-top: 80px;
-    text-align: center;
-}
-
-.branding {
-    display: flex;
-    align-items: center;
-}
-
-.brand-title {
-    margin-left: 10px;
-    color: black;
-    font-size: 10px;
 }
 
 .header::before {
@@ -49,6 +32,10 @@
 }
 
 .logo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 0;
     height: 50px;               /* Adjust logo size */
     width: auto;                /* Maintain aspect ratio */
 }
