@@ -92,7 +92,7 @@ function PostersPage({ role, email, name }) {
 
     // Get pending posters for admin/reviewer
     useEffect(() => {
-        if (role === "admin") {
+        if (role === "admin" || role === "reviewer") {
             fetchPendingPosters();
         }
     }, [role]);
@@ -104,12 +104,9 @@ function PostersPage({ role, email, name }) {
             .then(response => response.json())
             .then((data) => {
                 setPendingPosters(data);
-                setLoading(false);
             })
             .catch((error) => {
                 console.error("Error fetching pending posters:", error);
-                setLoading(false);
-                setLoadingError(true);
             });
     };
 
