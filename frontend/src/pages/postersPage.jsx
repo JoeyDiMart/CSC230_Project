@@ -117,11 +117,10 @@ function PostersPage({ role, email, name }) {
     // Handle input changes for uploading
     const handleChange = (e) => {
         const { name, value } = e.target;
-        if (name === "keywords") {
-            setUploadFile(prev => ({ ...prev, keywords: value.split(",").map(s => s.trim())}));
-        } else {
-            setUploadFile(prev => ({ ...prev, [name]: value }));
-        }
+        setUploadFile(prev => ({
+            ...prev,
+            [name]: value
+        }));
     };
 
     // Handle poster submission
