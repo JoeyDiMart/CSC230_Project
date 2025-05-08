@@ -257,6 +257,7 @@
     height: 5px;
     background-color: #C8102E;
     width: 100%;
+    padding: 0;
 }
 .publication-container:hover {
     transform: translateY(-5px) scale(1.03);
