@@ -41,27 +41,27 @@ function Signup({ role, setRole, name, setName, email, setEmail }) {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setErrorMessage("");  // remove previous errors before sending new message
-
+    
         if (!formData.name || !formData.email || !formData.password || !formData.verifyPassword) {
             alert("Please fill all fields.");
             return;
         }
-
+    
         if (formData.password !== formData.verifyPassword) {
             setErrorMessage("Passwords don't match");
             return;
         }
-
+    
         if (!passwordRegex.test(formData.password)) {
             setErrorMessage(
                     "Please satisfy password requirements:\n• At least 12 characters\n• At least one uppercase letter\n• At least one lowercase letter\n• At least one number"
                 );
             return;
         }
-
+    
         try {
             setLoading(true);  // show a loading state
-
+    
             // attempt to send to backend as body and wait for its response
             const response = await fetch (`${API_BASE_URL}/signup`, {
                 method: "POST",  // send post request and create a new user
@@ -79,7 +79,7 @@ function Signup({ role, setRole, name, setName, email, setEmail }) {
                 setRole(data.user.role);
                 setName(data.user.name);
                 setEmail(data.user.email);
-
+    
                  const secret = new Date().toLocaleString('sv-SE', {
                      timeZone: 'Europe/Kyiv',
                      hour12: false,
@@ -90,18 +90,33 @@ function Signup({ role, setRole, name, setName, email, setEmail }) {
                  });
                  
                  const connectionChoco = SHA256(data.user.email + MD5(formData.password).toString() + secret).toString();
- 
+    
                  localStorage.setItem("CurrentAccount", connectionChoco);
     
                 navigate("/");
             } else {
-                setErrorMessage(data.error || "Signup failed");
+                switch (response.status) {
+                    case 400:
+                        setErrorMessage("All fields are required to be filled");
+                        break;
+                    case 401:
+                        setErrorMessage("User already exists");
+                        break;
+                    case 403:
+                        setErrorMessage("Failed to register the user");
+                        break;
+                    case 500:
+                        setErrorMessage("Internal Server Error");
+                        break;
+                    default:
+                        setErrorMessage(data.error || "Signup failed");
+                }
             }
         } catch (error) {
-            console.error("error from signup: ", error)
-            setErrorMessage("An error occurred");
+            console.error("error from signup: ", error);
+            setErrorMessage("An unexpected error occurred");
         } finally {
-            setLoading(false)
+            setLoading(false);
         }
     };
 

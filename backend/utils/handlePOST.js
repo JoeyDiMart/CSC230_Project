@@ -95,7 +95,7 @@ const handleSignup = async (req, res) => {
         const collection = db.collection('USERS');  // access USERS section of database
         const existingUser = await collection.findOne({ email: email });
         if (existingUser) {  // test if email is already stored in database
-            return res.status(400).json({ error: "User already exists" });  // tested by changing message, works
+            return res.status(401).json({ error: "User already exists" });  // tested by changing message, works
         }
 
         const plainPassword = password;
@@ -125,10 +125,10 @@ const handleSignup = async (req, res) => {
 
             // error handling stuff
         } else {
-            return res.status(400).json({ error: "Failed to register user" });
+            return res.status(403).json({ error: "Failed to register user" });
         }
     } catch (err) {
-        return res.status(666).json({ error: 'Internal server error ' + err });
+        return res.status(500).json({ error: 'Internal server error ' + err });
     }
 };
 
@@ -143,13 +143,13 @@ const handleLogin = async (req, res) => {
         const collection = db.collection('USERS');
         const user = await collection.findOne({ email });
         if (!user) {
-            return res.status(460).json({ error: 'Invalid email or password' });
+            return res.status(401).json({ error: 'Some fields are not filed mylord' });
         }
 
         var enc_password = crypto.createHash('md5').update(password).digest('hex')
         const isMatch = enc_password === user.password;
         if (!isMatch) {
-            return res.status(401).json({ error: 'Invalid email or password' });
+            return res.status(402).json({ error: 'Invalid email or password' });
         }
 
 
@@ -193,7 +193,7 @@ const handleLogin = async (req, res) => {
 const handleLogout = (req, res) => {
     req.session.destroy(err => {
         if (err) {
-            return res.status(500).json({ error: 'Could not log out' });
+            return res.status(501).json({ error: 'Could not log out' });
         }
         res.json({ message: 'Logged out successfully' });
     });
