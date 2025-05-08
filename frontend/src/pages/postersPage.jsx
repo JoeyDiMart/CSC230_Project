@@ -28,7 +28,7 @@ function PostersPage({ role, email, name }) {
         title: '',
         author: name,
         email: email,
-        keywords: [],
+        keywords: '',
         file: '',
         status: 'pending',
         description: ''
@@ -138,7 +138,11 @@ function PostersPage({ role, email, name }) {
         formData.append("title", uploadFile.title);
         formData.append("author", uploadFile.author);
         formData.append("email", uploadFile.email);
-        formData.append("keywords", JSON.stringify(uploadFile.keywords));
+        formData.append("keywords", JSON.stringify(
+            Array.isArray(uploadFile.keywords)
+                ? uploadFile.keywords
+                : uploadFile.keywords.split(",").map(s => s.trim())
+        ));
         formData.append("file", uploadFile.file);
         formData.append("status", uploadFile.status);
         formData.append("description", uploadFile.description);
@@ -322,7 +326,7 @@ function PostersPage({ role, email, name }) {
                                             type="text"
                                             name="keywords"
                                             placeholder="Keywords (comma-separated)"
-                                            value={uploadFile.keywords.join(", ")}
+                                            value={uploadFile.keywords}
                                             onChange={handleChange}
                                         />
                                         <textarea
