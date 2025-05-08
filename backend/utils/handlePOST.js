@@ -221,29 +221,23 @@ const handlePosterUpload = async (req, res) => {
 };
 
 
-export const generateThumbnail = async (pdfPath, originalName) => {
+export const generateThumbnail = async (pdfPath) => {
     try {
         const stream = fs.createReadStream(pdfPath);
         const imageStream = await pdfThumbnail(stream, { resize: { width: 300 } });
 
-        const buffer = await getStream(imageStream);
-
-        const thumbnailsDir = path.join(__dirname, '../thumbnails');
-        if (!fs.existsSync(thumbnailsDir)) {
-            fs.mkdirSync(thumbnailsDir, { recursive: true });
+        const chunks = [];
+        for await (const chunk of imageStream) {
+            chunks.push(chunk);
         }
 
-        const filename = `${Date.now()}_${originalName.replace(/\.[^/.]+$/, '')}.png`;
-        const fullPath = path.join(thumbnailsDir, filename);
-        fs.writeFileSync(fullPath, buffer);
-
-        console.log("✅ Thumbnail saved as:", filename);
-        return filename;
+        return Buffer.concat(chunks); // Return binary Buffer
     } catch (err) {
         console.error("❌ Thumbnail generation failed:", err.message);
         return null;
     }
 };
+
 
 
 // chatgpt helped with debugging ********************************************** PUBLICATION UPLOAD IS RIGHT HERE
@@ -321,7 +315,7 @@ export const handlePublication = async (req, res) => {
                     data: base64Data,
                     type: contentType || "application/pdf",
                 },
-                thumbnail: thumbnailFilename,
+                thumbnail: thumbnailBuffer,
                 uploadedAt: new Date()
             };
 

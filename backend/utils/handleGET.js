@@ -191,7 +191,7 @@ const handleGetPhotos = async (req, res) => {
 // only accepted
 let handleGetPublications1 = async (req, res) => {
     try {
-        const db = client.db('CIRT'); 
+        const db = client.db('CIRT');
         const collection = db.collection('PUBLICATIONS');
 
         const publications = await collection.find({ status: "accepted" })
@@ -202,6 +202,14 @@ let handleGetPublications1 = async (req, res) => {
         if (publications.length === 0) {
             return res.status(404).json({ message: "No accepted publications found" });
         }
+
+        // Convert thumbnail Buffer to base64 string for rendering
+        publications.forEach(pub => {
+            if (pub.thumbnail && Buffer.isBuffer(pub.thumbnail)) {
+                pub.thumbnail = `data:image/png;base64,${pub.thumbnail.toString('base64')}`;
+            }
+        });
+
         res.json(publications);
     } catch (err) {
         console.error(err);
@@ -209,20 +217,28 @@ let handleGetPublications1 = async (req, res) => {
     }
 };
 
+
 // all ?
 let handleGetPublications2 = async (req, res) => {
     try {
-        const db = client.db('CIRT');  
-        const collection = db.collection('PUBLICATIONS');  
+        const db = client.db('CIRT');
+        const collection = db.collection('PUBLICATIONS');
 
-        const publications = await collection.aggregate([     
-            { $sample: { size: 10 } }                  
+        const publications = await collection.aggregate([
+            { $sample: { size: 10 } }
         ]).toArray();
 
         if (publications.length === 0) {
             return res.status(404).json({ message: "No accepted publications found" });
         }
 
+        // Convert Buffer thumbnail to base64 string
+        publications.forEach(pub => {
+            if (pub.thumbnail && Buffer.isBuffer(pub.thumbnail)) {
+                pub.thumbnail = `data:image/png;base64,${pub.thumbnail.toString('base64')}`;
+            }
+        });
+
         res.json(publications);
     } catch (err) {
         console.error(err);
@@ -230,7 +246,9 @@ let handleGetPublications2 = async (req, res) => {
     }
 };
 
-// only under review publications
+
+
+// under review publications
 let handleGetPublications3 = async (req, res) => {
     try {
         const db = client.db('CIRT');
@@ -244,6 +262,14 @@ let handleGetPublications3 = async (req, res) => {
         if (publications.length === 0) {
             return res.status(404).json({ message: "No under review publications found" });
         }
+
+        // Convert thumbnail buffer to base64 string
+        publications.forEach(pub => {
+            if (pub.thumbnail && Buffer.isBuffer(pub.thumbnail)) {
+                pub.thumbnail = `data:image/png;base64,${pub.thumbnail.toString('base64')}`;
+            }
+        });
+
         res.json(publications);
     } catch (err) {
         console.error(err);
@@ -253,10 +279,7 @@ let handleGetPublications3 = async (req, res) => {
 
 
 const handleGetMyPublications = async (req, res) => {
-    console.log("✅ handleGetMyPublications triggered");
-    console.log("Email param:", req.params.email)
     try {
-      
         const db = client.db('CIRT');
         const userCollection = db.collection("USERS");
         const publicationCollection = db.collection('PUBLICATIONS');
@@ -277,6 +300,12 @@ const handleGetMyPublications = async (req, res) => {
         const email = users[0].email;
 
         const publications = await publicationCollection.find({ email }).toArray();
+
+        publications.forEach(pub => {
+            if (pub.thumbnail && Buffer.isBuffer(pub.thumbnail)) {
+                pub.thumbnail = `data:image/png;base64,${pub.thumbnail.toString('base64')}`;
+            }
+        });
 
         if (!publications.length) {
             return res.status(404).json({ message: "No publications found for this user" });
