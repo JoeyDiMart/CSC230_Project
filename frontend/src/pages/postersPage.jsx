@@ -28,7 +28,7 @@ function PostersPage({ role, email, name }) {
         title: '',
         author: name,
         email: email,
-        keywords: [],
+        keywords: '',
         file: '',
         status: 'pending',
         description: ''
@@ -117,11 +117,10 @@ function PostersPage({ role, email, name }) {
     // Handle input changes for uploading
     const handleChange = (e) => {
         const { name, value } = e.target;
-        if (name === "keywords") {
-            setUploadFile(prev => ({ ...prev, keywords: value.split(",").map(s => s.trim())}));
-        } else {
-            setUploadFile(prev => ({ ...prev, [name]: value }));
-        }
+        setUploadFile(prev => ({
+            ...prev,
+            [name]: value
+        }));
     };
 
     // Handle poster submission
@@ -138,7 +137,11 @@ function PostersPage({ role, email, name }) {
         formData.append("title", uploadFile.title);
         formData.append("author", uploadFile.author);
         formData.append("email", uploadFile.email);
-        formData.append("keywords", JSON.stringify(uploadFile.keywords));
+        formData.append("keywords", JSON.stringify(
+            Array.isArray(uploadFile.keywords)
+                ? uploadFile.keywords
+                : uploadFile.keywords.split(",").map(s => s.trim())
+        ));
         formData.append("file", uploadFile.file);
         formData.append("status", uploadFile.status);
         formData.append("description", uploadFile.description);
@@ -322,7 +325,7 @@ function PostersPage({ role, email, name }) {
                                             type="text"
                                             name="keywords"
                                             placeholder="Keywords (comma-separated)"
-                                            value={uploadFile.keywords.join(", ")}
+                                            value={uploadFile.keywords}
                                             onChange={handleChange}
                                         />
                                         <textarea
@@ -335,9 +338,6 @@ function PostersPage({ role, email, name }) {
                                             <input {...getInputProps()} />
                                             <p>Drag & drop a file here, or click to select</p>
                                             <p>Accepted formats: JPEG, PNG, GIF, PDF</p>
-                                            {uploadFile.file && (
-                                                <p>Selected file: {uploadFile.file.name}</p>
-                                            )}
                                         </div>
                                         <button type="submit">Upload</button>
                                     </form>

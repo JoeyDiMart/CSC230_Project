@@ -26,7 +26,8 @@ const footerSection = [
         subTitle: [
             { text: "FAQ" },
             { text: "Get Access" },
-            { text: "Contact Us" }
+            { text: "Contact Us" },
+            { text: "Secret Button", link: "https://www.youtube.com/watch?v=dQw4w9WgXcQ" }
         ]
     }
 ];

@@ -353,7 +353,7 @@ const fetchMyPublications = () => {
                                 <input type="text" name="title" placeholder="Title" value={uploadFile.title} onChange={handleChange} required />
                                 <div className="input-list">
                                     <input type="text" name="author" placeholder="Author(s)" value={uploadFile.author} onChange={handleChange} required />
-                                    <input type="text" name="keywords" placeholder="Keywords" value={uploadFile.keywords} onChange={handleChange} />
+                                    <input type="text" name="keywords" placeholder="Keywords (comma-separated)" value={uploadFile.keywords} onChange={handleChange} />
                                 </div>
                                 <div {...getRootProps()} className="drop-container">
                                     <input {...getInputProps()} />
