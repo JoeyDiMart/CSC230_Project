@@ -254,9 +254,11 @@
     transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 .top-bar {
+    position: absolute;
     height: 5px;
     background-color: #C8102E;
-    width: 100%;
+    width: 100vw;
+
 }
 .publication-container:hover {
     transform: translateY(-5px) scale(1.03);
