@@ -29,9 +29,7 @@ function Posters({ posters, onPosterClick }) {
         <div className="posters-scroll-wrapper">
             {posters.length > 0 ? (
                 posters.map((poster, idx) => (
-                    <div key={idx}
-                         className="poster-container"
-                         onClick={() => onPosterClick?.(poster)} >
+                    <div key={idx} className="poster-container" onClick={() => onPosterClick?.(poster)} >
                         <div className="top-bar"></div>
                         <div className="content-padding-wrapper">
                             <div className="poster-title">
@@ -39,7 +37,7 @@ function Posters({ posters, onPosterClick }) {
                             </div>
                             <p><strong>Author:</strong> {poster.author}</p>
                             <p><strong>Keywords:</strong> {poster.keywords?.join(", ")}</p>
-                            {/* Show image preview */}
+
                             {poster.file?.type?.startsWith('image/') && (
                                 <div className="poster-thumbnail">
                                     <img
