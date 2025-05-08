@@ -336,7 +336,6 @@ function PostersPage({ role, email, name }) {
                 {loading ? (
                     <div className="loading-container">
                         <div className="loading-spinner"></div>
-                        <p>Loading posters...</p>
                     </div>
                 ) : loadingError ? (
                     <div className="error-container">
@@ -362,7 +361,6 @@ function PostersPage({ role, email, name }) {
                         {loadingMyPosters ? (
                             <div className="loading-container">
                                 <div className="loading-spinner"></div>
-                                <p>Loading your posters...</p>
                             </div>
                         ) : myPosters.length > 0 ? (
                             <Posters posters={myPosters} onPosterClick={(poster) => handlePosterPopup(poster)} />

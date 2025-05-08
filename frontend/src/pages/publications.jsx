@@ -59,7 +59,6 @@ function Pubs({ pubs, showStatus, onPublicationClick }) {
                 })
             ) : (
                 <div>
-                    <p>No Publications</p>
                 </div>
             )}
         </div>
