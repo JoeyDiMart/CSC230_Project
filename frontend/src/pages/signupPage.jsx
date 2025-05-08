@@ -148,6 +148,6 @@ function Signup({ role, setRole, name, setName, email, setEmail }) {
                 </form>
             </div>
         </div>
-    )
+    );
 }
 export default Signup;

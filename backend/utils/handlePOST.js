@@ -115,7 +115,7 @@ const handleSignup = async (req, res) => {
 
         const connectionChocoladeCookie = crypto.createHash('sha256').update(email + hashedPassword + secret).digest('hex');
 
-        const result = await collection.insertOne({name, email, password , role, connectionChocoladeCookie });  // collect all 4 variables from user inpus
+        const result = await collection.insertOne({name, email, hashedPassword , role, connectionChocoladeCookie });  // collect all 4 variables from user inpus
         if (result.insertedId) {  // if successfully created put into database
             const insertedUser = await collection.findOne(  // if successful collect
                 { _id: result.insertedId },
