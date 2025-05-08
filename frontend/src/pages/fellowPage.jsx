@@ -235,7 +235,7 @@ function FellowPage({role, email, name }) {
                             onClick={() => openPreview(fellow)}
                         >
                             <img
-                                src={`${API_BASE_URL}${fellow.photo}`}
+                                src={fellow.photo.startsWith("http") ? fellow.photo : `${API_BASE_URL}${fellow.photo}`}
                                 alt={fellow.name}
                                 className="publication-thumbnail"
                             />
