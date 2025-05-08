@@ -373,7 +373,7 @@ const fetchMyPublications = () => {
                     </div>
                 </div>
             )}
-            {role === 'reviewer' && (
+            {(role === 'reviewer' || role === 'admin') && (
                 <div className="reviewer-section">
                     <h2>Under Review</h2>
                     <div className="pubs-scroll-wrapper">
@@ -451,7 +451,7 @@ const fetchMyPublications = () => {
                                 </div>
                                 <div className="pub-popup-info">
                                     <h2>{popupPub.title}</h2>
-                                    <p><strong>Authors:</strong>
+                                    <p><strong>Authors: </strong>
                                         {Array.isArray(popupPub.author)
                                             ? popupPub.author.join(", ")
                                             : popupPub.author || "N/A"}
