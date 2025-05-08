@@ -422,15 +422,15 @@ const fetchMyPublications = () => {
             {/*   The logic for popups    */}
             {showPopup && popupPub && (
                 <>
-                    <div className="popup-backdrop" onClick={closePopup}></div>
-                    <div className="popup-overlay">
-                        <div className="popup-content" onClick={(e) => e.stopPropagation()}>
-                            <button className="popup-close" onClick={closePopup}>
+                    <div className="pub-popup-backdrop" onClick={closePopup}></div>
+                    <div className="pub-popup-overlay">
+                        <div className="pub-popup-content" onClick={(e) => e.stopPropagation()}>
+                            <button className="pub-popup-close" onClick={closePopup}>
                                 <ImCross size={20} />
                             </button>
 
-                            <div className="popup-layout">
-                                <div className="popup-pdf">
+                            <div className="pub-popup-layout">
+                                <div className="pub-popup-pdf">
                                     {popupPub?.file?.data ? (
                                         <embed
                                             src={`data:${popupPub?.file?.type || 'application/pdf'};base64,${popupPub?.file?.data}`}
@@ -444,7 +444,7 @@ const fetchMyPublications = () => {
                                         </p>
                                     )}
                                 </div>
-                                <div className="popup-info">
+                                <div className="pub-popup-info">
                                     <h2>{popupPub.title}</h2>
                                     <p><strong>Authors:</strong>
                                         {Array.isArray(popupPub.author)
@@ -464,7 +464,7 @@ const fetchMyPublications = () => {
                                         </div>
                                             {(role === "admin" || role === "reviewer") && (
                                                 <>
-                                                    <div className="popup-comments">
+                                                    <div className="pub-popup-comments">
                                                         <textarea placeholder="Write your comments here..."
                                                                   value={currentComment}
                                                                   onChange={(e) => handleCommentChange(e.target.value)} />
@@ -472,7 +472,7 @@ const fetchMyPublications = () => {
                                                     <div className="saving-text">
                                                         {savingComment && <p style={{ fontSize: "0.9rem", color: "#C8102E" }}>Saving...</p>}
                                                     </div>
-                                                    {role == "reviewer" && (
+                                                    {role === "reviewer" && (
                                                     <div style={{ marginTop: "20px", display: "flex", gap: "10px" }}>
                                                         <button onClick={() => handleStatusUpdate("accepted")} className="approve-btn">Approve</button>
                                                         <button onClick={() => handleStatusUpdate("denied")} className="deny-btn">Deny</button>
