@@ -227,7 +227,7 @@
 
 .poster-container {
     flex: 0 0 300px;
-{/*padding: 15px;*/}
+    padding: 0 10px 10px 10px;
     border: 1px solid #ddd;
     border-radius: 12px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
