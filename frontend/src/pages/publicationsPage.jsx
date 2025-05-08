@@ -343,7 +343,7 @@ const fetchMyPublications = () => {
                     </div>
                     {showUpload && (
                         <>
-                        <div className="pub-popup-backdrop" onClick={() => setShowUpload(false)}></div>
+                        <div className="popup-backdrop" onClick={() => setShowUpload(false)}></div>
                         <form onSubmit={handleSubmit}>
                         <div className="pub-upload-popup">
                             <button onClick={() => setShowUpload(false)} className="pub-exit-upload"><ImCross size={12} />
