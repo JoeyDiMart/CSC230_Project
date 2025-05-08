@@ -26,26 +26,24 @@ function Navbar({ role, setRole, name, setName, setEmail }) {
     }, []);
 
     return (
-        <nav className="navbar">
+        <nav className="navbar z-1000 ">
             <div className="branding">
                 <Link to="/"><img src="/UTampa_mark.png" alt="Tampa img" className="logo" />  {/* UTampa Logo */}</Link>
                 <Link to="/" className="brand-title"></Link>
             </div>
-            <div className="nav-items">
-                <label htmlFor="menu-icon" className="menu-icon">
+            <label htmlFor="menu-icon" className="menu-icon">
                     <input type="checkbox" id="menu-icon" checked={click} onChange={handleClick}/>
                     <span></span>
                     <span></span>
                     <span></span>
-                </label>
-                
+            </label>
+            <div className="nav-items">       
                 <ul className={click ? 'nav-menu active ' : 'nav-menu'}>
                     <li className="font-bold"><Link to="/Publications" onClick={closeMobileMenu}>Publications</Link></li>
                     <li><Link to="/posters" onClick={closeMobileMenu}>Posters</Link></li>
                     <li><Link to="/Events" onClick={closeMobileMenu}>Events</Link></li>
                     <li><Link to="/Research-Associates" onClick={closeMobileMenu}>Research Associates</Link></li>
                     <li><Link to="/fellow" onClick={closeMobileMenu}>Fellowship</Link></li> {/* New link */}
-
                 </ul>
             </div>
 

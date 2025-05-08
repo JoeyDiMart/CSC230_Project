@@ -28,10 +28,17 @@ function FellowPage({role, email, name }) {
     useEffect(() => {
         fetch(`${API_BASE_URL}/api/fellows`, { credentials: "include" })
             .then((res) => res.json())
-            .then((data) => setFellows(data))
+            .then((data) => {
+                if (data && data.length > 0) { // Check if fellows exist
+                    console.log("Fetched fellows:", data); // Debugging
+                    setFellows(data);
+                } else {
+                    console.log("No fellows found in the database.");
+                    setFellows([]); // Clear fellows if none exist
+                }
+            })
             .catch((err) => console.error("Error loading fellows:", err));
     }, []);
-
     // Fetch my fellowships
     useEffect(() => {
         if (email) { // Only fetch "my fellowships" if the user is logged in
@@ -96,6 +103,7 @@ function FellowPage({role, email, name }) {
     const filteredFellows = fellows.filter((fellow) =>
         fellow[searchFilter] && fellow[searchFilter].toLowerCase().includes(searchQuery.toLowerCase())
     );
+    console.log("filteredFellows", filteredFellows); // Debugging
 
     const openPreview = (fellow) => {
         setSelectedFellow(fellow);
@@ -108,114 +116,36 @@ function FellowPage({role, email, name }) {
     return (
 
         <div className="publisher-stuff">
-    
 
-            <div className="search-bar-container flex items-center justify-between flex-wrap gap-4 mb-6">
-            <h2>My Fellowships</h2>
-                <div className="animated-search-form text-black">
-                    <button className="search-icon">
-                        <FaSearch size={14} />
-                    </button>
-                    <input
-                        type="text"
-                        className="animated-search-input"
-                        placeholder="Search..."
-                        value={searchQuery}
-                        onChange={(e) => setSearchQuery(e.target.value)}
-                    />
-                    <div className="select-wrapper">
-                        <div className="select-inner">
-                            <select
-                                className="search-filter"
-                                value={searchFilter}
-                                onChange={(e) => setSearchFilter(e.target.value)}
-                            >
-                                <option value="name">Name</option>
-                                <option value="topic">Topic</option>
-                                <option value="year">Year</option>
-                            </select>
+            {email && (
+                <div className="search-bar-container flex items-center justify-between flex-wrap gap-4 mb-6">
+                    <h2>My Fellowships</h2>
+                    <div className="animated-search-form text-black">
+                        <button className="search-icon">
+                            <FaSearch size={14} />
+                        </button>
+                        <input
+                            type="text"
+                            className="animated-search-input"
+                            placeholder="Search..."
+                            value={searchQuery}
+                            onChange={(e) => setSearchQuery(e.target.value)}
+                        />
+                        <div className="select-wrapper">
+                            <div className="select-inner">
+                                <select
+                                    className="search-filter"
+                                    value={searchFilter}
+                                    onChange={(e) => setSearchFilter(e.target.value)}
+                                >
+                                    <option value="name">Name</option>
+                                    <option value="topic">Topic</option>
+                                    <option value="year">Year</option>
+                                </select>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-
-            <div className="pub-header" style={{ position: "absolute", top: "100px", right: "10px" }}>
-                <button onClick={() => setShowUpload(true)} className="upload">
-                    Upload New Fellow
-                </button>
-            </div>
-
-            {showUpload && (
-                <>
-                    <div className="popup-backdrop" onClick={() => setShowUpload(false)}></div>
-                    <form onSubmit={handleSubmit}>
-                        <div className="upload-popup">
-                            <button
-                                onClick={() => setShowUpload(false)}
-                                className="exit-upload"
-                            >
-                                <ImCross size={12} />
-                            </button>
-                            <h2>Upload a Fellow</h2>
-                            <div className="input-container">
-                                <input
-                                    type="text"
-                                    name="name"
-                                    placeholder="Name"
-                                    onChange={handleInputChange}
-                                    maxLength="20" // Limit name to 20 characters
-                                    required
-                                />
-                                <input
-                                    type="text"
-                                    name="year"
-                                    placeholder="Fellowship Year"
-                                    onChange={handleInputChange}
-                                    pattern="\d{4}" // Only allow 4-digit numbers
-                                    title="Please enter a valid 4-digit year"
-                                    required
-                                />
-                                <textarea
-                                    name="bio"
-                                    placeholder="Short Bio"
-                                    onChange={handleInputChange}
-                                    maxLength="100" // Limit bio to 100 characters
-                                    required
-                                />
-                                <input
-                                    type="url"
-                                    name="publicationLink"
-                                    placeholder="Publication URL"
-                                    onChange={handleInputChange}
-                                />
-                                <input
-                                    type="text"
-                                    name="topic"
-                                    placeholder="Fellowship Topic"
-                                    onChange={handleInputChange}
-                                    maxLength="100" // Limit topic to 100 characters
-                                />
-                                <input
-                                    type="text"
-                                    name="collaborators"
-                                    placeholder="Collaborators"
-                                    onChange={handleInputChange}
-                                    maxLength="50" // Limit collaborators to 50 characters
-                                />
-                                Add Photo Here
-                                <input
-                                    type="file"
-                                    accept="image/*"
-                                    onChange={handleFileChange}
-                                    required
-                                />
-                                <button type="submit" className="submit-upload">
-                                    Submit
-                                </button>
-                            </div>
-                        </div>
-                    </form>
-                </>
             )}
 
             {email && (
@@ -227,7 +157,7 @@ function FellowPage({role, email, name }) {
                             onClick={() => openPreview(fellow)}
                         >
                             <img
-                                src={`${API_BASE_URL}${fellow.photo}`}
+                                src={fellow.photo.startsWith("http") ? fellow.photo : `${API_BASE_URL}${fellow.photo}`}
                                 alt={fellow.name}
                                 className="publication-thumbnail"
                             />
@@ -238,6 +168,107 @@ function FellowPage({role, email, name }) {
                     ))}
                 </div>
             )}
+            {email && (
+                <div className="pub-header" style={{ position: "absolute", top: "100px", right: "10px" }}>
+                    <button onClick={() => setShowUpload(true)} className="upload">
+                        Upload New Fellow
+                    </button>
+                </div>
+            )}
+
+            {showUpload && (
+                <>
+                    <div className="popup-backdrop" onClick={() => setShowUpload(false)}></div>
+                    <form onSubmit={handleSubmit} className="upload-form">
+                        <div className="upload-popup">
+                            <button
+                                onClick={() => setShowUpload(false)}
+                                className="exit-upload"
+                            >
+                                <ImCross size={12} />
+                            </button>
+                            <h2>Upload a Fellow</h2>
+                            <div className="input-container">
+                                <label>
+                                    Name:
+                                    <input
+                                        type="text"
+                                        name="name"
+                                        placeholder="Name"
+                                        onChange={handleInputChange}
+                                        maxLength="20"
+                                        required
+                                    />
+                                </label>
+                                <label>
+                                    Fellowship Year:
+                                    <input
+                                        type="text"
+                                        name="year"
+                                        placeholder="Fellowship Year"
+                                        onChange={handleInputChange}
+                                        pattern="\d{4}"
+                                        title="Please enter a valid 4-digit year"
+                                        required
+                                    />
+                                </label>
+                                <label>
+                                    Short Bio:
+                                    <textarea
+                                        name="bio"
+                                        placeholder="Short Bio"
+                                        onChange={handleInputChange}
+                                        maxLength="100"
+                                        required
+                                    />
+                                </label>
+                                <label>
+                                    Publication URL:
+                                    <input
+                                        type="url"
+                                        name="publicationLink"
+                                        placeholder="Publication URL"
+                                        onChange={handleInputChange}
+                                    />
+                                </label>
+                                <label>
+                                    Fellowship Topic:
+                                    <input
+                                        type="text"
+                                        name="topic"
+                                        placeholder="Fellowship Topic"
+                                        onChange={handleInputChange}
+                                        maxLength="100"
+                                    />
+                                </label>
+                                <label>
+                                    Collaborators:
+                                    <input
+                                        type="text"
+                                        name="collaborators"
+                                        placeholder="Collaborators"
+                                        onChange={handleInputChange}
+                                        maxLength="50"
+                                    />
+                                </label>
+                                <label>
+                                    Add Photo:
+                                    <input
+                                        type="file"
+                                        accept="image/*"
+                                        onChange={handleFileChange}
+                                        required
+                                    />
+                                </label>
+                                <button type="submit" className="submit-upload">
+                                    Submit
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </>
+            )}
+
             <div className="search-bar-container flex items-center justify-between flex-wrap gap-4 mb-6">
                 <h2>All Fellowships</h2>
                 <div className="animated-search-form flex items-center gap-2">

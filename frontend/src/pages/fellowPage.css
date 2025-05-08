@@ -1,8 +1,8 @@
 .popup-overlay {
     position: fixed;
-    top: 1%;
-    left: 10%;
-    transform: translate(30%, 30%); /* Centers the element */
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); /* Centers the element */
     background-color: #fff;
     padding: 20px;
     border-radius: 10px;
@@ -10,11 +10,68 @@
     z-index: 1001;
     width: auto;
     max-width: 90%;
-    max-height: 80vh; /* Constrain height to 90% of the viewport */
+    max-height: 90vh; /* Constrain height to 80% of the viewport */
     overflow-y: auto; /* Add vertical scrolling if content overflows */
-    border: 2px solid red; /* Debugging style */
     display: flex; /* Enable flexbox */
     justify-content: center; /* Center horizontally */
     align-items: center; /* Center vertically */
     text-align: center; /* Center text alignment */
+}
+
+.upload-popup {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    width: auto; /* Allow it to size based on content */
+    max-width: 80%;
+    height:auto;
+    max-height: 90%; /* Adjust maximum height if needed */
+    margin: auto;
+    text-align: left;
+}
+
+
+.input-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.input-container label {
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.input-container input,
+.input-container textarea {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+.submit-upload {
+    background-color: #007bff;
+    color: #fff;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.submit-upload:hover {
+    background-color: #0056b3;
+}
+
+.exit-upload {
+    background: none;
+    border: none;
+    color: #333;
+    cursor: pointer;
+    position: absolute;
+    top: 10px;
+    right: 10px;
 }
