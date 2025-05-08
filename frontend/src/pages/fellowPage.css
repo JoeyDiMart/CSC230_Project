@@ -1,8 +1,8 @@
 .popup-overlay {
     position: fixed;
-    top: 1%;
-    left: 10%;
-    transform: translate(30%, 30%); /* Centers the element */
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); /* Centers the element */
     background-color: #fff;
     padding: 20px;
     border-radius: 10px;
@@ -10,9 +10,8 @@
     z-index: 1001;
     width: auto;
     max-width: 90%;
-    max-height: 80vh; /* Constrain height to 90% of the viewport */
+    max-height: 80vh; /* Constrain height to 80% of the viewport */
     overflow-y: auto; /* Add vertical scrolling if content overflows */
-    border: 2px solid red; /* Debugging style */
     display: flex; /* Enable flexbox */
     justify-content: center; /* Center horizontally */
     align-items: center; /* Center vertically */
