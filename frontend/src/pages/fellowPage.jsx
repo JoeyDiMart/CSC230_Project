@@ -116,37 +116,58 @@ function FellowPage({role, email, name }) {
     return (
 
         <div className="publisher-stuff">
-    
 
-            <div className="search-bar-container flex items-center justify-between flex-wrap gap-4 mb-6">
-            <h2>My Fellowships</h2>
-                <div className="animated-search-form text-black">
-                    <button className="search-icon">
-                        <FaSearch size={14} />
-                    </button>
-                    <input
-                        type="text"
-                        className="animated-search-input"
-                        placeholder="Search..."
-                        value={searchQuery}
-                        onChange={(e) => setSearchQuery(e.target.value)}
-                    />
-                    <div className="select-wrapper">
-                        <div className="select-inner">
-                            <select
-                                className="search-filter"
-                                value={searchFilter}
-                                onChange={(e) => setSearchFilter(e.target.value)}
-                            >
-                                <option value="name">Name</option>
-                                <option value="topic">Topic</option>
-                                <option value="year">Year</option>
-                            </select>
+            {email && (
+                <div className="search-bar-container flex items-center justify-between flex-wrap gap-4 mb-6">
+                    <h2>My Fellowships</h2>
+                    <div className="animated-search-form text-black">
+                        <button className="search-icon">
+                            <FaSearch size={14} />
+                        </button>
+                        <input
+                            type="text"
+                            className="animated-search-input"
+                            placeholder="Search..."
+                            value={searchQuery}
+                            onChange={(e) => setSearchQuery(e.target.value)}
+                        />
+                        <div className="select-wrapper">
+                            <div className="select-inner">
+                                <select
+                                    className="search-filter"
+                                    value={searchFilter}
+                                    onChange={(e) => setSearchFilter(e.target.value)}
+                                >
+                                    <option value="name">Name</option>
+                                    <option value="topic">Topic</option>
+                                    <option value="year">Year</option>
+                                </select>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            )}
 
+            {email && (
+                <div className="pubs-scroll-wrapper">
+                    {myFellows.map((fellow, idx) => (
+                        <div
+                            key={idx}
+                            className="publication-container"
+                            onClick={() => openPreview(fellow)}
+                        >
+                            <img
+                                src={fellow.photo.startsWith("http") ? fellow.photo : `${API_BASE_URL}${fellow.photo}`}
+                                alt={fellow.name}
+                                className="publication-thumbnail"
+                            />
+                            <div className="publication-info-wrapper">
+                                <h3>{fellow.topic}</h3>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            )}
             {email && (
                 <div className="pub-header" style={{ position: "absolute", top: "100px", right: "10px" }}>
                     <button onClick={() => setShowUpload(true)} className="upload">
@@ -248,26 +269,6 @@ function FellowPage({role, email, name }) {
                 </>
             )}
 
-            {email && (
-                <div className="pubs-scroll-wrapper">
-                    {myFellows.map((fellow, idx) => (
-                        <div
-                            key={idx}
-                            className="publication-container"
-                            onClick={() => openPreview(fellow)}
-                        >
-                            <img
-                                src={fellow.photo.startsWith("http") ? fellow.photo : `${API_BASE_URL}${fellow.photo}`}
-                                alt={fellow.name}
-                                className="publication-thumbnail"
-                            />
-                            <div className="publication-info-wrapper">
-                                <h3>{fellow.topic}</h3>
-                            </div>
-                        </div>
-                    ))}
-                </div>
-            )}
             <div className="search-bar-container flex items-center justify-between flex-wrap gap-4 mb-6">
                 <h2>All Fellowships</h2>
                 <div className="animated-search-form flex items-center gap-2">
