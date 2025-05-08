@@ -243,6 +243,17 @@
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 }
 
+.top-bar {
+    height: 5px;
+    background-color: #C8102E;
+    width: 100%;
+}
+
+.content-padding-wrapper {
+    padding: 15px;
+    box-sizing: border-box;
+}
+
 .poster-title {
     margin-bottom: 10px;
 }
