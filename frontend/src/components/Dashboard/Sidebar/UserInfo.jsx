@@ -15,8 +15,8 @@ const UserInfo = ({ user, isCollapsed, handleLogout }) => {
             {!isCollapsed &&
             <>           
              <div className="flex flex-col items-start">
-                <h1 className=" text-[16px] m-0 p-0 text-testingColorWhite">{user?.name}</h1>
-                <p className="text-[12px] m-0 p-0 text-testingColorSubtitle">{user?.email}</p>
+                <h1 className=" text-[16px] m-0 p-0 text-testingColorWhite text-wrap">{user?.name}</h1>
+                <p className="text-[12px] m-0 p-0 text-testingColorSubtitle text-wrap">{user?.email}</p>
             </div>
             <div>
                 {/* <button className="bg-transparent border-none flex"> <HiDotsVertical/> </button> */}
