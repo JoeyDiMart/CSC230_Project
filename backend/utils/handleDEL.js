@@ -8,7 +8,7 @@ export const handleDeleteRequest = async (req, res) => {
 
     const requestHandlers = {
         '/posters/:id': posterService.handleDelete,
-        '/events/unsubscribe': eventSubscriptionService.handleUnsubscribe
+        '/events/subscribe': eventSubscriptionService.handleUnsubscribe
     };
 
     const handler = requestHandlers[req.path];
