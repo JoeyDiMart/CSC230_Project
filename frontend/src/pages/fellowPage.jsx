@@ -156,7 +156,7 @@ function FellowPage({role, email, name }) {
             {showUpload && (
                 <>
                     <div className="popup-backdrop" onClick={() => setShowUpload(false)}></div>
-                    <form onSubmit={handleSubmit}>
+                    <form onSubmit={handleSubmit} className="upload-form">
                         <div className="upload-popup">
                             <button
                                 onClick={() => setShowUpload(false)}
@@ -166,57 +166,77 @@ function FellowPage({role, email, name }) {
                             </button>
                             <h2>Upload a Fellow</h2>
                             <div className="input-container">
-                                <input
-                                    type="text"
-                                    name="name"
-                                    placeholder="Name"
-                                    onChange={handleInputChange}
-                                    maxLength="20" // Limit name to 20 characters
-                                    required
-                                />
-                                <input
-                                    type="text"
-                                    name="year"
-                                    placeholder="Fellowship Year"
-                                    onChange={handleInputChange}
-                                    pattern="\d{4}" // Only allow 4-digit numbers
-                                    title="Please enter a valid 4-digit year"
-                                    required
-                                />
-                                <textarea
-                                    name="bio"
-                                    placeholder="Short Bio"
-                                    onChange={handleInputChange}
-                                    maxLength="100" // Limit bio to 100 characters
-                                    required
-                                />
-                                <input
-                                    type="url"
-                                    name="publicationLink"
-                                    placeholder="Publication URL"
-                                    onChange={handleInputChange}
-                                />
-                                <input
-                                    type="text"
-                                    name="topic"
-                                    placeholder="Fellowship Topic"
-                                    onChange={handleInputChange}
-                                    maxLength="100" // Limit topic to 100 characters
-                                />
-                                <input
-                                    type="text"
-                                    name="collaborators"
-                                    placeholder="Collaborators"
-                                    onChange={handleInputChange}
-                                    maxLength="50" // Limit collaborators to 50 characters
-                                />
-                                Add Photo Here
-                                <input
-                                    type="file"
-                                    accept="image/*"
-                                    onChange={handleFileChange}
-                                    required
-                                />
+                                <label>
+                                    Name:
+                                    <input
+                                        type="text"
+                                        name="name"
+                                        placeholder="Name"
+                                        onChange={handleInputChange}
+                                        maxLength="20"
+                                        required
+                                    />
+                                </label>
+                                <label>
+                                    Fellowship Year:
+                                    <input
+                                        type="text"
+                                        name="year"
+                                        placeholder="Fellowship Year"
+                                        onChange={handleInputChange}
+                                        pattern="\d{4}"
+                                        title="Please enter a valid 4-digit year"
+                                        required
+                                    />
+                                </label>
+                                <label>
+                                    Short Bio:
+                                    <textarea
+                                        name="bio"
+                                        placeholder="Short Bio"
+                                        onChange={handleInputChange}
+                                        maxLength="100"
+                                        required
+                                    />
+                                </label>
+                                <label>
+                                    Publication URL:
+                                    <input
+                                        type="url"
+                                        name="publicationLink"
+                                        placeholder="Publication URL"
+                                        onChange={handleInputChange}
+                                    />
+                                </label>
+                                <label>
+                                    Fellowship Topic:
+                                    <input
+                                        type="text"
+                                        name="topic"
+                                        placeholder="Fellowship Topic"
+                                        onChange={handleInputChange}
+                                        maxLength="100"
+                                    />
+                                </label>
+                                <label>
+                                    Collaborators:
+                                    <input
+                                        type="text"
+                                        name="collaborators"
+                                        placeholder="Collaborators"
+                                        onChange={handleInputChange}
+                                        maxLength="50"
+                                    />
+                                </label>
+                                <label>
+                                    Add Photo:
+                                    <input
+                                        type="file"
+                                        accept="image/*"
+                                        onChange={handleFileChange}
+                                        required
+                                    />
+                                </label>
                                 <button type="submit" className="submit-upload">
                                     Submit
                                 </button>
