@@ -40,7 +40,7 @@ function Posters({ posters, onPosterClick }) {
 
                             {poster.file?.type?.startsWith('image/') && (
                                 <div className="poster-thumbnail">
-                                    <img
+                                    <img loading="lazy"
                                         src={URL.createObjectURL(
                                             new Blob([base64ToByteArray(poster.file.data)], { type: poster.file.type })
                                         )}
