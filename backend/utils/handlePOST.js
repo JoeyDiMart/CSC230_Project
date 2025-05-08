@@ -272,7 +272,9 @@ export const handlePublication = async (req, res) => {
             const originalName = req.file.originalname;
 
 
-            const tempPath = path.join(__dirname, 'uploads', `${Date.now()}_${originalName}`);
+            //const tempPath = path.join(__dirname, 'uploads', `${Date.now()}_${originalName}`);
+            const tempPath = path.join('/tmp', `${Date.now()}_${originalName}`);
+
             fs.writeFileSync(tempPath, fileBuffer);
 
             // Generate thumbnail buffer
