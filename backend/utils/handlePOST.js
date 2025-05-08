@@ -22,10 +22,13 @@ export const handlePostRequest = async (req, res) => {
     console.log("Incoming POST request to:", req.path);
 
     // Handle event updates first since they have dynamic routes
-    const eventUpdateMatch = req.path.match(/^\/events\/([^\/]+)$/);
-    if (eventUpdateMatch) {
-        req.params = { id: eventUpdateMatch[1] };
-        return eventService.handleUpdate(req, res);
+    // Skip if the path is /events/subscribe
+    if (req.path !== '/events/subscribe') {
+        const eventUpdateMatch = req.path.match(/^\/events\/([^\/]+)$/);
+        if (eventUpdateMatch) {
+            req.params = { id: eventUpdateMatch[1] };
+            return eventService.handleUpdate(req, res);
+        }
     }
 
     // Static route handlers
