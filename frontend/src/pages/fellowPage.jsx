@@ -3,6 +3,7 @@ import { ImCross } from "react-icons/im";
 import { FaSearch } from "react-icons/fa";
 import "./publicationsPage.css"; // Reuse the CSS from publicationsPage
 import API_BASE_URL from "../config.js";
+import "./fellowPage.css"; // Add your own CSS for the FellowPage
 
 function FellowPage({role, email, name }) {
     const [fellows, setFellows] = useState([]);
