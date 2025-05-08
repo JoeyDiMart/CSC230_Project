@@ -282,7 +282,7 @@ function PostersPage({ role, email, name }) {
                     </div>
 
                     {/* Upload Button */}
-                    {(role === 'publisher' || role === 'admin') && (
+                    {role !== 'guest' && (
                         <div className="flex items-center w-100 bg-transparent ml-2">
                             <button className="flex items-center rounded-xl text-white" onClick={() => setShowUpload(true)}>
                                 Upload Poster
