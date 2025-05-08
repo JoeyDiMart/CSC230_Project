@@ -33,21 +33,21 @@ function Posters({ posters, onPosterClick }) {
                          className="poster-container"
                          onClick={() => onPosterClick?.(poster)} >
                         <div className="top-bar"></div>
-                        <div className="poster-title">
-                            <p><strong>{poster.title}</strong></p>
-                        </div>
-                        <p><strong>Author:</strong> {poster.author}</p>
-                        <p><strong>Keywords:</strong> {poster.keywords?.join(", ")}</p>
-
-                        {/* Show image preview */}
-                        {poster.file?.type?.startsWith('image/') && (
-                            <div className="poster-thumbnail">
-                                <img
-                                    src={`data:${poster.file.type};base64,${poster.file.data}`}
-                                    alt={poster.title}
-                                />
+                        <div className="content-padding-wrapper">
+                            <div className="poster-title">
+                                <p><strong>{poster.title}</strong></p>
                             </div>
-                        )}
+                            <p><strong>Author:</strong> {poster.author}</p>
+                            <p><strong>Keywords:</strong> {poster.keywords?.join(", ")}</p>
+                            {/* Show image preview */}
+                            {poster.file?.type?.startsWith('image/') && (
+                                <div className="poster-thumbnail">
+                                    <img
+                                        src={`data:${poster.file.type};base64,${poster.file.data}`}
+                                        alt={poster.title}
+                                    />
+                                </div>
+                            )}
 
                         {poster.file && (
                             <button
@@ -66,6 +66,7 @@ function Posters({ posters, onPosterClick }) {
                                 Download File
                             </button>
                         )}
+                        </div>
                     </div>
                 ))
             ) : (
