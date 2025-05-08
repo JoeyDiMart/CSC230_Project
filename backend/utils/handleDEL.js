@@ -11,7 +11,8 @@ export const handleDeleteRequest = async (req, res) => {
         '/events/subscribe': eventSubscriptionService.handleUnsubscribe
     };
 
-    const handler = requestHandlers[req.path];
+    // Check if the handler exists for this route
+    let handler = requestHandlers[req.path];
 
 
     if (handler) {
