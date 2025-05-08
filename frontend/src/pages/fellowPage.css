@@ -33,6 +33,7 @@
 
 
 .input-container {
+    border-radius: 30px;
     display: flex;
     flex-direction: column;
 }
