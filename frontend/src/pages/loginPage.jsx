@@ -32,12 +32,12 @@ function Login({ setRole, setName, setEmail }) {
     // maybe remove async?
     const handleSubmit = async (e) => {
         e.preventDefault();
-
+    
         try {
             const response = await fetch(`${API_BASE_URL}/login`, {
                 method: "POST",
                 headers: {"Content-Type": "application/json"},
-                credentials: 'include', //It tells the browser to send cookies with the request & allows session cookie to be saved in the browser
+                credentials: 'include', // It tells the browser to send cookies with the request & allows session cookie to be saved in the browser
                 body: JSON.stringify({
                     name: formData.name,
                     email: formData.email.toLowerCase(),
@@ -45,13 +45,13 @@ function Login({ setRole, setName, setEmail }) {
                     role: formData.role
                 }),
             });
-
+    
             if (response.ok) {
                 const data = await response.json();  // will expect a role and name from backend
                 setRole(data.user.role);
                 setName(data.user.name);
                 setEmail(data.user.email);
-
+    
                 const secret = new Date().toLocaleString('sv-SE', {
                     timeZone: 'Europe/Kyiv',
                     hour12: false,
@@ -62,19 +62,34 @@ function Login({ setRole, setName, setEmail }) {
                 });
                 
                 const connectionChoco = SHA256(data.user.email + MD5(formData.password).toString() + secret).toString();
-
-      
-                localStorage.setItem("CurrentAccount", connectionChoco);
     
+                localStorage.setItem("CurrentAccount", connectionChoco);
+        
                 navigate("/");
             } else {
-                const errorData = await response.json();
-                alert(errorData.message);
+                let errorMessage;
+                switch (response.status) {
+                    case 400:
+                        errorMessage = "Email and password are required";
+                        break;
+                    case 401:
+                        errorMessage = "Valid Email and password are required";
+                        break;
+                    case 402:
+                        errorMessage = "Invalid email or password";
+                        break;
+                    case 500:
+                        errorMessage = "Internal server error";
+                        break;
+                    default:
+                        errorMessage = "An unexpected error occurred";
+                }
+                alert(errorMessage);
             }
-
+    
         } catch (error) {
             console.error("Error during login: ", error);
-            alert(error.message);
+            alert("An unexpected error occurred");
         }
     };
 
