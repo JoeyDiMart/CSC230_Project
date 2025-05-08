@@ -36,7 +36,7 @@ function Pubs({ pubs, showStatus, onPublicationClick }) {
                                 <img
                                     src={`data:image/png;base64,${publication.thumbnail}`}
                                     alt="PDF thumbnail"
-                                    style={{ width: "100%", maxHeight: "200px", objectFit: "contain" }}
+                                    style={{ width: "100%", maxHeight: "300px", objectFit: "contain" }}
                                 />
                             )}
 
