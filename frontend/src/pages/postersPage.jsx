@@ -398,58 +398,23 @@ function PostersPage({ role, email, name }) {
                                         <p><strong>Keywords:</strong> {popupPoster.keywords?.join(', ')}</p>
                                         <p><strong>File:</strong> {popupPoster.file?.name}</p>
                                         <div className="button-group">
-                                            <button 
-                                                onClick={async () => {
-                                                    try {
-                                                        const response = await fetch(
-                                                            `${API_BASE_URL}/posters/${popupPoster._id}/file`,
-                                                            { 
-                                                                credentials: 'include',
-                                                                headers: {
-                                                                    'Accept': '*/*'
-                                                                }
-                                                            }
-                                                        );
-                                                        
-                                                        if (!response.ok) {
-                                                            throw new Error('Failed to fetch file');
-                                                        }
-                                                        
-                                                        const contentType = response.headers.get('content-type');
-                                                        const contentDisposition = response.headers.get('content-disposition');
-                                                        const blob = await response.blob();
-                                                        
-                                                        const url = window.URL.createObjectURL(blob);
-                                                        const a = document.createElement('a');
-                                                        a.style.display = 'none';
-                                                        a.href = url;
-                                                        a.download = popupPoster.file.name;
-                                                        
-                                                        document.body.appendChild(a);
-                                                        a.click();
-                                                        
-                                                        // Clean up
-                                                        setTimeout(() => {
-                                                            document.body.removeChild(a);
-                                                            window.URL.revokeObjectURL(url);
-                                                        }, 100);
-                                                    } catch (error) {
-                                                        console.error('Error downloading file:', error);
-                                                        alert('Error downloading file. Please try again.');
-                                                    }
-                                                }}
-                                                className="download-btn"
-                                            >
-                                                Download
-                                            </button>
-                                            {role === 'admin' && popupPoster.status === 'pending' && (
-                                                <button 
-                                                    onClick={() => handleApprovePoster(popupPoster._id)}
-                                                    className="approve-btn"
-                                                >
-                                                    Approve
-                                                </button>
+                                            {(role === 'admin' || role === 'reviewer') && popupPoster.status === 'pending' && (
+                                                <div className="admin-actions">
+                                                    <button
+                                                        onClick={() => handleApprovePoster(popupPoster._id)}
+                                                        className="approve-btn"
+                                                    >
+                                                        Approve
+                                                    </button>
+                                                    <button
+                                                        onClick={() => handleDenyPoster(popupPoster._id)}
+                                                        className="deny-btn"
+                                                    >
+                                                        Deny
+                                                    </button>
+                                                </div>
                                             )}
+
                                         </div>
                                     </div>
                                 </div>
