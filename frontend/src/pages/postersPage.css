@@ -228,14 +228,21 @@
 .poster-container {
     flex: 0 0 300px;
     border: 1px solid #ddd;
+    overflow: hidden;
     border-radius: 12px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     cursor: pointer;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
+.top-bar {
+    height: 5px;
+    background-color: #C8102E;
+    width: 100%;
+}
 
 .content-padding-wrapper {
     padding: 10px;
+
 }
 
 .poster-container:hover {
@@ -243,10 +250,6 @@
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 }
 
-.content-padding-wrapper {
-    padding: 15px;
-    box-sizing: border-box;
-}
 
 .poster-title {
     margin-bottom: 10px;
