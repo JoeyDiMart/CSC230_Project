@@ -257,6 +257,7 @@
     height: 5px;
     background-color: #C8102E;
     width: 100%;
+    margin-bottom: 1px;
 }
 
 .publication-container:hover {
